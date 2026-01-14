@@ -27,6 +27,12 @@ if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/SDL/CMakeLists.txt")
     set(SDLIMAGE_JPG ON CACHE BOOL "Enable JPEG image support" FORCE)
     
     add_subdirectory(SDL_image)
+
+    # Disable heavy dependencies
+    set(SDLTTF_HARFBUZZ OFF CACHE BOOL "Enable HarfBuzz support" FORCE)
+    set(SDLTTF_FREETYPE_VENDORED ON CACHE BOOL "Use vendored FreeType" FORCE)
+    
+    add_subdirectory(SDL_ttf)
 else()
     message(FATAL_ERROR "SDL subdirectory not found. Please add SDL3 source to Vendor/SDL.")
 endif()

@@ -5,6 +5,8 @@ cmake_minimum_required(VERSION 3.16)
 file(GLOB_RECURSE ENGINE_SOURCES 
     "Source/**.cpp"
     "Source/**.c"
+    "ThirdParty/Include/**.cpp"
+    "ThirdParty/Include/**.c"
 )
 
 file(GLOB_RECURSE ENGINE_HEADERS 
@@ -33,11 +35,12 @@ target_include_directories(Engine
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-# Link with SDL3, SDL_image, and libzmq
+# Link with SDL3, SDL_image, SDL_ttf, and libzmq
 target_link_libraries(Engine 
     PUBLIC 
         SDL3::SDL3
         SDL3_image::SDL3_image
+        SDL3_ttf::SDL3_ttf
         libzmq-static
 )
 
