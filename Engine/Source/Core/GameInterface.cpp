@@ -495,4 +495,116 @@ float GameInterface::GetUsedPercent() {
     return 0.0f;
 }
 
+uint32_t GameInterface::AddAudioClip(const std::string& path) {
+    if (audioManagerRef) {
+        return audioManagerRef->AddAudioClip(path);
+    }
+    return 0;
+}
+
+void GameInterface::PlayAudioClip(uint32_t id) {
+    if (audioManagerRef) {
+        return audioManagerRef->PlayAudioClip(id);
+    }
+    return;
+}
+
+void GameInterface::PauseAudioClip(uint32_t id) {
+    if (audioManagerRef) {
+        return audioManagerRef->PauseAudioClip(id);
+    }
+    return;
+}
+
+void GameInterface::StopAudioClip(uint32_t id) {
+    if (audioManagerRef) {
+        return audioManagerRef->StopAudioClip(id);
+    }
+    return;
+}
+
+void GameInterface::SetAudioVolume(uint32_t id, float volume) {
+    if (audioManagerRef) {
+        return audioManagerRef->SetAudioVolume(id, volume);
+    }
+    return;
+}
+
+float GameInterface::GetAudioVolume(uint32_t id) {
+    if (audioManagerRef) {
+        return audioManagerRef->GetAudioVolume(id);
+    }
+    return 0.0f;
+}
+
+void GameInterface::SetAudioMasterVolume(float volume) {
+    if (audioManagerRef) {
+        return audioManagerRef->SetAudioMasterVolume(volume);
+    }
+    return;
+}
+
+float GameInterface::GetAudioMasterVolume() {
+    if (audioManagerRef) {
+        return audioManagerRef->GetAudioMasterVolume();
+    }
+    return 0.0f;
+}
+
+void GameInterface::SetAudioLooping(uint32_t id, bool loop) {
+    if (audioManagerRef) {
+        return audioManagerRef->SetAudioLooping(id, loop);
+    }
+    return;
+}
+
+bool GameInterface::GetAudioLooping(uint32_t id) {
+    if (audioManagerRef) {
+        return audioManagerRef->GetAudioLooping(id);
+    }
+    return false;
+}
+
+void GameInterface::SetAudioPlayOnAwake(uint32_t id, bool playOnAwake) {
+    if (audioManagerRef) {
+        audioManagerRef->SetAudioPlayOnAwake(id, playOnAwake);
+    }
+    return;
+}
+
+bool GameInterface::GetAudioPlayOnAwake(uint32_t id) {
+    if (audioManagerRef) {
+        return audioManagerRef->GetAudioPlayOnAwake(id);
+    }
+    return false;
+}
+
+void GameInterface::SetAudioSpatialization(uint32_t id, bool spatialization) {
+    if (audioManagerRef)
+    {
+        return audioManagerRef->SetAudioSpatialization(id, spatialization);
+    }
+}
+
+bool GameInterface::IsAudioPlaying(uint32_t id) {
+    if (audioManagerRef) {
+        return audioManagerRef->IsAudioPlaying(id);
+    }
+    return false;
+}
+
+bool GameInterface::IsAudioPaused(uint32_t id) {
+    if (audioManagerRef) {
+        return audioManagerRef->IsAudioPaused(id);
+    }
+    return false;
+}
+
+bool GameInterface::IsAudioStopped(uint32_t id) {
+    if (audioManagerRef) {
+        audioManagerRef->IsAudioStopped(id);
+    }
+    return false;
+}
+
 }

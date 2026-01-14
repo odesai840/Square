@@ -9,6 +9,7 @@
 #include "Networking/NetworkManager.h"
 #include "NetworkMode.h"
 #include "Memory/PoolAllocator.h"
+#include "Audio/AudioManager.h"
 #include <vector>
 #include <string>
 
@@ -53,6 +54,7 @@ public:
     void SetHeadlessServer(bool headless) { headlessServer = headless; }
     // Set pool allocator reference (for use in engine core only)
     void SetPoolAllocator(PoolAllocator* allocator) {this->allocatorRef = allocator;}
+    void SetAudioManager(AudioManager* audioManager) { this->audioManagerRef = audioManager; }
     
 protected:
     // Add an entity to the scene
@@ -199,23 +201,6 @@ protected:
     // Gets the local player's entity ID
     uint32_t GetLocalPlayerEntity();
 
-    // Starts replay recording
-    void StartReplayRecording(float keyframeIntervalSeconds = 1.0f);
-    // Stops replay recording
-    void StopReplayRecording();
-    // Starts replay playback
-    void StartReplayPlayback();
-    // Stops replay playback
-    void StopReplayPlayback();
-    // Clears replay data from memory
-    void ClearReplay();
-    // Returns whether a replay is currently being recorded
-    bool IsReplayRecording() const;
-    // Returns whether a recorded replay is currently being played
-    bool IsReplayPlaying() const;
-    // Returns whether a replay is loaded in memory
-    bool HasReplay() const;
-
     // Allocates a slot from the memory pool and returns its ID (-1 if pool is full)
     int Alloc();
     // Frees a specific memory slot by ID, making it available for reuse
@@ -228,6 +213,23 @@ protected:
     int GetTotal();
     // Returns the percentage of used memory slots (0.0-100.0)
     float GetUsedPercent();
+    
+    uint32_t AddAudioClip(const std::string& path);
+    void PlayAudioClip(uint32_t id);
+    void PauseAudioClip(uint32_t id);
+    void StopAudioClip(uint32_t id);
+    void SetAudioVolume(uint32_t id, float volume);
+    float GetAudioVolume(uint32_t id);
+    void SetAudioMasterVolume(float volume);
+    float GetAudioMasterVolume();
+    void SetAudioLooping(uint32_t id, bool loop);
+    bool GetAudioLooping(uint32_t id);
+    void SetAudioPlayOnAwake(uint32_t id, bool playOnAwake);
+    bool GetAudioPlayOnAwake(uint32_t id);
+    void SetAudioSpatialization(uint32_t id, bool spatialization);
+    bool IsAudioPlaying(uint32_t id);
+    bool IsAudioPaused(uint32_t id);
+    bool IsAudioStopped(uint32_t id);
 
 private:
     // Internal renderer reference (internal use only)
@@ -248,6 +250,7 @@ private:
     Server* serverRef = nullptr;
     // Memory reference (internal use only)
     PoolAllocator* allocatorRef = nullptr;
+    AudioManager* audioManagerRef = nullptr;
 
     // Current network mode
     NetworkMode currentMode = NetworkMode::STANDALONE;

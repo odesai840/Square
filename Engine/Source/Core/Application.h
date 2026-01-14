@@ -11,6 +11,7 @@
 #include "Timeline.h"
 #include "Networking/NetworkManager.h"
 #include "Memory/PoolAllocator.h"
+#include "Audio/AudioManager.h"
 #include <thread>
 #include <mutex>
 #include <atomic>
@@ -63,6 +64,8 @@ private:
     NetworkManager networkManager;
     // Memory allocator for game object pooling
     PoolAllocator allocator;
+    AudioManager audioManager;
+    
     // Script collection for game logic
     std::vector<GameInterface*> scripts;
 

@@ -10,4 +10,5 @@ public:
 private:
     uint32_t player;
     uint32_t marcus;
+    uint32_t music;
 };

@@ -225,6 +225,8 @@ namespace SquareCore
             script->SetEntityManager(&entityManager);
             script->SetTimeline(&timeline);
             script->SetMode(NetworkMode::STANDALONE);
+            script->SetPoolAllocator(&allocator);
+            script->SetAudioManager(&audioManager);
         }
 
         // Start worker threads
@@ -235,9 +237,6 @@ namespace SquareCore
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
-
-        // Run game start method
-        //game->OnStart();
 
         // Main update loop
         bool done = false;
@@ -460,6 +459,7 @@ namespace SquareCore
             script->SetTimeline(&timeline);
             script->SetMode(NetworkMode::CLIENT);
             script->SetPoolAllocator(&allocator);
+            script->SetAudioManager(&audioManager);
         }
 
         // Start worker threads
