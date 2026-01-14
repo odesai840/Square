@@ -1,178 +1,105 @@
 #include "Input.h"
-#include <SDL3/SDL_keyboard.h>
-#include <SDL3/SDL_scancode.h>
-#include <algorithm>
-#include <iostream>
 
 namespace SquareCore {
 
-Input::Input() {}
+Input::Input() {
+    std::memset(keyStates, 0, sizeof(keyStates));
+    std::memset(mouseButtonStates, 0, sizeof(mouseButtonStates));
+}
 
-bool Input::IsKeyPressed(SDL_Scancode scancode) {
-    // Get the current state of the keyboard
-    int numKeys = 0;
-    const bool* keybordState = SDL_GetKeyboardState(&numKeys);
+void Input::UpdateKeyState(SDL_Scancode key, bool pressed) {
+    if (key < 0 || key >= SDL_SCANCODE_COUNT) return;
 
-    // Check that the scancode is between 0 and the highest-value keyboard key
-    if (0 < scancode && scancode < numKeys) {
-        // If the scancode is valid, return whether that key is pressed
-        return keybordState[scancode];
+    if (pressed) {
+        keyStates[key] = KeyState::PRESSED;
+    } else {
+        keyStates[key] = KeyState::RELEASED;
+    }
+}
+
+void Input::UpdateMouseButtonState(int button, bool pressed) {
+    if (button < 0 || button >= MAX_MOUSE_BUTTONS) return;
+
+    if (pressed) {
+        mouseButtonStates[button] = KeyState::PRESSED;
+    } else {
+        mouseButtonStates[button] = KeyState::RELEASED;
+    }
+}
+
+void Input::UpdateMousePosition(float x, float y) {
+    previousMousePosition = mousePosition;
+    mousePosition = {x, y};
+
+    if (firstMouse) {
+        mouseDelta = {0.0f, 0.0f};
+        firstMouse = false;
+        return;
     }
 
-    // If the scancode is invalid, return false
+    mouseDelta = {
+        mousePosition.x - previousMousePosition.x,
+        mousePosition.y - previousMousePosition.y
+    };
+}
+
+void Input::UpdateMouseScroll(float xOffset, float yOffset) {
+    mouseScroll = {xOffset, yOffset};
+}
+
+void Input::ResetDeltas() {
+    mouseDelta = {0.0f, 0.0f};
+    mouseScroll = {0.0f, 0.0f};
+}
+
+bool Input::GetKeyPressed(SDL_Scancode key) {
+    if (key < 0 || key >= SDL_SCANCODE_COUNT) return false;
+
+    if (keyStates[key] == KeyState::PRESSED) {
+        keyStates[key] = KeyState::HELD;
+        return true;
+    }
     return false;
 }
 
-void Input::RegisterChord(const ChordDefinition& chord) {
-    registeredChords.push_back(chord);
+bool Input::GetKeyHeld(SDL_Scancode key) {
+    if (key < 0 || key >= SDL_SCANCODE_COUNT) return false;
+    return keyStates[key] == KeyState::PRESSED || keyStates[key] == KeyState::HELD;
 }
 
-void Input::UpdateChords(const std::set<SDL_Scancode>& pressedKeys, float currentTime) {
-    // Clear previous frame's detections
-    detectedThisFrame.clear();
+bool Input::GetKeyReleased(SDL_Scancode key) {
+    if (key < 0 || key >= SDL_SCANCODE_COUNT) return false;
 
-    // Track changes to key states
-    for (SDL_Scancode key : pressedKeys) {
-        if (currentlyPressed.find(key) == currentlyPressed.end()) {
-            keyHistory.push_back({key, currentTime, true});
-            currentlyPressed.insert(key);
-        }
+    if (keyStates[key] == KeyState::RELEASED) {
+        keyStates[key] = KeyState::NONE;
+        return true;
     }
-
-    // Track key releases
-    std::vector<SDL_Scancode> releasedKeys;
-    for (SDL_Scancode key : currentlyPressed) {
-        if (pressedKeys.find(key) == pressedKeys.end()) {
-            releasedKeys.push_back(key);
-        }
-    }
-    for (SDL_Scancode key : releasedKeys) {
-        keyHistory.push_back({key, currentTime, false});
-        currentlyPressed.erase(key);
-    }
-
-    // Clean old history
-    UpdateKeyHistory(currentTime);
-
-    // Detect chords
-    DetectSimultaneousChords(currentTime);
-    DetectSequenceChords(currentTime);
+    return false;
 }
 
-void Input::DetectSimultaneousChords(float currentTime) {
-    for (const ChordDefinition& chord : registeredChords) {
-        if (chord.type != ChordType::SIMULTANEOUS) continue;
+bool Input::GetMouseButtonPressed(int button) {
+    if (button < 0 || button >= MAX_MOUSE_BUTTONS) return false;
 
-        // Check if all required keys are currently pressed
-        bool allPressed = true;
-        for (SDL_Scancode key : chord.keys) {
-            if (currentlyPressed.find(key) == currentlyPressed.end()) {
-                allPressed = false;
-                break;
-            }
-        }
-
-        if (allPressed) {
-            // Verify they were pressed within the simultaneous window
-            bool simultaneous = AreKeysSimultaneous(chord.keys, chord.simultaneousWindow);
-            if (simultaneous) {
-                if (activeChords.find(chord.name) == activeChords.end()) {
-                    detectedThisFrame.push_back(chord.name);
-                    activeChords.insert(chord.name);
-                }
-            }
-        } else {
-            // Chord no longer active
-            activeChords.erase(chord.name);
-        }
+    if (mouseButtonStates[button] == KeyState::PRESSED) {
+        mouseButtonStates[button] = KeyState::HELD;
+        return true;
     }
+    return false;
 }
 
-void Input::DetectSequenceChords(float currentTime) {
-    for (const ChordDefinition& chord : registeredChords) {
-        if (chord.type != ChordType::SEQUENCE) continue;
+bool Input::GetMouseButtonHeld(int button) {
+    if (button < 0 || button >= MAX_MOUSE_BUTTONS) return false;
+    return mouseButtonStates[button] == KeyState::PRESSED || mouseButtonStates[button] == KeyState::HELD;
+}
 
-        if (IsSequenceInHistory(chord.keys, chord.maxTimeBetweenPresses, currentTime)) {
-            // Only trigger once per sequence
-            if (activeChords.find(chord.name) == activeChords.end()) {
-                detectedThisFrame.push_back(chord.name);
-                activeChords.insert(chord.name);
-            }
-        } else {
-            activeChords.erase(chord.name);
-        }
+bool Input::GetMouseButtonReleased(int button) {
+    if (button < 0 || button >= MAX_MOUSE_BUTTONS) return false;
+
+    if (mouseButtonStates[button] == KeyState::RELEASED) {
+        mouseButtonStates[button] = KeyState::NONE;
+        return true;
     }
-}
-
-void Input::UpdateKeyHistory(float currentTime) {
-    // Remove old key history
-    while (!keyHistory.empty() &&
-           (currentTime - keyHistory.front().timestamp) > maxHistoryDuration) {
-        keyHistory.pop_front();
-    }
-}
-
-bool Input::AreKeysSimultaneous(const std::vector<SDL_Scancode>& keys, float window) const {
-    if (keys.empty()) return false;
-
-    // Find the press events for these keys
-    std::vector<float> pressTimes;
-    for (SDL_Scancode key : keys) {
-        for (auto it = keyHistory.rbegin(); it != keyHistory.rend(); ++it) {
-            if (it->key == key && it->isPressed) {
-                pressTimes.push_back(it->timestamp);
-                break;
-            }
-        }
-    }
-
-    if (pressTimes.size() != keys.size()) return false;
-    
-    float minTime = *std::min_element(pressTimes.begin(), pressTimes.end());
-    float maxTime = *std::max_element(pressTimes.begin(), pressTimes.end());
-
-    return (maxTime - minTime) <= window;
-}
-
-bool Input::IsSequenceInHistory(const std::vector<SDL_Scancode>& keys,
-                                  float maxTime, float currentTime) const {
-    if (keys.empty()) return false;
-
-    // Find the sequence of key presses in history
-    std::vector<float> pressTimes;
-    size_t keyIndex = 0;
-
-    for (const KeyPressEvent& event : keyHistory) {
-        if (keyIndex >= keys.size()) break;
-
-        if (event.isPressed && event.key == keys[keyIndex]) {
-            pressTimes.push_back(event.timestamp);
-            keyIndex++;
-        }
-    }
-    
-    if (pressTimes.size() != keys.size()) return false;
-
-    // Check timing between presses
-    for (size_t i = 1; i < pressTimes.size(); i++) {
-        float timeBetween = pressTimes[i] - pressTimes[i-1];
-        if (timeBetween > maxTime) return false;
-    }
-
-    // Check that the last key was pressed recently
-    return (currentTime - pressTimes.back()) <= maxTime;
-}
-
-std::vector<std::string> Input::GetDetectedChords() const {
-    return detectedThisFrame;
-}
-
-void Input::ClearDetectedChords() {
-    detectedThisFrame.clear();
-}
-
-bool Input::IsChordActive(const std::string& chordName) const {
-    return activeChords.find(chordName) != activeChords.end();
+    return false;
 }
 
 }

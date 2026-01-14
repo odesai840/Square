@@ -63,48 +63,6 @@ namespace SquareCore
         return {};
     }
 
-    bool GameInterface::IsKeyPressed(SDL_Scancode key) {
-        if(inputRef) {
-            return inputRef->IsKeyPressed(key);
-        }
-        return false;
-    }
-
-    void GameInterface::RegisterInputChord(const std::string& name, ChordType type, const std::vector<SDL_Scancode>& keys,
-        float maxTimeBetweenPresses, float simultaneousWindow)
-    {
-        if (inputRef) {
-            ChordDefinition chord;
-            chord.name = name;
-            chord.type = type;
-            chord.keys = keys;
-            chord.maxTimeBetweenPresses = maxTimeBetweenPresses;
-            chord.simultaneousWindow = simultaneousWindow;
-            inputRef->RegisterChord(chord);
-        }
-    }
-
-    void GameInterface::UpdateInputChords(const std::set<SDL_Scancode>& pressedKeys, float currentTime) {
-        if (inputRef) {
-            inputRef->UpdateChords(pressedKeys, currentTime);
-        }
-    }
-
-    bool GameInterface::IsChordDetected(const std::string& chordName) {
-        if (inputRef) {
-            const auto& chords = inputRef->GetDetectedChords();
-            return std::find(chords.begin(), chords.end(), chordName) != chords.end();
-        }
-        return false;
-    }
-
-    bool GameInterface::IsChordActive(const std::string& chordName) {
-        if (inputRef) {
-            return inputRef->IsChordActive(chordName);
-        }
-        return false;
-    }
-
     void GameInterface::FlipSprite(uint32_t entityID, bool flipX, bool flipY) {
         if(entityManagerRef) {
             entityManagerRef->FlipSprite(entityID, flipX, flipY);
@@ -150,6 +108,69 @@ namespace SquareCore
         if(entityManagerRef) {
             entityManagerRef->SetColliderType(entityID, type);
         }
+    }
+    
+    bool GameInterface::GetKeyPressed(SDL_Scancode key) {
+        if(inputRef) {
+            return inputRef->GetKeyPressed(key);
+        }
+        return false;
+    }
+
+    bool GameInterface::GetKeyHeld(SDL_Scancode key) {
+        if(inputRef) {
+            return inputRef->GetKeyHeld(key);
+        }
+        return false;
+    }
+
+    bool GameInterface::GetKeyReleased(SDL_Scancode key) {
+        if(inputRef) {
+            return inputRef->GetKeyReleased(key);
+        }
+        return false;
+    }
+
+    bool GameInterface::GetMouseButtonPressed(int button) {
+        if(inputRef) {
+            return inputRef->GetMouseButtonPressed(button);
+        }
+        return false;
+    }
+
+    bool GameInterface::GetMouseButtonHeld(int button) {
+        if(inputRef) {
+            return inputRef->GetMouseButtonHeld(button);
+        }
+        return false;
+    }
+
+    bool GameInterface::GetMouseButtonReleased(int button) {
+        if (inputRef) {
+            return inputRef->GetMouseButtonReleased(button);
+        }
+        return false;
+    }
+
+    Vec2 GameInterface::GetMousePosition() {
+        if(inputRef) {
+            return inputRef->GetMousePosition();
+        }
+        return {};
+    }
+
+    Vec2 GameInterface::GetMouseDelta() {
+        if(inputRef) {
+            return inputRef->GetMouseDelta();
+        }
+        return {};
+    }
+
+    Vec2 GameInterface::GetMouseScroll() {
+        if(inputRef) {
+            return inputRef->GetMouseScroll();
+        }
+        return {};
     }
 
     void GameInterface::SetGravity(float gravity) {

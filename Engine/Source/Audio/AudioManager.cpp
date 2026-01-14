@@ -92,9 +92,6 @@ void AudioManager::SetAudioLooping(uint32_t id, bool loop) {
     if (it == audioClips.end()) {
         return;
     }
-    
-    SDL_Log("Setting audio looping: %s", loop ? "true" : "false");
-    
     ma_sound_set_looping(&audioClips[id]->sound, loop ? MA_TRUE : MA_FALSE);
 }
 

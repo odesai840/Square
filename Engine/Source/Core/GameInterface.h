@@ -105,17 +105,15 @@ namespace SquareCore
         // Sets an entity's collider type
         void SetColliderType(uint32_t entityID, ColliderType type);
 
-        // Checks if a key is pressed
-        bool IsKeyPressed(SDL_Scancode key);
-        // Registers an input chord for detection
-        void RegisterInputChord(const std::string& name, ChordType type, const std::vector<SDL_Scancode>& keys,
-                                float maxTimeBetweenPresses = 0.3f, float simultaneousWindow = 0.05f);
-        // Updates the chord detector with current key states
-        void UpdateInputChords(const std::set<SDL_Scancode>& pressedKeys, float currentTime);
-        // Checks if a chord was detected this frame
-        bool IsChordDetected(const std::string& chordName);
-        // Checks if a chord is currently active (keys still held)
-        bool IsChordActive(const std::string& chordName);
+        bool GetKeyPressed(SDL_Scancode key);
+        bool GetKeyHeld(SDL_Scancode key);
+        bool GetKeyReleased(SDL_Scancode key);
+        bool GetMouseButtonPressed(int button);
+        bool GetMouseButtonHeld(int button);
+        bool GetMouseButtonReleased(int button);
+        Vec2 GetMousePosition();
+        Vec2 GetMouseDelta();
+        Vec2 GetMouseScroll();
 
         // Set gravity
         void SetGravity(float gravity);

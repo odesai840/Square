@@ -13,4 +13,6 @@ private:
     uint32_t music;
     uint32_t ui_rect;
     uint32_t ui_button;
+    
+    bool IsGrounded(uint32_t playerId);
 };

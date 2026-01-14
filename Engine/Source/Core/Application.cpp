@@ -249,18 +249,36 @@ namespace SquareCore
         bool done = false;
         while (!done && running)
         {
-            // Handle SDL quit event
+            // Handle SDL events
             SDL_Event event;
             while (SDL_PollEvent(&event))
             {
-                if (event.type == SDL_EVENT_QUIT)
+                switch (event.type)
                 {
+                case SDL_EVENT_QUIT:
                     done = true;
+                    break;
+                case SDL_EVENT_KEY_DOWN:
+                    if (!event.key.repeat)
+                        input.UpdateKeyState(event.key.scancode, true);
+                    break;
+                case SDL_EVENT_KEY_UP:
+                    input.UpdateKeyState(event.key.scancode, false);
+                    break;
+                case SDL_EVENT_MOUSE_BUTTON_DOWN:
+                    input.UpdateMouseButtonState(event.button.button - 1, true);
+                    break;
+                case SDL_EVENT_MOUSE_BUTTON_UP:
+                    input.UpdateMouseButtonState(event.button.button - 1, false);
+                    break;
+                case SDL_EVENT_MOUSE_MOTION:
+                    input.UpdateMousePosition(event.motion.x, event.motion.y);
+                    break;
+                case SDL_EVENT_MOUSE_WHEEL:
+                    input.UpdateMouseScroll(event.wheel.x, event.wheel.y);
+                    break;
                 }
             }
-
-            // Update input state
-            SDL_PumpEvents();
 
             // Signal render thread to render this frame
             {
@@ -268,6 +286,8 @@ namespace SquareCore
                 renderReady = true;
             }
             renderCondition.notify_one();
+            
+            input.ResetDeltas();
         }
 
         // Signal threads to stop
@@ -407,13 +427,32 @@ namespace SquareCore
                 SDL_Event event;
                 while (SDL_PollEvent(&event))
                 {
-                    if (event.type == SDL_EVENT_QUIT)
+                    switch (event.type)
                     {
+                    case SDL_EVENT_QUIT:
                         done = true;
+                        break;
+                    case SDL_EVENT_KEY_DOWN:
+                        if (!event.key.repeat)
+                            input.UpdateKeyState(event.key.scancode, true);
+                        break;
+                    case SDL_EVENT_KEY_UP:
+                        input.UpdateKeyState(event.key.scancode, false);
+                        break;
+                    case SDL_EVENT_MOUSE_BUTTON_DOWN:
+                        input.UpdateMouseButtonState(event.button.button - 1, true);
+                        break;
+                    case SDL_EVENT_MOUSE_BUTTON_UP:
+                        input.UpdateMouseButtonState(event.button.button - 1, false);
+                        break;
+                    case SDL_EVENT_MOUSE_MOTION:
+                        input.UpdateMousePosition(event.motion.x, event.motion.y);
+                        break;
+                    case SDL_EVENT_MOUSE_WHEEL:
+                        input.UpdateMouseScroll(event.wheel.x, event.wheel.y);
+                        break;
                     }
                 }
-
-                SDL_PumpEvents();
 
                 // Signal render thread
                 {
@@ -421,6 +460,8 @@ namespace SquareCore
                     renderReady = true;
                 }
                 renderCondition.notify_one();
+                
+                input.ResetDeltas();
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(16));
             }
@@ -500,14 +541,32 @@ namespace SquareCore
             SDL_Event event;
             while (SDL_PollEvent(&event))
             {
-                if (event.type == SDL_EVENT_QUIT)
+                switch (event.type)
                 {
+                case SDL_EVENT_QUIT:
                     done = true;
+                    break;
+                case SDL_EVENT_KEY_DOWN:
+                    if (!event.key.repeat)
+                        input.UpdateKeyState(event.key.scancode, true);
+                    break;
+                case SDL_EVENT_KEY_UP:
+                    input.UpdateKeyState(event.key.scancode, false);
+                    break;
+                case SDL_EVENT_MOUSE_BUTTON_DOWN:
+                    input.UpdateMouseButtonState(event.button.button - 1, true);
+                    break;
+                case SDL_EVENT_MOUSE_BUTTON_UP:
+                    input.UpdateMouseButtonState(event.button.button - 1, false);
+                    break;
+                case SDL_EVENT_MOUSE_MOTION:
+                    input.UpdateMousePosition(event.motion.x, event.motion.y);
+                    break;
+                case SDL_EVENT_MOUSE_WHEEL:
+                    input.UpdateMouseScroll(event.wheel.x, event.wheel.y);
+                    break;
                 }
             }
-
-            // Update input state
-            SDL_PumpEvents();
 
             // Signal render thread to render this frame
             {
@@ -515,6 +574,8 @@ namespace SquareCore
                 renderReady = true;
             }
             renderCondition.notify_one();
+            
+            input.ResetDeltas();
         }
 
         // Disconnect from server

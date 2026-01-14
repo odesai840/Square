@@ -1,73 +1,47 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+#include "Math/Math.h"
+#include "KeyState.h"
 #include <SDL3/SDL_scancode.h>
-#include <vector>
-#include <deque>
-#include <set>
-#include <string>
 
 namespace SquareCore {
-
-// Chord type enumeration
-enum class ChordType {
-    SIMULTANEOUS,  // Multiple keys held simultaneously
-    SEQUENCE       // Timed sequence of keypresses
-};
-
-// Chord definition structure
-struct ChordDefinition {
-    std::string name;                           // Chord identifier
-    ChordType type;                             // Type of chord
-    std::vector<SDL_Scancode> keys;             // Required keys in order
-    float maxTimeBetweenPresses = 0.3f;         // Max time between keys (sequences)
-    float simultaneousWindow = 0.05f;           // Tolerance for simultaneous detection
-};
-
-// Key press event for history tracking
-struct KeyPressEvent {
-    SDL_Scancode key;
-    float timestamp;
-    bool isPressed;
-};
 
 class Input {
 public:
     Input();
 
-    // Returns if a key was pressed
-    bool IsKeyPressed(SDL_Scancode scancode);
+    void UpdateKeyState(SDL_Scancode key, bool pressed);
+    void UpdateMouseButtonState(int button, bool pressed);
+    void UpdateMousePosition(float x, float y);
+    void UpdateMouseScroll(float xOffset, float yOffset);
 
-    // Register a chord for detection
-    void RegisterChord(const ChordDefinition& chord);
+    void ResetDeltas();
 
-    // Update chord detector with current key states and timeline
-    void UpdateChords(const std::set<SDL_Scancode>& pressedKeys, float currentTime);
+    bool GetKeyPressed(SDL_Scancode key);
+    bool GetKeyHeld(SDL_Scancode key);
+    bool GetKeyReleased(SDL_Scancode key);
 
-    // Get list of chords detected this frame
-    std::vector<std::string> GetDetectedChords() const;
+    bool GetMouseButtonPressed(int button);
+    bool GetMouseButtonHeld(int button);
+    bool GetMouseButtonReleased(int button);
 
-    // Clear detected chords (call after processing)
-    void ClearDetectedChords();
-
-    // Check if a specific chord is currently active
-    bool IsChordActive(const std::string& chordName) const;
+    Vec2 GetMousePosition() const { return mousePosition; }
+    Vec2 GetMouseDelta() const { return mouseDelta; }
+    Vec2 GetMouseScroll() const { return mouseScroll; }
 
 private:
-    // Chord detection state
-    std::vector<ChordDefinition> registeredChords;    // Registered chord definitions
-    std::deque<KeyPressEvent> keyHistory;             // Recent key events for sequence detection
-    std::set<SDL_Scancode> currentlyPressed;          // Keys currently held down
-    std::vector<std::string> detectedThisFrame;       // Chords detected this frame
-    std::set<std::string> activeChords;               // Active chords (still being held)
-    float maxHistoryDuration = 1.0f;                  // How long to keep history
+    KeyState keyStates[SDL_SCANCODE_COUNT] = {};
 
-    // Detection methods
-    void DetectSimultaneousChords(float currentTime);
-    void DetectSequenceChords(float currentTime);
-    void UpdateKeyHistory(float currentTime);
-    bool AreKeysSimultaneous(const std::vector<SDL_Scancode>& keys, float window) const;
-    bool IsSequenceInHistory(const std::vector<SDL_Scancode>& keys, float maxTime, float currentTime) const;
+    static constexpr int MAX_MOUSE_BUTTONS = 8;
+    KeyState mouseButtonStates[MAX_MOUSE_BUTTONS] = {};
+    
+    Vec2 mousePosition = {0.0f, 0.0f};
+    Vec2 previousMousePosition = {0.0f, 0.0f};
+    Vec2 mouseDelta = {0.0f, 0.0f};
+    Vec2 mouseScroll = {0.0f, 0.0f};
+
+    bool firstMouse = true;
 };
 
 }

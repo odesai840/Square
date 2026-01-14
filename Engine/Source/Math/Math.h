@@ -2,6 +2,8 @@
 #define MATH_H
 
 #include <cmath>
+#include <string>
+#include <ostream>
 
 namespace SquareCore {
 
@@ -100,9 +102,12 @@ struct Vec2 {
     static Vec2 right() { return Vec2(1.0f, 0.0f); }
 };
 
-// Allow scalar * vector multiplication
-inline Vec2 operator*(float scalar, const Vec2& vec) {
-    return vec * scalar;
+inline std::ostream& operator<<(std::ostream& os, const Vec2& v) {
+    return os << "{" << v.x << "," << v.y << "}";
+}
+
+inline float Lerp(float a, float b, float alpha) {
+    return a + alpha * (b - a);
 }
 
 }

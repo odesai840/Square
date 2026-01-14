@@ -18,20 +18,40 @@ void MainBehavior::OnStart() {
 }
 
 void MainBehavior::OnUpdate(float deltaTime) {
-
     float moveSpeed = 350.0f;
-        
-    SquareCore::Vec2 targetVelocity = SquareCore::Vec2(GetVelocity(player).x, GetVelocity(player).y);
-    if (IsKeyPressed(SDL_SCANCODE_A))
-    {
-        targetVelocity.x -= moveSpeed * deltaTime;
+    float acceleration = 15.0f;
+
+    SquareCore::Vec2 currentVelocity = GetVelocity(player);
+    float targetX = 0.0f;
+
+    if (GetKeyHeld(SDL_SCANCODE_A)) {
+        targetX = -moveSpeed;
         FlipSprite(player, false, false);
     }
-    if (IsKeyPressed(SDL_SCANCODE_D))
-    {
-        targetVelocity.x += moveSpeed * deltaTime;
+    if (GetKeyHeld(SDL_SCANCODE_D)) {
+        targetX = moveSpeed;
         FlipSprite(player, true, false);
     }
 
-    SetVelocity(player, targetVelocity.x, targetVelocity.y);
+    float newVelocityX = SquareCore::Lerp(currentVelocity.x, targetX, acceleration * deltaTime);
+    SetVelocity(player, newVelocityX, currentVelocity.y);
+    
+    if (GetKeyPressed(SDL_SCANCODE_W) && IsGrounded(player)) {
+        float jumpVelocity = 600.0f;
+        SetVelocity(player, newVelocityX, jumpVelocity);
+    }
+}
+
+bool MainBehavior::IsGrounded(uint32_t playerId) {
+    auto collisions = GetEntityCollisions(playerId);
+    for (const auto& collision : collisions) {
+        if (collision.second == 2) {
+            SquareCore::Vec2 vel = GetVelocity(playerId);
+            if (vel.y < 0) {
+                SetVelocity(playerId, vel.x, 0.0f);
+            }
+            return true;
+        }
+    }
+    return false;
 }
