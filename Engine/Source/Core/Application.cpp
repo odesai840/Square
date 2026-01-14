@@ -121,6 +121,8 @@ namespace SquareCore
             // Release lock allow rendering events
             lock.unlock();
 
+            uiManager.Update();
+
             // Update animations
             entityManager.UpdateAnimations(effectiveDeltaTime);
 
@@ -133,6 +135,7 @@ namespace SquareCore
 
             // Render the frame
             renderer.BeginFrame(effectiveDeltaTime, entityManager);
+            renderer.RenderUI(uiManager);
             renderer.EndFrame();
         }
     }
@@ -177,9 +180,12 @@ namespace SquareCore
             renderReady = false;
             // Release lock allow rendering events
             lock.unlock();
+            
+            uiManager.Update();
 
             // Render the frame
             renderer.BeginFrame(effectiveDeltaTime, server->GetEntityManager());
+            renderer.RenderUI(uiManager);
             renderer.EndFrame();
         }
     }
@@ -227,6 +233,7 @@ namespace SquareCore
             script->SetMode(NetworkMode::STANDALONE);
             script->SetPoolAllocator(&allocator);
             script->SetAudioManager(&audioManager);
+            script->SetUIManager(&uiManager);
         }
 
         // Start worker threads
@@ -460,6 +467,7 @@ namespace SquareCore
             script->SetMode(NetworkMode::CLIENT);
             script->SetPoolAllocator(&allocator);
             script->SetAudioManager(&audioManager);
+            script->SetUIManager(&uiManager);
         }
 
         // Start worker threads

@@ -6,6 +6,8 @@
 #include "Camera.h"
 #include <SDL3/SDL.h>
 
+#include "UI/UIManager.h"
+
 namespace SquareCore {
 
 // Enum for different scaling modes
@@ -28,6 +30,8 @@ public:
     void BeginFrame(float deltaTime, EntityManager& entityManager);
     // Ends the render pass for the current frame
     void EndFrame();
+
+    void RenderUI(UIManager& uiManager);
 
     // Function to toggle the scaling mode
     void ToggleScalingMode();

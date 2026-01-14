@@ -19,7 +19,7 @@ EntityManager::~EntityManager() {
 }
 
 uint32_t EntityManager::AddEntity(const char* spritePath, float Xpos, float Ypos, float rotation,
-    float Xscale, float Yscale, bool physEnabled)
+    float Xscale, float Yscale, bool physEnabled, std::vector<std::string> tags)
 {
     // Input validation
     if (!spritePath || spritePath[0] == '\0') {
@@ -47,6 +47,7 @@ uint32_t EntityManager::AddEntity(const char* spritePath, float Xpos, float Ypos
     newEntity.rotation = rotation;
     newEntity.scale = Vec2(Xscale, Yscale);
     newEntity.physApplied = physEnabled;
+    newEntity.tags = tags;
 
     // Add to the entity vector and update the index map
     entities.push_back(newEntity);
@@ -56,7 +57,7 @@ uint32_t EntityManager::AddEntity(const char* spritePath, float Xpos, float Ypos
 }
 
 uint32_t EntityManager::AddAnimatedEntity(const char* spritePath, int totalFrames, float fps,
-    float Xpos, float Ypos, float rotation, float Xscale, float Yscale, bool physEnabled)
+    float Xpos, float Ypos, float rotation, float Xscale, float Yscale, bool physEnabled, std::vector<std::string> tags)
 {
 
     // Input validation
@@ -93,6 +94,7 @@ uint32_t EntityManager::AddAnimatedEntity(const char* spritePath, int totalFrame
     newEntity.rotation = rotation;
     newEntity.scale = Vec2(Xscale, Yscale);
     newEntity.physApplied = physEnabled;
+    newEntity.tags = tags;
 
     // Animation properties
     newEntity.totalFrames = totalFrames;
@@ -198,6 +200,26 @@ Entity* EntityManager::GetEntityByID(uint32_t ID) {
     }
 
     return &entities[it->second];
+}
+
+std::vector<uint32_t> EntityManager::GetAllEntityIDsWithTag(std::string tag)
+{
+    std::lock_guard<std::mutex> lock(entityMutex);
+    std::vector<uint32_t> entityIDs;
+
+    for (Entity& entity : entities)
+    {
+        for (const auto& entityTag : entity.tags)
+        {
+            if (entityTag == tag)
+            {
+                entityIDs.push_back(entity.ID);
+                break;
+            }
+        }
+    }
+    
+    return entityIDs;
 }
 
 size_t EntityManager::GetEntityCount() const {

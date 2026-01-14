@@ -12,6 +12,7 @@
 #include "Networking/NetworkManager.h"
 #include "Memory/PoolAllocator.h"
 #include "Audio/AudioManager.h"
+#include "UI/UIManager.h"
 #include <thread>
 #include <mutex>
 #include <atomic>
@@ -41,11 +42,10 @@ public:
     void RunClient(const std::string& serverAddress);
     // Pushes a script to the script stack
     void PushScript(GameInterface* script);
-    // Initialize engine references for a script
-    void InitializeScriptReferences(GameInterface* script);
 
     // Provides access to the entity manager
     EntityManager& GetEntityManager() { return entityManager; }
+    UIManager& GetUIManager() { return uiManager; }
 
 private:
     // Internal window class
@@ -65,6 +65,7 @@ private:
     // Memory allocator for game object pooling
     PoolAllocator allocator;
     AudioManager audioManager;
+    UIManager uiManager;
     
     // Script collection for game logic
     std::vector<GameInterface*> scripts;

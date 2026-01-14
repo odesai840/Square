@@ -79,6 +79,8 @@ struct Entity {
 
     // Collision
     Collider collider;                 // The collider for this entity
+
+    std::vector<std::string> tags;
 };
 
 }

@@ -30,10 +30,10 @@ public:
 
     // Thread-safe function to add an entity
     uint32_t AddEntity(const char* spritePath, float Xpos = 0.0f, float Ypos = 0.0f, float rotation = 0.0f,
-        float Xscale = 1.0f, float Yscale = 1.0f, bool physEnabled = false);
+        float Xscale = 1.0f, float Yscale = 1.0f, bool physEnabled = false, std::vector<std::string> tags = {});
     // Thread-safe function to add an animated entity
     uint32_t AddAnimatedEntity(const char* spritePath, int totalFrames, float fps, float Xpos = 0.0f, float Ypos = 0.0f,
-        float rotation = 0.0f, float Xscale = 1.0f, float Yscale = 1.0f, bool physEnabled = false);
+        float rotation = 0.0f, float Xscale = 1.0f, float Yscale = 1.0f, bool physEnabled = false, std::vector<std::string> tags = {});
     // Thread-safe function to add a spriteless entity
     uint32_t AddSpritelessEntity(float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a,
         float Xpos = 0.0f, float Ypos = 0.0f, float rotation = 0.0f, float Xscale = 1.0f, float Yscale = 1.0f, bool physEnabled = false);
@@ -48,6 +48,8 @@ public:
     Entity* GetEntityByID(uint32_t ID);
     // Thread-safe function to get the current entity count
     size_t GetEntityCount() const;
+
+    std::vector<uint32_t> GetAllEntityIDsWithTag(std::string tag);
 
     // Thread-safe function to check if an entity exists
     bool EntityExists(uint32_t ID) const;
