@@ -7,7 +7,9 @@ int main(int argc, char* argv[]) {
     // River application
     SquareCore::Application app;
     // Master script for gameplay logic
-    MainBehavior mainBehavior;
+
+    MainBehavior* mainBehavior = new MainBehavior();
+    app.PushScript(mainBehavior);
 
     // Parse command line arguments
     if (argc > 1) {
@@ -16,7 +18,7 @@ int main(int argc, char* argv[]) {
         if (arg1 == "--server") {
             // Run as dedicated server
             std::cout << "Starting River server...\n";
-            app.RunServer(&mainBehavior);
+            app.RunServer();
             return 0;
         }
         else if (arg1 == "--client") {
@@ -26,13 +28,13 @@ int main(int argc, char* argv[]) {
                 serverAddress = argv[2];
             }
             std::cout << "Starting Square client, connecting to: " << serverAddress << "\n";
-            app.RunClient(serverAddress, &mainBehavior);
+            app.RunClient(serverAddress);
             return 0;
         }
         else if (arg1 == "--listen") {
             // Run as listen server
             std::cout << "Starting Square listen server...\n";
-            app.RunServer(&mainBehavior, false);
+            app.RunServer(false);
             return 0;
         }
         else {
@@ -44,6 +46,6 @@ int main(int argc, char* argv[]) {
 
     // Default: Run standalone
     std::cout << "Starting Square in standalone mode...\n";
-    app.Run(&mainBehavior);
+    app.Run();
     return 0;
 }

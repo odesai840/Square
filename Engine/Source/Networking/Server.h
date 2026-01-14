@@ -37,7 +37,7 @@ public:
     ~Server();
 
     // Starts the server with game logic instance
-    void Start(GameInterface* gameLogic);
+    void Start(const std::vector<GameInterface*>& scripts);
     // Stops the server gracefully
     void Stop();
 
@@ -70,7 +70,7 @@ private:
     Physics serverPhysics;
     Timeline serverTimeline;
     ServerInputManager inputManager;
-    GameInterface* gameLogic = nullptr;
+    std::vector<GameInterface*> scripts;
 
     // Client management
     std::unordered_map<uint32_t, uint32_t> clientPlayerMap;  // clientID -> player entityID

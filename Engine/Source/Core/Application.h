@@ -33,11 +33,15 @@ public:
     // Initializes engine resources
     void Init();
     // Starts the core application loop (standalone mode)
-    void Run(GameInterface* game);
+    void Run();
     // Starts the server loop
-    void RunServer(GameInterface* game, bool headless = true);
+    void RunServer(bool headless = true);
     // Starts the client loop with server connection
-    void RunClient(const std::string& serverAddress, GameInterface* game);
+    void RunClient(const std::string& serverAddress);
+    // Pushes a script to the script stack
+    void PushScript(GameInterface* script);
+    // Initialize engine references for a script
+    void InitializeScriptReferences(GameInterface* script);
 
     // Provides access to the entity manager
     EntityManager& GetEntityManager() { return entityManager; }
@@ -59,12 +63,11 @@ private:
     NetworkManager networkManager;
     // Memory allocator for game object pooling
     PoolAllocator allocator;
+    // Script collection for game logic
+    std::vector<GameInterface*> scripts;
 
     // Current network mode
     NetworkMode currentMode = NetworkMode::STANDALONE;
-
-    // Game interface reference for thread access
-    GameInterface* gameRef = nullptr;
 
     // Atomic boolean to control thread loops
     std::atomic<bool> running{true};

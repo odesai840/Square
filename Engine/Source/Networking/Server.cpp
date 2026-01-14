@@ -19,18 +19,18 @@ Server::~Server() {
     Stop();
 }
 
-void Server::Start(GameInterface* gameLogic) {
+void Server::Start(const std::vector<GameInterface*>& scripts) {
     if (running.load()) {
         std::cout << "Server is already running\n";
         return;
     }
 
-    if (!gameLogic) {
+    if (scripts.empty()) {
         std::cout << "Error: Cannot start server without game logic instance\n";
         return;
     }
 
-    this->gameLogic = gameLogic;
+    this->scripts = scripts;
     running = true;
 
     std::cout << "Starting server...\n";
@@ -190,9 +190,8 @@ uint32_t Server::HandleConnect(void* socket) {
     SendWorldStateToClient(clientID);
 
     // Notify game logic (spawn player and broadcast to all clients)
-    if (gameLogic) {
-        gameLogic->OnClientConnected(clientID);
-    }
+    for (auto* script : scripts) 
+        script->OnClientConnected(clientID);
 
     // NOW start the client thread (world state is already queued)
     {
@@ -221,9 +220,8 @@ void Server::HandleDisconnect(uint32_t clientID) {
     }
 
     // Notify game logic
-    if (gameLogic) {
-        gameLogic->OnClientDisconnected(clientID);
-    }
+    for (auto* script : scripts) 
+        script->OnClientDisconnected(clientID);
 
     std::cout << "Client " << clientID << " disconnected\n";
 }
@@ -357,9 +355,8 @@ void Server::SimulationLoop() {
             serverEntityManager.UpdateAnimations(effectiveTimestep);
 
             // Call game logic
-            if (gameLogic) {
-                gameLogic->OnUpdate(effectiveTimestep);
-            }
+            for (auto* script : scripts) 
+                script->OnUpdate(effectiveTimestep);
 
             // Capture game state
             GameStateSnapshot snapshot = CaptureGameState();
