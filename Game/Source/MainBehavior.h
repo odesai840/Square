@@ -1,5 +1,4 @@
-#ifndef MAIN_BEHAVIOR_H
-#define MAIN_BEHAVIOR_H
+#pragma once
 
 #include "GameInterface.h"
 
@@ -7,6 +6,8 @@ class MainBehavior : public SquareCore::GameInterface {
 public:
     void OnStart() override;
     void OnUpdate(float deltaTime) override;
-};
 
-#endif
+private:
+    uint32_t player;
+    uint32_t marcus;
+};
