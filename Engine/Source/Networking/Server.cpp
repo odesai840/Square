@@ -176,20 +176,18 @@ uint32_t Server::HandleConnect(void* socket) {
     int timeout = 100;
     clientSocket->set(zmq::sockopt::rcvtimeo, timeout);
 
-    // Create client connection (but don't start thread yet)
+    // Create client connection
     auto conn = std::make_unique<ClientConnection>();
     conn->clientID = clientID;
     conn->active = true;
-    // NOTE: Thread not started yet to avoid race condition
 
     {
         std::lock_guard<std::mutex> lock(clientConnectionsMutex);
         clientConnections.push_back(std::move(conn));
     }
 
-    // Send current world state to new client (queue all existing entities)
-    // This must happen BEFORE the client thread starts to avoid race condition
-    SendWorldStateToClient(clientID, clientSocket);
+    // Send current world state to new client
+    SendWorldStateToClient(clientID);
 
     // Notify game logic (spawn player and broadcast to all clients)
     if (gameLogic) {
@@ -334,9 +332,6 @@ void Server::SimulationLoop() {
 
     auto lastTime = std::chrono::high_resolution_clock::now();
     float accumulator = 0.0f;
-
-    // Connect event manager to timeline for timestamp tracking
-    serverEventManager.SetTimeline(&serverTimeline);
 
     while (running.load()) {
         auto currentTime = std::chrono::high_resolution_clock::now();
@@ -491,7 +486,7 @@ void Server::BroadcastEntityDespawn(uint32_t entityID, uint32_t excludeClientID)
               << clientConnections.size() << " clients\n";
 }
 
-void Server::SendWorldStateToClient(uint32_t clientID, void* clientSocket) {
+void Server::SendWorldStateToClient(uint32_t clientID) {
     // Get all entities from entity manager
     std::vector<Entity> entities = serverEntityManager.GetEntitiesCopy();
 

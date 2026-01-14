@@ -118,9 +118,6 @@ void Application::RenderThreadFunction() {
         // Update game logic
         gameRef->OnUpdate(effectiveDeltaTime);
 
-        // Update replay manager
-        replayManager.Update(eventManager, effectiveDeltaTime);
-
         // Render the frame
         renderer.BeginFrame(effectiveDeltaTime, entityManager);
         renderer.EndFrame();
@@ -202,19 +199,8 @@ void Application::Run(GameInterface* game) {
     game->SetInput(&input);
     game->SetEntityManager(&entityManager);
     game->SetTimeline(&timeline);
-    game->SetEventManager(&eventManager);
-    eventManager.SetTimeline(&timeline);
     game->SetMode(NetworkMode::STANDALONE);
-    game->SetMemory(&allocator);
-
-    // Set up replay manager
-    replayManager.SetEntityManager(&entityManager);
-    game->SetReplayManager(&replayManager);
-
-    // Connect EventManager to ReplayManager for input recording
-    eventManager.SetInputRecordingCallback([this](const EventData& data) {
-        replayManager.RecordInput(data);
-    });
+    game->SetPoolAllocator(&allocator);
 
     // Start worker threads
     physicsThread = std::thread(&Application::PhysicsThreadFunction, this);
@@ -290,11 +276,10 @@ void Application::RunServer(GameInterface* game, bool headless) {
     game->SetPhysicsRef(&server.GetPhysics());
     game->SetTimeline(&server.GetTimeline());
     game->SetInputManager(&server.GetInputManager());
-    game->SetEventManager(&server.GetEventManager());
     game->SetMode(NetworkMode::SERVER);
     game->SetServerRef(&server);
     game->SetHeadlessServer(headless);
-    game->SetMemory(&allocator);
+    game->SetPoolAllocator(&allocator);
 
     // Enable headless mode only for dedicated servers
     server.GetEntityManager().SetHeadlessMode(headless);
@@ -354,9 +339,6 @@ void Application::RunServer(GameInterface* game, bool headless) {
         while (!rendererInitialized.load()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
-
-        // Initialize game logic
-        //game->OnStart();
 
         // Start server (blocks in simulation loop)
         std::thread serverThread([&server, game]() {
@@ -420,19 +402,8 @@ void Application::RunClient(const std::string& serverAddress, GameInterface* gam
     game->SetInput(&input);
     game->SetEntityManager(&entityManager);
     game->SetTimeline(&timeline);
-    game->SetEventManager(&eventManager);
-    eventManager.SetTimeline(&timeline);
     game->SetMode(NetworkMode::CLIENT);
-    game->SetMemory(&allocator);
-
-    // Set up replay manager
-    replayManager.SetEntityManager(&entityManager);
-    game->SetReplayManager(&replayManager);
-
-    // Connect EventManager to ReplayManager for input recording
-    eventManager.SetInputRecordingCallback([this](const EventData& data) {
-        replayManager.RecordInput(data);
-    });
+    game->SetPoolAllocator(&allocator);
 
     // Start worker threads
     physicsThread = std::thread(&Application::PhysicsThreadFunction, this);
@@ -452,9 +423,6 @@ void Application::RunClient(const std::string& serverAddress, GameInterface* gam
 
     // Set network manager reference for game
     game->SetNetworkManager(&networkManager);
-
-    // Run game start method
-    //game->OnStart();
 
     // Main update loop
     bool done = false;

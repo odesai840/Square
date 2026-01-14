@@ -3,12 +3,12 @@
 
 namespace SquareCore {
 
-class Allocator {
+class PoolAllocator {
 public:
     // Creates a pool allocator with specified slot size and count
-    Allocator(int size, int count);
+    PoolAllocator(int size, int count);
     // Destroys the allocator and frees all reserved memory
-    ~Allocator();
+    ~PoolAllocator();
     
     // Allocates a slot from the pool and returns its ID (-1 if pool is full)
     int Alloc();

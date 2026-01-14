@@ -10,9 +10,7 @@
 #include "Renderer/EntityManager.h"
 #include "Timeline.h"
 #include "Networking/NetworkManager.h"
-#include "EventHandler/EventManager.h"
-#include "Replay/ReplayManager.h"
-#include "Memory/Allocator.h"
+#include "Memory/PoolAllocator.h"
 #include <thread>
 #include <mutex>
 #include <atomic>
@@ -59,12 +57,8 @@ private:
     Timeline timeline;
     // Network manager for client networking
     NetworkManager networkManager;
-    // Event manager for event-driven gameplay
-    EventManager eventManager;
-    // Replay manager for recording and playback
-    ReplayManager replayManager;
     // Memory allocator for game object pooling
-    Allocator allocator;
+    PoolAllocator allocator;
 
     // Current network mode
     NetworkMode currentMode = NetworkMode::STANDALONE;

@@ -1,20 +1,20 @@
-#include "Allocator.h"
+#include "PoolAllocator.h"
 #include <cstring>
 
 namespace SquareCore {
 
-Allocator::Allocator(int size, int count) : size(size), count(count), usedNum(0) {
+PoolAllocator::PoolAllocator(int size, int count) : size(size), count(count), usedNum(0) {
     memory = new char[size * count];
     used = new bool[count];
     std::memset(used, 0, count * sizeof(bool));
 }
 
-Allocator::~Allocator() {
+PoolAllocator::~PoolAllocator() {
     delete[] memory;
     delete[] used;
 }
 
-int Allocator::Alloc() {
+int PoolAllocator::Alloc() {
     for (int i = 0; i < count; i++) {
         if (!used[i]) {
             used[i] = true;
@@ -25,29 +25,29 @@ int Allocator::Alloc() {
     return -1;
 }
 
-void Allocator::FreeSlot(int id) {
+void PoolAllocator::FreeSlot(int id) {
     if (id >= 0 && id < count && used[id]) {
         used[id] = false;
         usedNum--;
     }
 }
 
-void* Allocator::GetPointer(int id) {
+void* PoolAllocator::GetPointer(int id) {
     if (id < 0 || id >= count) {
         return nullptr;
     }
     return memory + (id * size);
 }
 
-int Allocator::GetUsed() const {
+int PoolAllocator::GetUsed() const {
     return usedNum;
 }
 
-int Allocator::GetTotal() const {
+int PoolAllocator::GetTotal() const {
     return count;
 }
 
-float Allocator::GetUsedPercent() const {
+float PoolAllocator::GetUsedPercent() const {
     if (count == 0) {
         return 0.0f;
     }

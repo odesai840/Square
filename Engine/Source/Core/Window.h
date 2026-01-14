@@ -13,7 +13,7 @@ struct WindowProps {
     std::string Title;
 
     // Constructor with default settings
-    WindowProps(unsigned int width = 1920, unsigned int height = 1080, std::string title = "River")
+    WindowProps(unsigned int width = 1920, unsigned int height = 1080, std::string title = "Square")
         : Width(width), Height(height), Title(title)
     {
 

@@ -2,7 +2,6 @@
 #include "Networking/Server.h"
 #include "Networking/ServerInputManager.h"
 #include "Networking/NetworkProtocol.h"
-#include "Replay/ReplayManager.h"
 
 namespace SquareCore {
 
@@ -429,41 +428,6 @@ uint32_t GameInterface::GetLocalPlayerEntity() {
     return 0;
 }
 
-void GameInterface::Register(int type, Event e)
-{
-    if (eventManagerRef) {
-        eventManagerRef->Register(type, e);
-    }
-}
-
-void GameInterface::Deregister(int type)
-{
-    if (eventManagerRef) {
-        eventManagerRef->Deregister(type);
-    }
-}
-
-void GameInterface::Queue(int type, EventData data)
-{
-    if (eventManagerRef) {
-        eventManagerRef->Queue(type, data);
-    }
-}
-
-void GameInterface::QueueDelayed(int type, float delaySeconds, EventData data) {
-    if (eventManagerRef && timelineRef) {
-        float scheduledTime = timelineRef->GetCurrentTime() + delaySeconds;
-        eventManagerRef->Queue(type, data, scheduledTime);
-    }
-}
-
-void GameInterface::Raise()
-{
-    if (eventManagerRef) {
-        eventManagerRef->Raise();
-    }
-}
-
 void GameInterface::BroadcastEntitySpawn(uint32_t entityID, uint32_t ownerClientID, uint32_t excludeClientID) {
     if (serverRef && entityManagerRef) {
         Entity* entity = entityManagerRef->GetEntityByID(entityID);
@@ -488,57 +452,6 @@ void GameInterface::BroadcastEntityDespawn(uint32_t entityID, uint32_t excludeCl
     if (serverRef) {
         serverRef->BroadcastEntityDespawn(entityID, excludeClientID);
     }
-}
-
-void GameInterface::StartReplayRecording(float keyframeIntervalSeconds) {
-    if (replayManagerRef) {
-        replayManagerRef->StartRecording(keyframeIntervalSeconds);
-    }
-}
-
-void GameInterface::StopReplayRecording() {
-    if (replayManagerRef) {
-        replayManagerRef->StopRecording();
-    }
-}
-
-void GameInterface::StartReplayPlayback() {
-    if (replayManagerRef) {
-        replayManagerRef->StartPlayback();
-    }
-}
-
-void GameInterface::StopReplayPlayback() {
-    if (replayManagerRef) {
-        replayManagerRef->StopPlayback();
-    }
-}
-
-void GameInterface::ClearReplay() {
-    if (replayManagerRef) {
-        replayManagerRef->ClearReplay();
-    }
-}
-
-bool GameInterface::IsReplayRecording() const {
-    if (replayManagerRef) {
-        return replayManagerRef->IsRecording();
-    }
-    return false;
-}
-
-bool GameInterface::IsReplayPlaying() const {
-    if (replayManagerRef) {
-        return replayManagerRef->IsPlaying();
-    }
-    return false;
-}
-
-bool GameInterface::HasReplay() const {
-    if (replayManagerRef) {
-        return replayManagerRef->HasReplay();
-    }
-    return false;
 }
 
 int GameInterface::Alloc() {

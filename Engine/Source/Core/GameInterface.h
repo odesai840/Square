@@ -8,9 +8,7 @@
 #include "Timeline.h"
 #include "Networking/NetworkManager.h"
 #include "NetworkMode.h"
-#include "EventHandler/EventManager.h"
-#include "Replay/ReplayManager.h"
-#include "Memory/Allocator.h"
+#include "Memory/PoolAllocator.h"
 #include <vector>
 #include <string>
 
@@ -49,16 +47,12 @@ public:
     void SetInputManager(ServerInputManager* inputManager) { this->serverInputManagerRef = inputManager; }
     // Set server reference (for server mode only)
     void SetServerRef(Server* server) { this->serverRef = server; }
-    // Set event manager reference (for use in engine core only)
-    void SetEventManager(EventManager* eventManager) { this->eventManagerRef = eventManager; }
-    // Set replay manager reference (for use in engine core only)
-    void SetReplayManager(ReplayManager* replayManager) { this->replayManagerRef = replayManager; }
     // Set network mode (for use in engine core only)
     void SetMode(NetworkMode mode) { this->currentMode = mode; }
     // Set headless server flag (for server mode only)
     void SetHeadlessServer(bool headless) { headlessServer = headless; }
-    // Set Memory reference (for use in engine core only)
-    void SetMemory(Allocator* allocator) {this->allocatorRef = allocator;}
+    // Set pool allocator reference (for use in engine core only)
+    void SetPoolAllocator(PoolAllocator* allocator) {this->allocatorRef = allocator;}
     
 protected:
     // Add an entity to the scene
@@ -205,17 +199,6 @@ protected:
     // Gets the local player's entity ID
     uint32_t GetLocalPlayerEntity();
 
-    // Registers an Event
-    void Register(int type, Event e);
-    // Deregisters event
-    void Deregister(int type);
-    // Queues event
-    void Queue(int type, EventData data = EventData());
-    // Queue a delayed event
-    void QueueDelayed(int type, float delaySeconds, EventData data = EventData());
-    // Raises events in order of queue
-    void Raise();
-
     // Starts replay recording
     void StartReplayRecording(float keyframeIntervalSeconds = 1.0f);
     // Stops replay recording
@@ -263,12 +246,8 @@ private:
     ServerInputManager* serverInputManagerRef = nullptr;
     // Internal server reference (internal use and server mode only)
     Server* serverRef = nullptr;
-    // Internal event manager reference (internal use only)
-    EventManager* eventManagerRef = nullptr;
-    // Internal replay manager reference (internal use only)
-    ReplayManager* replayManagerRef = nullptr;
     // Memory reference (internal use only)
-    Allocator* allocatorRef = nullptr;
+    PoolAllocator* allocatorRef = nullptr;
 
     // Current network mode
     NetworkMode currentMode = NetworkMode::STANDALONE;
