@@ -362,6 +362,12 @@ namespace SquareCore
         }
         return false;
     }
+    
+    Vec2 GameInterface::ScreenToWorld(const Vec2& screenPos) const {
+        if (rendererRef)
+            return rendererRef->ScreenToWorld(screenPos);
+        return screenPos;
+    }
 
     float GameInterface::GetCurrentTime() const {
         if (timelineRef) {

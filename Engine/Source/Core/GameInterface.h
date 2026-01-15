@@ -175,6 +175,7 @@ namespace SquareCore
         Vec2 GetVisibleWorldMax() const;
         // Camera viewport query (what world area is visible on screen)
         bool IsWorldPositionVisible(const Vec2& worldPos, const Vec2& size) const;
+        Vec2 ScreenToWorld(const Vec2& screenPos) const;
 
         // Get current game time
         float GetCurrentTime() const;

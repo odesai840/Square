@@ -43,6 +43,8 @@ public:
 
     // Get a reference to the camera
     Camera& GetCamera();
+    
+    Vec2 ScreenToWorld(const Vec2& screenPos) const;
 
 private:
     // Internal pointer to the underlying SDL renderer

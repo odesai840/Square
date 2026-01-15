@@ -90,7 +90,7 @@ namespace SquareCore
             SDL_SetRenderDrawBlendMode(rendererRef, SDL_BLENDMODE_BLEND);
             SDL_RenderFillRect(rendererRef, &rect);
 
-            if (element->type == UIElementType::RECT)
+            /*if (element->type == UIElementType::RECT)
             {
                 const UIRect* rectElement = static_cast<const UIRect*>(element);
                 if (rectElement->hasBorder)
@@ -98,7 +98,7 @@ namespace SquareCore
                     SDL_SetRenderDrawColor(rendererRef, rectElement->borderColor.r, rectElement->borderColor.g, rectElement->borderColor.b, rectElement->borderColor.a);
                     SDL_RenderRect(rendererRef, &rect);
                 }
-            }
+            }*/
         }
     }
 
@@ -314,5 +314,25 @@ namespace SquareCore
     Camera& Renderer::GetCamera()
     {
         return camera;
+    }
+    
+    Vec2 Renderer::ScreenToWorld(const Vec2& screenPos) const
+    {
+        float globalScaleX, globalScaleY;
+        CalculateScalingFactors(globalScaleX, globalScaleY);
+        
+        float scaledX = screenPos.x - (static_cast<float>(windowWidth) / 2.0f);
+        float scaledY = (static_cast<float>(windowHeight) / 2.0f) - screenPos.y;
+        
+        float cameraRelativeX = scaledX / globalScaleX;
+        float cameraRelativeY = scaledY / globalScaleY;
+        
+        float zoom = camera.GetZoom();
+        Vec2 camPos = camera.GetPosition();
+        
+        return Vec2(
+            (cameraRelativeX / zoom) + camPos.x,
+            (cameraRelativeY / zoom) + camPos.y
+        );
     }
 }

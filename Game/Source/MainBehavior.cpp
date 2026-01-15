@@ -15,9 +15,15 @@ void MainBehavior::OnStart() {
     [] {
         SDL_Log("Pressed button");
     });
+    
+    mouseFollower = AddSpritelessEntity(20.0f, 20.0f, 255, 0, 0, 255, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, false);
+    SetColliderType(mouseFollower, SquareCore::ColliderType::NONE);
 }
 
 void MainBehavior::OnUpdate(float deltaTime) {
+    SquareCore::Vec2 mousePos = ScreenToWorld(GetMousePosition());
+    SetPosition(mouseFollower, mousePos.x, mousePos.y);
+
     float moveSpeed = 350.0f;
     float acceleration = 15.0f;
 
