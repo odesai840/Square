@@ -48,6 +48,10 @@ namespace SquareCore
         {
             std::cout << "Error initializing SDL\n";
         }
+        
+        if (!TTF_Init()) {
+            SDL_LogError(SDL_LOG_CATEGORY_ERROR,"Error initializing SDL_ttf: %s\n", SDL_GetError());
+        }
 
         // Create the application window
         window.SetNativeWindow(
@@ -85,6 +89,7 @@ namespace SquareCore
     {
         // Initialize renderer
         renderer.Init(window.GetNativeWindow());
+        uiManager.SetTextEngine(renderer.GetTextEngine());
         // Initialize entity manager
         entityManager.SetRenderer(renderer.GetRenderer());
 
@@ -144,6 +149,7 @@ namespace SquareCore
     {
         // Initialize renderer
         renderer.Init(window.GetNativeWindow());
+        uiManager.SetTextEngine(renderer.GetTextEngine());
         // Initialize entity manager
         entityManager.SetRenderer(renderer.GetRenderer());
         server->GetEntityManager().SetRenderer(renderer.GetRenderer());
@@ -307,6 +313,7 @@ namespace SquareCore
         // Clean up SDL resources
         SDL_DestroyRenderer(renderer.GetRenderer());
         SDL_DestroyWindow(window.GetNativeWindow());
+        TTF_Quit();
         SDL_Quit();
     }
 
@@ -483,6 +490,7 @@ namespace SquareCore
 
             SDL_DestroyRenderer(renderer.GetRenderer());
             SDL_DestroyWindow(window.GetNativeWindow());
+            TTF_Quit();
             SDL_Quit();
         }
     }
@@ -602,6 +610,7 @@ namespace SquareCore
         // Clean up SDL resources
         SDL_DestroyRenderer(renderer.GetRenderer());
         SDL_DestroyWindow(window.GetNativeWindow());
+        TTF_Quit();
         SDL_Quit();
     }
 

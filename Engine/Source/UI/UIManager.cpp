@@ -38,6 +38,33 @@ namespace SquareCore
         return button->ID;
     }
 
+    uint32_t UIManager::AddText(float x_pos, float y_pos, float fontSize, RGBA color,
+                              const std::string& fontPath, const std::string& text)
+    {
+        std::lock_guard<std::mutex> lock(uiMutex);
+
+        UIText* ui_text = new UIText();
+        ui_text->ID = nextElementID++;
+        ui_text->x = x_pos;
+        ui_text->y = y_pos;
+        ui_text->color = color;
+        TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);
+        ui_text->font = font;
+        ui_text->text = text;
+        
+        if (font && textEngineRef)
+        {
+            ui_text->textObject = TTF_CreateText(textEngineRef, font, text.c_str(), text.length());
+            if (ui_text->textObject)
+            {
+                TTF_SetTextColor(ui_text->textObject, color.r, color.g, color.b, color.a);
+            }
+        }
+
+        elements[ui_text->ID] = ui_text;
+        return ui_text->ID;
+    }
+
     void UIManager::DeleteElement(uint32_t id)
     {
         std::lock_guard<std::mutex> lock(uiMutex);
@@ -45,6 +72,12 @@ namespace SquareCore
         auto it = elements.find(id);
         if (it != elements.end())
         {
+            if (it->second->type == UIElementType::TEXT)
+            {
+                UIText* textElem = static_cast<UIText*>(it->second);
+                if (textElem->textObject) TTF_DestroyText(textElem->textObject);
+                if (textElem->font) TTF_CloseFont(textElem->font);
+            }
             delete it->second;
             elements.erase(it);
         }
@@ -194,5 +227,13 @@ namespace SquareCore
     {
         return leftButtonDown && !previousLeftButtonDown;
     }
-    // --
+
+    void UIManager::SetUIText(uint32_t elementID, std::string newText)
+    {
+        auto it = elements.find(elementID);
+        if (it != elements.end())
+        {
+            static_cast<UIText*>(it->second)->text = newText;
+        }
+    }
 }

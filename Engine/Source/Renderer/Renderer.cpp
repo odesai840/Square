@@ -10,16 +10,22 @@ namespace SquareCore
 
     Renderer::~Renderer()
     {
+        TTF_DestroyRendererTextEngine(textEngineRef);
     }
 
     void Renderer::Init(SDL_Window* window)
     {
         // Initialize the SDL renderer
         rendererRef = SDL_CreateRenderer(window, NULL);
-
         if (rendererRef == nullptr)
         {
             SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Error creating SDL renderer: %s\n", SDL_GetError());
+        }
+        
+        textEngineRef = TTF_CreateRendererTextEngine(rendererRef);
+        if (textEngineRef == nullptr)
+        {
+            SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Error creating SDL text engine: %s\n", SDL_GetError());
         }
 
         // Get the initial window size for the base resolution
@@ -73,6 +79,16 @@ namespace SquareCore
         for (auto& [id, element] : elements)
         {
             if (!element->visible) continue;
+            
+            if (element->type == UIElementType::TEXT)
+            {
+                const UIText* textElem = static_cast<const UIText*>(element);
+                if (textElem->textObject)
+                {
+                    TTF_DrawRendererText(textElem->textObject, element->x, element->y);
+                }
+                continue;
+            }
 
             SDL_FRect rect = { element->x, element->y, element->width, element->height };
             RGBA color = element->color;

@@ -15,6 +15,7 @@ namespace SquareCore
     public:
         uint32_t AddRect(float x_pos, float y_pos, float width, float height, RGBA color, Border border = {RGBA(0, 0, 0, 255), 1.0f, 0.0f});
         uint32_t AddButton(float x_pos, float y_pos, float width, float height, RGBA color, Border border = {RGBA(0, 0, 0, 255), 1.0f, 0.0f}, std::function<void()> onPress = nullptr);
+        uint32_t AddText(float x_pos, float y_pos, float fontSize, RGBA color, const std::string& fontPath, const std::string& text);
         void DeleteElement(uint32_t id);
         void ClearElements();
 
@@ -33,11 +34,16 @@ namespace SquareCore
         Vec2 GetMousePosition() const;
         bool IsMouseButtonDown() const;
         bool IsMouseButtonPressed() const;
+        
+        void SetUIText(uint32_t elementID, std::string newText);
+        void SetTextEngine(TTF_TextEngine* textEngine) { textEngineRef = textEngine; }
 
     private:
         mutable std::mutex uiMutex;
         std::unordered_map<uint32_t, UIElement*> elements;
         uint32_t nextElementID = 1;
+        
+        TTF_TextEngine* textEngineRef = nullptr;
     
         float mouseX = 0.0f;
         float mouseY = 0.0f;

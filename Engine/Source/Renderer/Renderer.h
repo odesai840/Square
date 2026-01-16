@@ -44,11 +44,14 @@ public:
     // Get a reference to the camera
     Camera& GetCamera();
     
+    TTF_TextEngine* GetTextEngine() const { return textEngineRef; }
+    
     Vec2 ScreenToWorld(const Vec2& screenPos) const;
 
 private:
     // Internal pointer to the underlying SDL renderer
     SDL_Renderer* rendererRef = nullptr;
+    TTF_TextEngine* textEngineRef = nullptr;
     // Stores the width of the application window
     int windowWidth;
     // Stores the height of the application window

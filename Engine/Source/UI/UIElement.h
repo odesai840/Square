@@ -1,17 +1,18 @@
 ﻿#pragma once
 
 #include "Math/Math.h"
+#include "UI/Color.h"
+#include <SDL3_ttf/SDL_ttf.h>
 #include <functional>
 #include <cstdint>
-
-#include "UI/Color.h"
 
 namespace SquareCore
 {
     enum class UIElementType
     {
         RECT,
-        BUTTON
+        BUTTON,
+        TEXT
     };
 
     struct Border
@@ -51,5 +52,14 @@ namespace SquareCore
         RGBA pressedColor = RGBA(150, 150, 150, 255);
 
         std::function<void()> onPress;
+    };
+    
+    struct UIText : UIElement
+    {
+        UIText() { type = UIElementType::TEXT; }
+        
+        TTF_Font* font = nullptr;
+        TTF_Text* textObject = nullptr;
+        std::string text = "";
     };
 }

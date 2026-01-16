@@ -659,6 +659,19 @@ namespace SquareCore
         if (uiManagerRef) return uiManagerRef->AddButton(x, y, width, height, color, border, onPress);
         return 0;
     }
+    
+    uint32_t GameInterface::AddUIText(float x_pos, float y_pos, float fontSize, RGBA color, const std::string& fontPath, const std::string& text)
+    {
+        if (uiManagerRef)
+            return uiManagerRef->AddText(x_pos, y_pos, fontSize, color, fontPath, text);
+        return 0;
+    }
+
+    void GameInterface::SetUIText(uint32_t textID, const std::string& text)
+    {
+        if (uiManagerRef)
+            uiManagerRef->SetUIText(textID, text);
+    }
 
     void GameInterface::RemoveUIElement(uint32_t elementID) {
         if (uiManagerRef) uiManagerRef->DeleteElement(elementID);
