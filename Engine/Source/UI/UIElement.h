@@ -22,6 +22,14 @@ namespace SquareCore
         float radius = 0.0f;
     };
 
+    struct Text
+    {
+        std::string text = "";
+        TTF_Font* font = nullptr;
+        TTF_Text* textObject = nullptr;
+        RGBA color;
+    };
+
     struct UIElement
     {
         uint32_t ID = 0;
@@ -33,7 +41,8 @@ namespace SquareCore
         bool visible = true;
         RGBA color = RGBA(255, 255, 255, 255);
         int zIndex = 0;
-        Border border = {RGBA(0, 0, 0, 255), 1.0f, 0.0f};
+        Border border;
+        Text text;
     };
 
     struct UIRect : UIElement
@@ -57,9 +66,5 @@ namespace SquareCore
     struct UIText : UIElement
     {
         UIText() { type = UIElementType::TEXT; }
-        
-        TTF_Font* font = nullptr;
-        TTF_Text* textObject = nullptr;
-        std::string text = "";
     };
 }

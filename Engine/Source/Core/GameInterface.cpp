@@ -10,81 +10,103 @@ namespace SquareCore
         if (entityManagerRef) return entityManagerRef->GetAllEntityIDsWithTag(tag);
         return {};
     }
-    
+
     uint32_t GameInterface::AddEntity(const char* spritePath, float Xpos, float Ypos, float rotation,
-        float Xscale, float Yscale, bool physEnabled, std::vector<std::string> tags)
+                                      float Xscale, float Yscale, bool physEnabled, std::vector<std::string> tags)
     {
-        if(entityManagerRef) {
+        if (entityManagerRef)
+        {
             return entityManagerRef->AddEntity(spritePath, Xpos, Ypos, rotation, Xscale, Yscale, physEnabled, tags);
         }
         return 0;
     }
 
     uint32_t GameInterface::AddAnimatedEntity(const char* spritePath, int totalFrames, float fps,
-        float Xpos, float Ypos, float rotation, float Xscale, float Yscale, bool physEnabled)
+                                              float Xpos, float Ypos, float rotation, float Xscale, float Yscale,
+                                              bool physEnabled)
     {
-        if(entityManagerRef) {
-            return entityManagerRef->AddAnimatedEntity(spritePath, totalFrames, fps, Xpos, Ypos, rotation, Xscale, Yscale, physEnabled);
+        if (entityManagerRef)
+        {
+            return entityManagerRef->AddAnimatedEntity(spritePath, totalFrames, fps, Xpos, Ypos, rotation, Xscale,
+                                                       Yscale, physEnabled);
         }
         return 0;
     }
 
     uint32_t GameInterface::AddSpritelessEntity(float width, float height, RGBA color, float Xpos, float Ypos,
-        float rotation, float Xscale, float Yscale, bool physEnabled)
+                                                float rotation, float Xscale, float Yscale, bool physEnabled)
     {
-        if(entityManagerRef) {
-            return entityManagerRef->AddSpritelessEntity(width, height, color, Xpos, Ypos, rotation, Xscale, Yscale, physEnabled);
+        if (entityManagerRef)
+        {
+            return entityManagerRef->AddSpritelessEntity(width, height, color, Xpos, Ypos, rotation, Xscale, Yscale,
+                                                         physEnabled);
         }
         return 0;
     }
 
-    void GameInterface::RemoveEntity(uint32_t entityID) {
-        if(entityManagerRef) {
+    void GameInterface::RemoveEntity(uint32_t entityID)
+    {
+        if (entityManagerRef)
+        {
             entityManagerRef->RemoveEntity(entityID);
         }
     }
 
-    void GameInterface::UpdateEntityPosition(uint32_t entityID, float newX, float newY) {
-        if(entityManagerRef) {
+    void GameInterface::UpdateEntityPosition(uint32_t entityID, float newX, float newY)
+    {
+        if (entityManagerRef)
+        {
             entityManagerRef->UpdateEntityPosition(entityID, newX, newY);
         }
     }
 
-    std::vector<std::pair<uint32_t, int>> GameInterface::GetEntityCollisions(uint32_t entityID) {
-        if (entityManagerRef) {
+    std::vector<std::pair<uint32_t, int>> GameInterface::GetEntityCollisions(uint32_t entityID)
+    {
+        if (entityManagerRef)
+        {
             std::vector<std::pair<uint32_t, int>> result;
-            bool success = entityManagerRef->GetEntityProperty(entityID, [&result](const Entity& entity){
+            bool success = entityManagerRef->GetEntityProperty(entityID, [&result](const Entity& entity)
+            {
                 result = entity.collider.GetCollisions();
             });
-            if (success) {
+            if (success)
+            {
                 return result;
             }
         }
         return {};
     }
 
-    void GameInterface::FlipSprite(uint32_t entityID, bool flipX, bool flipY) {
-        if(entityManagerRef) {
+    void GameInterface::FlipSprite(uint32_t entityID, bool flipX, bool flipY)
+    {
+        if (entityManagerRef)
+        {
             entityManagerRef->FlipSprite(entityID, flipX, flipY);
         }
     }
 
-    bool GameInterface::GetFlipX(uint32_t entityID) {
-        if(entityManagerRef) {
+    bool GameInterface::GetFlipX(uint32_t entityID)
+    {
+        if (entityManagerRef)
+        {
             return entityManagerRef->GetFlipX(entityID);
         }
         return false;
     }
 
-    bool GameInterface::GetFlipY(uint32_t entityID) {
-        if(entityManagerRef) {
+    bool GameInterface::GetFlipY(uint32_t entityID)
+    {
+        if (entityManagerRef)
+        {
             return entityManagerRef->GetFlipY(entityID);
         }
         return false;
     }
 
-    bool GameInterface::GetFlipState(uint32_t entityID, bool& flipX, bool& flipY) {
-        if(entityManagerRef) {
+    bool GameInterface::GetFlipState(uint32_t entityID, bool& flipX, bool& flipY)
+    {
+        if (entityManagerRef)
+        {
             return entityManagerRef->GetFlipState(entityID, flipX, flipY);
         }
         flipX = false;
@@ -92,389 +114,504 @@ namespace SquareCore
         return false;
     }
 
-    void GameInterface::ToggleFlipX(uint32_t entityID) {
-        if(entityManagerRef) {
+    void GameInterface::ToggleFlipX(uint32_t entityID)
+    {
+        if (entityManagerRef)
+        {
             entityManagerRef->ToggleFlipX(entityID);
         }
     }
 
-    void GameInterface::ToggleFlipY(uint32_t entityID) {
-        if(entityManagerRef) {
+    void GameInterface::ToggleFlipY(uint32_t entityID)
+    {
+        if (entityManagerRef)
+        {
             entityManagerRef->ToggleFlipY(entityID);
         }
     }
 
-    void GameInterface::SetColliderType(uint32_t entityID, ColliderType type) {
-        if(entityManagerRef) {
+    void GameInterface::SetColliderType(uint32_t entityID, ColliderType type)
+    {
+        if (entityManagerRef)
+        {
             entityManagerRef->SetColliderType(entityID, type);
         }
     }
-    
+
     void GameInterface::AddTagToEntity(uint32_t entityID, std::string tag)
     {
         if (entityManagerRef) entityManagerRef->AddTagToEntity(entityID, tag);
     }
-    
+
     void GameInterface::RemoveTagFromEntity(uint32_t entityID, std::string tag)
     {
         if (entityManagerRef) entityManagerRef->RemoveTagFromEntity(entityID, tag);
     }
-    
-    bool GameInterface::GetKeyPressed(SDL_Scancode key) {
-        if(inputRef) {
+
+    bool GameInterface::GetKeyPressed(SDL_Scancode key)
+    {
+        if (inputRef)
+        {
             return inputRef->GetKeyPressed(key);
         }
         return false;
     }
 
-    bool GameInterface::GetKeyHeld(SDL_Scancode key) {
-        if(inputRef) {
+    bool GameInterface::GetKeyHeld(SDL_Scancode key)
+    {
+        if (inputRef)
+        {
             return inputRef->GetKeyHeld(key);
         }
         return false;
     }
 
-    bool GameInterface::GetKeyReleased(SDL_Scancode key) {
-        if(inputRef) {
+    bool GameInterface::GetKeyReleased(SDL_Scancode key)
+    {
+        if (inputRef)
+        {
             return inputRef->GetKeyReleased(key);
         }
         return false;
     }
 
-    bool GameInterface::GetMouseButtonPressed(int button) {
-        if(inputRef) {
+    bool GameInterface::GetMouseButtonPressed(int button)
+    {
+        if (inputRef)
+        {
             return inputRef->GetMouseButtonPressed(button);
         }
         return false;
     }
 
-    bool GameInterface::GetMouseButtonHeld(int button) {
-        if(inputRef) {
+    bool GameInterface::GetMouseButtonHeld(int button)
+    {
+        if (inputRef)
+        {
             return inputRef->GetMouseButtonHeld(button);
         }
         return false;
     }
 
-    bool GameInterface::GetMouseButtonReleased(int button) {
-        if (inputRef) {
+    bool GameInterface::GetMouseButtonReleased(int button)
+    {
+        if (inputRef)
+        {
             return inputRef->GetMouseButtonReleased(button);
         }
         return false;
     }
 
-    Vec2 GameInterface::GetMousePosition() {
-        if(inputRef) {
+    Vec2 GameInterface::GetMousePosition()
+    {
+        if (inputRef)
+        {
             return inputRef->GetMousePosition();
         }
         return {};
     }
 
-    Vec2 GameInterface::GetMouseDelta() {
-        if(inputRef) {
+    Vec2 GameInterface::GetMouseDelta()
+    {
+        if (inputRef)
+        {
             return inputRef->GetMouseDelta();
         }
         return {};
     }
 
-    Vec2 GameInterface::GetMouseScroll() {
-        if(inputRef) {
+    Vec2 GameInterface::GetMouseScroll()
+    {
+        if (inputRef)
+        {
             return inputRef->GetMouseScroll();
         }
         return {};
     }
 
-    void GameInterface::SetGravity(float gravity) {
-        if (physicsRef){
+    void GameInterface::SetGravity(float gravity)
+    {
+        if (physicsRef)
+        {
             physicsRef->SetGravity(gravity);
         }
     }
 
-    float GameInterface::GetGravity(){
-        if (physicsRef){
+    float GameInterface::GetGravity()
+    {
+        if (physicsRef)
+        {
             return physicsRef->GetGravity();
         }
         return 0.0f;
     }
 
-    void GameInterface::ApplyForce(uint32_t entityID, float forceX, float forceY) {
-        if (entityManagerRef && physicsRef) {
+    void GameInterface::ApplyForce(uint32_t entityID, float forceX, float forceY)
+    {
+        if (entityManagerRef && physicsRef)
+        {
             Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) {
+            if (entity)
+            {
                 physicsRef->ApplyForce(*entity, Vec2(forceX, forceY));
             }
         }
     }
 
-    void GameInterface::ApplyImpulse(uint32_t entityID, float impulseX, float impulseY) {
-        if (entityManagerRef && physicsRef) {
+    void GameInterface::ApplyImpulse(uint32_t entityID, float impulseX, float impulseY)
+    {
+        if (entityManagerRef && physicsRef)
+        {
             Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) {
+            if (entity)
+            {
                 physicsRef->ApplyImpulse(*entity, Vec2(impulseX, impulseY));
             }
         }
     }
 
-    void GameInterface::SetVelocity(uint32_t entityID, float velX, float velY) {
-        if (entityManagerRef && physicsRef) {
+    void GameInterface::SetVelocity(uint32_t entityID, float velX, float velY)
+    {
+        if (entityManagerRef && physicsRef)
+        {
             Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) {
+            if (entity)
+            {
                 physicsRef->SetVelocity(*entity, Vec2(velX, velY));
             }
         }
     }
 
-    Vec2 GameInterface::GetVelocity(uint32_t entityID) {
-        if (entityManagerRef) {
+    Vec2 GameInterface::GetVelocity(uint32_t entityID)
+    {
+        if (entityManagerRef)
+        {
             Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) {
+            if (entity)
+            {
                 return entity->velocity;
             }
         }
         return Vec2::zero();
     }
 
-    void GameInterface::SetPosition(uint32_t entityID, float newX, float newY) {
-        if (entityManagerRef) {
+    void GameInterface::SetPosition(uint32_t entityID, float newX, float newY)
+    {
+        if (entityManagerRef)
+        {
             entityManagerRef->SetPosition(entityID, Vec2(newX, newY));
         }
     }
 
-    Vec2 GameInterface::GetPosition(uint32_t entityID) {
-        if (entityManagerRef) {
+    Vec2 GameInterface::GetPosition(uint32_t entityID)
+    {
+        if (entityManagerRef)
+        {
             Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) {
+            if (entity)
+            {
                 return entity->position;
             }
         }
         return Vec2::zero();
     }
 
-    void GameInterface::ToggleScalingMode() {
-        if (rendererRef) {
+    void GameInterface::ToggleScalingMode()
+    {
+        if (rendererRef)
+        {
             rendererRef->ToggleScalingMode();
         }
     }
 
-    void GameInterface::ToggleDebugCollisions() {
-        if (rendererRef) {
+    void GameInterface::ToggleDebugCollisions()
+    {
+        if (rendererRef)
+        {
             rendererRef->ToggleDebugCollisions();
         }
     }
 
-    void GameInterface::SetCameraPosition(const Vec2& pos) {
-        if (rendererRef) {
+    void GameInterface::SetCameraPosition(const Vec2& pos)
+    {
+        if (rendererRef)
+        {
             rendererRef->GetCamera().SetPosition(pos);
         }
     }
 
-    void GameInterface::SetCameraPosition(float x, float y) {
+    void GameInterface::SetCameraPosition(float x, float y)
+    {
         SetCameraPosition(Vec2(x, y));
     }
 
-    Vec2 GameInterface::GetCameraPosition() const {
-        if (rendererRef) {
+    Vec2 GameInterface::GetCameraPosition() const
+    {
+        if (rendererRef)
+        {
             return rendererRef->GetCamera().GetPosition();
         }
         return Vec2::zero();
     }
 
-    void GameInterface::MoveCamera(const Vec2& delta) {
-        if (rendererRef) {
+    void GameInterface::MoveCamera(const Vec2& delta)
+    {
+        if (rendererRef)
+        {
             rendererRef->GetCamera().Move(delta);
         }
     }
 
-    void GameInterface::MoveCamera(float deltaX, float deltaY) {
+    void GameInterface::MoveCamera(float deltaX, float deltaY)
+    {
         MoveCamera(Vec2(deltaX, deltaY));
     }
 
-    void GameInterface::SnapCameraToPosition(const Vec2& pos) {
-        if (rendererRef) {
+    void GameInterface::SnapCameraToPosition(const Vec2& pos)
+    {
+        if (rendererRef)
+        {
             rendererRef->GetCamera().SnapToPosition(pos);
         }
     }
 
-    void GameInterface::SetCameraZoom(float zoom) {
-        if (rendererRef) {
+    void GameInterface::SetCameraZoom(float zoom)
+    {
+        if (rendererRef)
+        {
             rendererRef->GetCamera().SetZoom(zoom);
         }
     }
 
-    float GameInterface::GetCameraZoom() const {
-        if (rendererRef) {
+    float GameInterface::GetCameraZoom() const
+    {
+        if (rendererRef)
+        {
             return rendererRef->GetCamera().GetZoom();
         }
         return 1.0f;
     }
 
-    void GameInterface::SetCameraZoomLimits(float min, float max) {
-        if (rendererRef) {
+    void GameInterface::SetCameraZoomLimits(float min, float max)
+    {
+        if (rendererRef)
+        {
             rendererRef->GetCamera().SetZoomLimits(min, max);
         }
     }
 
-    void GameInterface::SetCameraBounds(const Vec2& min, const Vec2& max) {
-        if (rendererRef) {
+    void GameInterface::SetCameraBounds(const Vec2& min, const Vec2& max)
+    {
+        if (rendererRef)
+        {
             rendererRef->GetCamera().SetBounds(min, max);
         }
     }
 
-    void GameInterface::SetCameraBounds(float minX, float minY, float maxX, float maxY) {
+    void GameInterface::SetCameraBounds(float minX, float minY, float maxX, float maxY)
+    {
         SetCameraBounds(Vec2(minX, minY), Vec2(maxX, maxY));
     }
 
-    void GameInterface::EnableCameraBounds(bool enable) {
-        if (rendererRef) {
+    void GameInterface::EnableCameraBounds(bool enable)
+    {
+        if (rendererRef)
+        {
             rendererRef->GetCamera().EnableBounds(enable);
         }
     }
 
-    void GameInterface::FollowCameraTarget(const Vec2& targetPos, float smoothing, float deltaTime) {
-        if (rendererRef) {
+    void GameInterface::FollowCameraTarget(const Vec2& targetPos, float smoothing, float deltaTime)
+    {
+        if (rendererRef)
+        {
             rendererRef->GetCamera().FollowTarget(targetPos, smoothing, deltaTime);
         }
     }
 
-    void GameInterface::FollowCameraTarget(float targetX, float targetY, float smoothing, float deltaTime) {
+    void GameInterface::FollowCameraTarget(float targetX, float targetY, float smoothing, float deltaTime)
+    {
         FollowCameraTarget(Vec2(targetX, targetY), smoothing, deltaTime);
     }
 
-    void GameInterface::SetCameraDeadZone(float width, float height) {
-        if (rendererRef) {
+    void GameInterface::SetCameraDeadZone(float width, float height)
+    {
+        if (rendererRef)
+        {
             rendererRef->GetCamera().SetFollowDeadZone(width, height);
         }
     }
 
-    bool GameInterface::IsCameraInDeadZone(const Vec2& targetPos) const {
-        if (rendererRef) {
+    bool GameInterface::IsCameraInDeadZone(const Vec2& targetPos) const
+    {
+        if (rendererRef)
+        {
             return rendererRef->GetCamera().IsInDeadZone(targetPos);
         }
         return false;
     }
 
-    Vec2 GameInterface::GetVisibleWorldMin() const {
-        if (rendererRef) {
+    Vec2 GameInterface::GetVisibleWorldMin() const
+    {
+        if (rendererRef)
+        {
             return rendererRef->GetCamera().GetVisibleWorldMin();
         }
         return Vec2::zero();
     }
 
-    Vec2 GameInterface::GetVisibleWorldMax() const {
-        if (rendererRef) {
+    Vec2 GameInterface::GetVisibleWorldMax() const
+    {
+        if (rendererRef)
+        {
             return rendererRef->GetCamera().GetVisibleWorldMax();
         }
         return Vec2::zero();
     }
 
-    bool GameInterface::IsWorldPositionVisible(const Vec2& worldPos, const Vec2& size) const {
-        if (rendererRef) {
+    bool GameInterface::IsWorldPositionVisible(const Vec2& worldPos, const Vec2& size) const
+    {
+        if (rendererRef)
+        {
             return rendererRef->GetCamera().IsVisible(worldPos, size);
         }
         return false;
     }
-    
-    Vec2 GameInterface::ScreenToWorld(const Vec2& screenPos) const {
+
+    Vec2 GameInterface::ScreenToWorld(const Vec2& screenPos) const
+    {
         if (rendererRef)
             return rendererRef->ScreenToWorld(screenPos);
         return screenPos;
     }
 
-    float GameInterface::GetCurrentTime() const {
-        if (timelineRef) {
+    float GameInterface::GetCurrentTime() const
+    {
+        if (timelineRef)
+        {
             return timelineRef->GetCurrentTime();
         }
         return 0.0f;
     }
 
-    void GameInterface::SetTimeScale(float scale) {
-        if (timelineRef) {
+    void GameInterface::SetTimeScale(float scale)
+    {
+        if (timelineRef)
+        {
             timelineRef->SetTimeScale(scale);
         }
     }
 
-    float GameInterface::GetTimeScale() const {
-        if (timelineRef) {
+    float GameInterface::GetTimeScale() const
+    {
+        if (timelineRef)
+        {
             return timelineRef->GetTimeScale();
         }
         return 1.0f;
     }
 
-    void GameInterface::IncreaseTimeScale() {
-        if (timelineRef) {
+    void GameInterface::IncreaseTimeScale()
+    {
+        if (timelineRef)
+        {
             timelineRef->IncreaseTimeScale();
         }
     }
 
-    void GameInterface::DecreaseTimeScale() {
-        if (timelineRef) {
+    void GameInterface::DecreaseTimeScale()
+    {
+        if (timelineRef)
+        {
             timelineRef->DecreaseTimeScale();
         }
     }
 
-    void GameInterface::SetPaused(bool isPaused) {
-        if (timelineRef) {
+    void GameInterface::SetPaused(bool isPaused)
+    {
+        if (timelineRef)
+        {
             timelineRef->SetPaused(isPaused);
         }
     }
 
-    bool GameInterface::IsPaused() const {
-        if (timelineRef) {
+    bool GameInterface::IsPaused() const
+    {
+        if (timelineRef)
+        {
             return timelineRef->IsPaused();
         }
         return false;
     }
 
-    InputState GameInterface::GetInputForClient(uint32_t clientID) {
-        if (serverInputManagerRef) {
+    InputState GameInterface::GetInputForClient(uint32_t clientID)
+    {
+        if (serverInputManagerRef)
+        {
             return serverInputManagerRef->GetInputForClient(clientID);
         }
         return {};
     }
 
-    std::vector<uint32_t> GameInterface::GetConnectedClients() {
-        if (serverRef) {
+    std::vector<uint32_t> GameInterface::GetConnectedClients()
+    {
+        if (serverRef)
+        {
             return serverRef->GetConnectedClients();
         }
         return {};
     }
 
-    uint32_t GameInterface::GetPlayerEntityForClient(uint32_t clientID) {
-        if (serverRef) {
+    uint32_t GameInterface::GetPlayerEntityForClient(uint32_t clientID)
+    {
+        if (serverRef)
+        {
             return serverRef->GetPlayerEntityForClient(clientID);
         }
         return 0;
     }
 
-    void GameInterface::RegisterPlayerEntity(uint32_t clientID, uint32_t entityID) {
-        if (serverRef) {
+    void GameInterface::RegisterPlayerEntity(uint32_t clientID, uint32_t entityID)
+    {
+        if (serverRef)
+        {
             serverRef->RegisterPlayerEntity(clientID, entityID);
         }
     }
 
-    void GameInterface::SendInputToServer(const std::unordered_map<std::string, bool>& buttons) {
-        if (networkManagerRef) {
+    void GameInterface::SendInputToServer(const std::unordered_map<std::string, bool>& buttons)
+    {
+        if (networkManagerRef)
+        {
             networkManagerRef->SendInput(buttons);
         }
     }
 
-    uint32_t GameInterface::GetLocalClientId() {
-        if (networkManagerRef) {
+    uint32_t GameInterface::GetLocalClientId()
+    {
+        if (networkManagerRef)
+        {
             return networkManagerRef->GetClientId();
         }
         return 0;
     }
 
-    uint32_t GameInterface::GetLocalPlayerEntity() {
-        if (networkManagerRef) {
+    uint32_t GameInterface::GetLocalPlayerEntity()
+    {
+        if (networkManagerRef)
+        {
             return networkManagerRef->GetLocalPlayerEntity();
         }
         return 0;
     }
 
-    void GameInterface::BroadcastEntitySpawn(uint32_t entityID, uint32_t ownerClientID, uint32_t excludeClientID) {
-        if (serverRef && entityManagerRef) {
+    void GameInterface::BroadcastEntitySpawn(uint32_t entityID, uint32_t ownerClientID, uint32_t excludeClientID)
+    {
+        if (serverRef && entityManagerRef)
+        {
             Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) {
+            if (entity)
+            {
                 EntitySpawnInfo spawnInfo;
                 spawnInfo.entityID = entity->ID;
                 spawnInfo.spritePath = entity->spritePath;
@@ -491,227 +628,292 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::BroadcastEntityDespawn(uint32_t entityID, uint32_t excludeClientID) {
-        if (serverRef) {
+    void GameInterface::BroadcastEntityDespawn(uint32_t entityID, uint32_t excludeClientID)
+    {
+        if (serverRef)
+        {
             serverRef->BroadcastEntityDespawn(entityID, excludeClientID);
         }
     }
 
-    int GameInterface::Alloc() {
-        if (allocatorRef) {
+    int GameInterface::Alloc()
+    {
+        if (allocatorRef)
+        {
             return allocatorRef->Alloc();
         }
         return -1;
     }
 
-    void GameInterface::FreeSlot(int id) {
-        if (allocatorRef) {
+    void GameInterface::FreeSlot(int id)
+    {
+        if (allocatorRef)
+        {
             allocatorRef->FreeSlot(id);
         }
     }
 
-    void* GameInterface::GetPointer(int id) {
-        if (allocatorRef) {
+    void* GameInterface::GetPointer(int id)
+    {
+        if (allocatorRef)
+        {
             return allocatorRef->GetPointer(id);
         }
         return nullptr;
     }
 
-    int GameInterface::GetUsed() {
-        if (allocatorRef) {
+    int GameInterface::GetUsed()
+    {
+        if (allocatorRef)
+        {
             return allocatorRef->GetUsed();
         }
         return -1;
     }
 
-    int GameInterface::GetTotal() {
-        if (allocatorRef) {
+    int GameInterface::GetTotal()
+    {
+        if (allocatorRef)
+        {
             return allocatorRef->GetTotal();
         }
         return -1;
     }
 
-    float GameInterface::GetUsedPercent() {
-        if (allocatorRef) {
+    float GameInterface::GetUsedPercent()
+    {
+        if (allocatorRef)
+        {
             return allocatorRef->GetUsedPercent();
         }
         return 0.0f;
     }
 
-    uint32_t GameInterface::AddAudioClip(const std::string& path) {
-        if (audioManagerRef) {
+    uint32_t GameInterface::AddAudioClip(const std::string& path)
+    {
+        if (audioManagerRef)
+        {
             return audioManagerRef->AddAudioClip(path);
         }
         return 0;
     }
 
-    void GameInterface::PlayAudioClip(uint32_t id) {
-        if (audioManagerRef) {
+    void GameInterface::PlayAudioClip(uint32_t id)
+    {
+        if (audioManagerRef)
+        {
             return audioManagerRef->PlayAudioClip(id);
         }
         return;
     }
 
-    void GameInterface::PauseAudioClip(uint32_t id) {
-        if (audioManagerRef) {
+    void GameInterface::PauseAudioClip(uint32_t id)
+    {
+        if (audioManagerRef)
+        {
             return audioManagerRef->PauseAudioClip(id);
         }
         return;
     }
 
-    void GameInterface::StopAudioClip(uint32_t id) {
-        if (audioManagerRef) {
+    void GameInterface::StopAudioClip(uint32_t id)
+    {
+        if (audioManagerRef)
+        {
             return audioManagerRef->StopAudioClip(id);
         }
         return;
     }
 
-    void GameInterface::SetAudioVolume(uint32_t id, float volume) {
-        if (audioManagerRef) {
+    void GameInterface::SetAudioVolume(uint32_t id, float volume)
+    {
+        if (audioManagerRef)
+        {
             return audioManagerRef->SetAudioVolume(id, volume);
         }
         return;
     }
 
-    float GameInterface::GetAudioVolume(uint32_t id) {
-        if (audioManagerRef) {
+    float GameInterface::GetAudioVolume(uint32_t id)
+    {
+        if (audioManagerRef)
+        {
             return audioManagerRef->GetAudioVolume(id);
         }
         return 0.0f;
     }
 
-    void GameInterface::SetAudioMasterVolume(float volume) {
-        if (audioManagerRef) {
+    void GameInterface::SetAudioMasterVolume(float volume)
+    {
+        if (audioManagerRef)
+        {
             return audioManagerRef->SetAudioMasterVolume(volume);
         }
         return;
     }
 
-    float GameInterface::GetAudioMasterVolume() {
-        if (audioManagerRef) {
+    float GameInterface::GetAudioMasterVolume()
+    {
+        if (audioManagerRef)
+        {
             return audioManagerRef->GetAudioMasterVolume();
         }
         return 0.0f;
     }
 
-    void GameInterface::SetAudioLooping(uint32_t id, bool loop) {
-        if (audioManagerRef) {
+    void GameInterface::SetAudioLooping(uint32_t id, bool loop)
+    {
+        if (audioManagerRef)
+        {
             return audioManagerRef->SetAudioLooping(id, loop);
         }
         return;
     }
 
-    bool GameInterface::GetAudioLooping(uint32_t id) {
-        if (audioManagerRef) {
+    bool GameInterface::GetAudioLooping(uint32_t id)
+    {
+        if (audioManagerRef)
+        {
             return audioManagerRef->GetAudioLooping(id);
         }
         return false;
     }
 
-    void GameInterface::SetAudioPlayOnAwake(uint32_t id, bool playOnAwake) {
-        if (audioManagerRef) {
+    void GameInterface::SetAudioPlayOnAwake(uint32_t id, bool playOnAwake)
+    {
+        if (audioManagerRef)
+        {
             audioManagerRef->SetAudioPlayOnAwake(id, playOnAwake);
         }
         return;
     }
 
-    bool GameInterface::GetAudioPlayOnAwake(uint32_t id) {
-        if (audioManagerRef) {
+    bool GameInterface::GetAudioPlayOnAwake(uint32_t id)
+    {
+        if (audioManagerRef)
+        {
             return audioManagerRef->GetAudioPlayOnAwake(id);
         }
         return false;
     }
 
-    void GameInterface::SetAudioSpatialization(uint32_t id, bool spatialization) {
+    void GameInterface::SetAudioSpatialization(uint32_t id, bool spatialization)
+    {
         if (audioManagerRef)
         {
             return audioManagerRef->SetAudioSpatialization(id, spatialization);
         }
     }
 
-    bool GameInterface::IsAudioPlaying(uint32_t id) {
-        if (audioManagerRef) {
+    bool GameInterface::IsAudioPlaying(uint32_t id)
+    {
+        if (audioManagerRef)
+        {
             return audioManagerRef->IsAudioPlaying(id);
         }
         return false;
     }
 
-    bool GameInterface::IsAudioPaused(uint32_t id) {
-        if (audioManagerRef) {
+    bool GameInterface::IsAudioPaused(uint32_t id)
+    {
+        if (audioManagerRef)
+        {
             return audioManagerRef->IsAudioPaused(id);
         }
         return false;
     }
 
-    bool GameInterface::IsAudioStopped(uint32_t id) {
-        if (audioManagerRef) {
+    bool GameInterface::IsAudioStopped(uint32_t id)
+    {
+        if (audioManagerRef)
+        {
             audioManagerRef->IsAudioStopped(id);
         }
         return false;
     }
 
-    uint32_t GameInterface::AddUIRect(float x, float y, float width, float height, RGBA color, Border border) {
-        if (uiManagerRef) return uiManagerRef->AddRect(x, y, width, height, color, border);
-        return 0;
+    uint32_t GameInterface::AddUIRect(float x_pos, float y_pos, float width, float height, RGBA color, std::string text, Border border, const std::string& fontPath, float fontSize, RGBA textColor)
+    {
+        if (!uiManagerRef) return 0;
+        return uiManagerRef->AddRect(x_pos, y_pos, width, height, color, text, border, fontPath, fontSize, textColor);
     }
 
-    uint32_t GameInterface::AddUIButton(float x, float y, float width, float height, RGBA color, Border border, std::function<void()> onPress) {
-        if (uiManagerRef) return uiManagerRef->AddButton(x, y, width, height, color, border, onPress);
-        return 0;
-    }
-    
-    uint32_t GameInterface::AddUIText(float x_pos, float y_pos, float fontSize, RGBA color, const std::string& fontPath, const std::string& text)
+    uint32_t GameInterface::AddUIButton(float x_pos, float y_pos, float width, float height, RGBA color, std::string text, Border border, std::function<void()> onPress, const std::string& fontPath, float fontSize, RGBA textColor)
     {
-        if (uiManagerRef)
-            return uiManagerRef->AddText(x_pos, y_pos, fontSize, color, fontPath, text);
-        return 0;
+        if (!uiManagerRef) return 0;
+        return uiManagerRef->AddButton(x_pos, y_pos, width, height, color, text, border, onPress, fontPath, fontSize, textColor);
+    }
+
+    uint32_t GameInterface::AddUIText(float x_pos, float y_pos, float fontSize, RGBA color, const std::string& fontPath,
+                                      const std::string& text)
+    {
+        if (!uiManagerRef) return 0;
+        return uiManagerRef->AddText(x_pos, y_pos, fontSize, color, fontPath, text);
     }
 
     void GameInterface::SetUIText(uint32_t textID, const std::string& text)
     {
-        if (uiManagerRef)
-            uiManagerRef->SetUIText(textID, text);
+        if (!uiManagerRef) return;
+        uiManagerRef->SetUIText(textID, text);
     }
 
-    void GameInterface::RemoveUIElement(uint32_t elementID) {
-        if (uiManagerRef) uiManagerRef->DeleteElement(elementID);
+    void GameInterface::RemoveUIElement(uint32_t elementID)
+    {
+        if (!uiManagerRef) return;
+        uiManagerRef->DeleteElement(elementID);
     }
 
-    void GameInterface::SetUIButtonCallback(uint32_t buttonID, std::function<void()> onPress) {
-        if (uiManagerRef) uiManagerRef->SetButtonCallback(buttonID, onPress);
+    void GameInterface::SetUIButtonCallback(uint32_t buttonID, std::function<void()> onPress)
+    {
+        if (!uiManagerRef) return;
+        uiManagerRef->SetButtonCallback(buttonID, onPress);
     }
 
-    void GameInterface::SetUIElementVisible(uint32_t elementID, bool visible) {
-        if (uiManagerRef) uiManagerRef->SetElementVisible(elementID, visible);
+    void GameInterface::SetUIElementVisible(uint32_t elementID, bool visible)
+    {
+        if (!uiManagerRef) return;
+        uiManagerRef->SetElementVisible(elementID, visible);
     }
 
-    void GameInterface::SetUIElementPosition(uint32_t elementID, float x, float y) {
-        if (uiManagerRef) uiManagerRef->SetElementPosition(elementID, x, y);
+    void GameInterface::SetUIElementPosition(uint32_t elementID, float x_pos, float y_pos)
+    {
+        if (!uiManagerRef) return;
+        uiManagerRef->SetElementPosition(elementID, x_pos, y_pos);
     }
 
-    void GameInterface::SetUIElementColor(uint32_t elementID, RGBA color) {
-        if (uiManagerRef) uiManagerRef->SetElementColor(elementID, color);
+    void GameInterface::SetUIElementColor(uint32_t elementID, RGBA color)
+    {
+        if (!uiManagerRef) return;
+        uiManagerRef->SetElementColor(elementID, color);
     }
 
     void GameInterface::SetUIElementZIndex(uint32_t elementID, int zIndex)
     {
-        if (uiManagerRef) uiManagerRef->SetElementZIndex(elementID, zIndex);
+        if (!uiManagerRef) return;
+        uiManagerRef->SetElementZIndex(elementID, zIndex);
     }
 
-    // REPLACE LATER WITH INPUT CLASS
-    Vec2 GameInterface::GetUIMousePosition() const {
-        if (uiManagerRef) return uiManagerRef->GetMousePosition();
-        return Vec2(0, 0);
+    Vec2 GameInterface::GetUIMousePosition() const
+    {
+        if (!uiManagerRef) return Vec2(0.0f, 0.0f);
+        return uiManagerRef->GetMousePosition();
     }
 
-    bool GameInterface::IsUIMouseButtonDown() const {
-        if (uiManagerRef) return uiManagerRef->IsMouseButtonDown();
-        return false;
+    bool GameInterface::IsUIMouseButtonDown() const
+    {
+        if (!uiManagerRef) return false;
+        return uiManagerRef->IsMouseButtonDown();
     }
 
-    bool GameInterface::IsUIMouseButtonPressed() const {
-        if (uiManagerRef) return uiManagerRef->IsMouseButtonPressed();
-        return false;
+    bool GameInterface::IsUIMouseButtonPressed() const
+    {
+        if (!uiManagerRef) return false;
+        return uiManagerRef->IsMouseButtonPressed();
     }
-    // --
+
+    void GameInterface::SetUITextColor(uint32_t elementID, RGBA color)
+    {
+        if (!uiManagerRef) return;
+        uiManagerRef->SetTextColor(elementID, color);
+    }
 }

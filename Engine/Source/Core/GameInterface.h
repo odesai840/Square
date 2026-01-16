@@ -240,9 +240,8 @@ namespace SquareCore
         bool IsAudioPaused(uint32_t id);
         bool IsAudioStopped(uint32_t id);
 
-        uint32_t AddUIRect(float x_pos = 0.0f, float y_pos = 0.0f, float width = 100.0f, float height = 50.0f, RGBA color = RGBA(255, 255, 255, 255), Border border = {RGBA(0, 0, 0, 255), 1.0f, 0.0f});
-        uint32_t AddUIButton(float x_pos = 0.0f, float y_pos = 0.0f, float width = 100.0f, float height = 50.0f, RGBA color = RGBA(255, 255, 255, 255), Border border = {RGBA(0, 0, 0, 255), 1.0f, 0.0f},
-                             std::function<void()> onPress = nullptr);
+        uint32_t AddUIRect(float x_pos = 0.0f, float y_pos = 0.0f, float width = 100.0f, float height = 50.0f, RGBA color = RGBA(255, 255, 255, 255), std::string text = "", Border border = {RGBA(0, 0, 0, 255), 1.0f, 0.0f}, const std::string& fontPath = "", float fontSize = 16.0f, RGBA textColor = RGBA(0, 0, 0, 255));
+        uint32_t AddUIButton(float x_pos = 0.0f, float y_pos = 0.0f, float width = 100.0f, float height = 50.0f, RGBA color = RGBA(255, 255, 255, 255), std::string text = "", Border border = {RGBA(0, 0, 0, 255), 1.0f, 0.0f}, std::function<void()> onPress = nullptr, const std::string& fontPath = "", float fontSize = 16.0f, RGBA textColor = RGBA(0, 0, 0, 255));
         uint32_t AddUIText(float x_pos, float y_pos, float fontSize, RGBA color,
                      const std::string& fontPath, const std::string& text);
         void SetUIText(uint32_t textID, const std::string& text);
@@ -252,6 +251,7 @@ namespace SquareCore
         void SetUIElementPosition(uint32_t elementID, float x_pos, float y_pos);
         void SetUIElementColor(uint32_t elementID, RGBA color);
         void SetUIElementZIndex(uint32_t elementID, int zIndex);
+        void SetUITextColor(uint32_t elementID, RGBA color);
 
         // REPLACE LATER WITH INPUT CLASS
         Vec2 GetUIMousePosition() const;

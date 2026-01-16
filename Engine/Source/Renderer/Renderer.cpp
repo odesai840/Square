@@ -21,7 +21,7 @@ namespace SquareCore
         {
             SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Error creating SDL renderer: %s\n", SDL_GetError());
         }
-        
+
         textEngineRef = TTF_CreateRendererTextEngine(rendererRef);
         if (textEngineRef == nullptr)
         {
@@ -79,18 +79,17 @@ namespace SquareCore
         for (auto& [id, element] : elements)
         {
             if (!element->visible) continue;
-            
+
             if (element->type == UIElementType::TEXT)
             {
-                const UIText* textElem = static_cast<const UIText*>(element);
-                if (textElem->textObject)
+                if (element->text.textObject)
                 {
-                    TTF_DrawRendererText(textElem->textObject, element->x, element->y);
+                    TTF_DrawRendererText(element->text.textObject, element->x, element->y);
                 }
                 continue;
             }
 
-            SDL_FRect rect = { element->x, element->y, element->width, element->height };
+            SDL_FRect rect = {element->x, element->y, element->width, element->height};
             RGBA color = element->color;
 
             if (element->type == UIElementType::BUTTON)
@@ -106,22 +105,33 @@ namespace SquareCore
             SDL_SetRenderDrawBlendMode(rendererRef, SDL_BLENDMODE_BLEND);
             SDL_RenderFillRect(rendererRef, &rect);
 
-            const UIRect* rectElement = static_cast<const UIRect*>(element);
-            if (rectElement->border.thickness > 0.0f)
+            if (element->border.thickness > 0.0f)
             {
-                SDL_SetRenderDrawColor(rendererRef, rectElement->border.color.r, rectElement->border.color.g, rectElement->border.color.b, rectElement->border.color.a);
-        
-                float thickness = rectElement->border.thickness;
-        
-                SDL_FRect top = { rect.x - thickness, rect.y - thickness, rect.w + (thickness * 2), thickness };
-                SDL_FRect bottom = { rect.x - thickness, rect.y + rect.h, rect.w + (thickness * 2), thickness };
-                SDL_FRect left = { rect.x - thickness, rect.y, thickness, rect.h };
-                SDL_FRect right = { rect.x + rect.w, rect.y, thickness, rect.h };
-        
+                SDL_SetRenderDrawColor(rendererRef, element->border.color.r, element->border.color.g,
+                                       element->border.color.b, element->border.color.a);
+
+                float thickness = element->border.thickness;
+
+                SDL_FRect top = {rect.x - thickness, rect.y - thickness, rect.w + (thickness * 2), thickness};
+                SDL_FRect bottom = {rect.x - thickness, rect.y + rect.h, rect.w + (thickness * 2), thickness};
+                SDL_FRect left = {rect.x - thickness, rect.y, thickness, rect.h};
+                SDL_FRect right = {rect.x + rect.w, rect.y, thickness, rect.h};
+
                 SDL_RenderFillRect(rendererRef, &top);
                 SDL_RenderFillRect(rendererRef, &bottom);
                 SDL_RenderFillRect(rendererRef, &left);
                 SDL_RenderFillRect(rendererRef, &right);
+            }
+
+            if (element->text.textObject)
+            {
+                int textWidth, textHeight;
+                TTF_GetTextSize(element->text.textObject, &textWidth, &textHeight);
+
+                float textX = element->x + (element->width / 2.0f) - (static_cast<float>(textWidth) / 2.0f);
+                float textY = element->y + (element->height / 2.0f) - (static_cast<float>(textHeight) / 2.0f);
+
+                TTF_DrawRendererText(element->text.textObject, textX, textY);
             }
         }
     }
@@ -163,7 +173,7 @@ namespace SquareCore
 
             // Set draw color with alpha
             SDL_SetRenderDrawColor(rendererRef, entity.spritelessColor.r, entity.spritelessColor.g,
-                entity.spritelessColor.b, entity.spritelessColor.a);
+                                   entity.spritelessColor.b, entity.spritelessColor.a);
             SDL_SetRenderDrawBlendMode(rendererRef, SDL_BLENDMODE_BLEND);
 
             // Draw filled rectangle
@@ -339,21 +349,21 @@ namespace SquareCore
     {
         return camera;
     }
-    
+
     Vec2 Renderer::ScreenToWorld(const Vec2& screenPos) const
     {
         float globalScaleX, globalScaleY;
         CalculateScalingFactors(globalScaleX, globalScaleY);
-        
+
         float scaledX = screenPos.x - (static_cast<float>(windowWidth) / 2.0f);
         float scaledY = (static_cast<float>(windowHeight) / 2.0f) - screenPos.y;
-        
+
         float cameraRelativeX = scaledX / globalScaleX;
         float cameraRelativeY = scaledY / globalScaleY;
-        
+
         float zoom = camera.GetZoom();
         Vec2 camPos = camera.GetPosition();
-        
+
         return Vec2(
             (cameraRelativeX / zoom) + camPos.x,
             (cameraRelativeY / zoom) + camPos.y

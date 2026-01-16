@@ -1,5 +1,10 @@
 #include "MainBehavior.h"
 
+void OnButtonPressedTest()
+{
+    SDL_Log("Pressed button");
+}
+
 void MainBehavior::OnStart() {
     player = AddEntity("Resources/Sprites/GaelPingu.png", 0.0f, 0.0f, 0.0f, 0.1f, 0.1f, true);
     marcus = AddEntity("Resources/Sprites/marcus.png", 0.0f, -300.0f, 0.0f, 5.0f, 0.5f, false);
@@ -9,14 +14,15 @@ void MainBehavior::OnStart() {
     SetAudioLooping(music, true);
     PlayAudioClip(music);
 
-    ui_rect = AddUIRect(0.0f, 0.0f, 100.0f, 50.0f, SquareCore::RGBA(255, 255, 255, 255));
+    ui_rect = AddUIRect(0.0f, 0.0f, 100.0f, 50.0f, SquareCore::RGBA(255, 255, 255, 255), "", {}, "Resources/Fonts/Helvetica.ttf", 18.0f);
     
-    ui_button = AddUIButton(500.0f, 500.0f, 200.0f, 50.0f, SquareCore::RGBA(255, 255, 255, 255), {SquareCore::RGBA(0, 0, 0, 255), 5.0f, 0.0f},
-    [] {
-        SDL_Log("Pressed button");
-    });
+    ui_button = AddUIButton(500.0f, 500.0f, 200.0f, 50.0f, 
+    SquareCore::RGBA(255, 255, 255, 255), "Test", 
+    {SquareCore::RGBA(0, 0, 0, 255), 5.0f, 0.0f},
+    OnButtonPressedTest, "Resources/Fonts/Helvetica.ttf", 24.0f, 
+    SquareCore::RGBA(255, 0, 0, 255));
     
-    ui_text = AddUIText(555.0f, 515.0f, 24.0f, SquareCore::RGBA(255, 0, 0, 255), "Resources/Fonts/Helvetica.ttf", "YIPPIE!");
+    ui_text = AddUIText(700.0f, 300.0f, 24.0f, SquareCore::RGBA(255, 0, 0, 255), "Resources/Fonts/Helvetica.ttf", "YIPPIE!");
     
     mouseFollower = AddSpritelessEntity(20.0f, 20.0f, SquareCore::RGBA(255, 0, 0, 255), 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, false);
     SetColliderType(mouseFollower, SquareCore::ColliderType::NONE);

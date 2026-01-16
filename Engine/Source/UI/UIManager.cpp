@@ -2,7 +2,7 @@
 
 namespace SquareCore
 {
-    uint32_t UIManager::AddRect(float x_pos, float y_pos, float width, float height, RGBA color, Border border)
+    uint32_t UIManager::AddRect(float x_pos, float y_pos, float width, float height, RGBA color, std::string textStr, Border border, const std::string& fontPath, float fontSize, RGBA textColor)
     {
         std::lock_guard<std::mutex> lock(uiMutex);
 
@@ -15,12 +15,25 @@ namespace SquareCore
         rect->color = color;
         rect->border = border;
 
+        if (!textStr.empty() && !fontPath.empty() && textEngineRef)
+        {
+            rect->text.font = TTF_OpenFont(fontPath.c_str(), fontSize);
+            rect->text.text = textStr;
+            if (rect->text.font)
+            {
+                rect->text.textObject = TTF_CreateText(textEngineRef, rect->text.font, textStr.c_str(), textStr.length());
+                if (rect->text.textObject)
+                {
+                    TTF_SetTextColor(rect->text.textObject, textColor.r, textColor.g, textColor.b, textColor.a);
+                }
+            }
+        }
+
         elements[rect->ID] = rect;
         return rect->ID;
     }
 
-    uint32_t UIManager::AddButton(float x_pos, float y_pos, float width, float height, RGBA color, Border border,
-                                  std::function<void()> onPress)
+    uint32_t UIManager::AddButton(float x_pos, float y_pos, float width, float height, RGBA color, std::string textStr, Border border, std::function<void()> onPress, const std::string& fontPath, float fontSize, RGBA textColor)
     {
         std::lock_guard<std::mutex> lock(uiMutex);
 
@@ -34,12 +47,25 @@ namespace SquareCore
         button->border = border;
         button->onPress = onPress;
 
+        if (!textStr.empty() && !fontPath.empty() && textEngineRef)
+        {
+            button->text.font = TTF_OpenFont(fontPath.c_str(), fontSize);
+            button->text.text = textStr;
+            if (button->text.font)
+            {
+                button->text.textObject = TTF_CreateText(textEngineRef, button->text.font, textStr.c_str(), textStr.length());
+                if (button->text.textObject)
+                {
+                    TTF_SetTextColor(button->text.textObject, textColor.r, textColor.g, textColor.b, textColor.a);
+                }
+            }
+        }
+
         elements[button->ID] = button;
         return button->ID;
     }
 
-    uint32_t UIManager::AddText(float x_pos, float y_pos, float fontSize, RGBA color,
-                              const std::string& fontPath, const std::string& text)
+    uint32_t UIManager::AddText(float x_pos, float y_pos, float fontSize, RGBA color, const std::string& fontPath, const std::string& textStr)
     {
         std::lock_guard<std::mutex> lock(uiMutex);
 
@@ -49,15 +75,15 @@ namespace SquareCore
         ui_text->y = y_pos;
         ui_text->color = color;
         TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);
-        ui_text->font = font;
-        ui_text->text = text;
+        ui_text->text.font = font;
+        ui_text->text.text = textStr;
         
         if (font && textEngineRef)
         {
-            ui_text->textObject = TTF_CreateText(textEngineRef, font, text.c_str(), text.length());
-            if (ui_text->textObject)
+            ui_text->text.textObject = TTF_CreateText(textEngineRef, font, textStr.c_str(), textStr.length());
+            if (ui_text->text.textObject)
             {
-                TTF_SetTextColor(ui_text->textObject, color.r, color.g, color.b, color.a);
+                TTF_SetTextColor(ui_text->text.textObject, color.r, color.g, color.b, color.a);
             }
         }
 
@@ -72,13 +98,10 @@ namespace SquareCore
         auto it = elements.find(id);
         if (it != elements.end())
         {
-            if (it->second->type == UIElementType::TEXT)
-            {
-                UIText* textElem = static_cast<UIText*>(it->second);
-                if (textElem->textObject) TTF_DestroyText(textElem->textObject);
-                if (textElem->font) TTF_CloseFont(textElem->font);
-            }
-            delete it->second;
+            UIElement* elem = it->second;
+            if (elem->text.textObject) TTF_DestroyText(elem->text.textObject);
+            if (elem->text.font) TTF_CloseFont(elem->text.font);
+            delete elem;
             elements.erase(it);
         }
     }
@@ -89,6 +112,8 @@ namespace SquareCore
 
         for (auto& [id, element] : elements)
         {
+            if (element->text.textObject) TTF_DestroyText(element->text.textObject);
+            if (element->text.font) TTF_CloseFont(element->text.font);
             delete element;
         }
         elements.clear();
@@ -113,10 +138,7 @@ namespace SquareCore
 
                 UIButton* button = static_cast<UIButton*>(elem);
 
-                button->isHovered = PointInRect(mouseX, mouseY,
-                                                button->x, button->y,
-                                                button->width, button->height);
-
+                button->isHovered = PointInRect(mouseX, mouseY, button->x, button->y, button->width, button->height);
                 button->isPressed = button->isHovered && leftButtonDown;
 
                 if (button->isHovered && !leftButtonDown && previousLeftButtonDown)
@@ -206,13 +228,22 @@ namespace SquareCore
         }
     }
 
-    // if it's not obvious, this one should not be replaced with input class since it doesn't actually do anything with input even though it's used alongside it
+    void UIManager::SetTextColor(uint32_t elementID, RGBA color)
+    {
+        std::lock_guard<std::mutex> lock(uiMutex);
+
+        auto it = elements.find(elementID);
+        if (it != elements.end() && it->second->text.textObject)
+        {
+            TTF_SetTextColor(it->second->text.textObject, color.r, color.g, color.b, color.a);
+        }
+    }
+
     bool UIManager::PointInRect(float px, float py, float rx, float ry, float rw, float rh) const
     {
         return px >= rx && px <= rx + rw && py >= ry && py <= ry + rh;
     }
 
-    // REPLACE LATER WITH INPUT CLASS
     Vec2 UIManager::GetMousePosition() const
     {
         return Vec2(mouseX, mouseY);
@@ -228,12 +259,28 @@ namespace SquareCore
         return leftButtonDown && !previousLeftButtonDown;
     }
 
-    void UIManager::SetUIText(uint32_t elementID, std::string newText)
+    void UIManager::SetUIText(uint32_t elementID, const std::string& newText)
     {
+        std::lock_guard<std::mutex> lock(uiMutex);
+
         auto it = elements.find(elementID);
         if (it != elements.end())
         {
-            static_cast<UIText*>(it->second)->text = newText;
+            UIElement* elem = it->second;
+            elem->text.text = newText;
+            
+            if (elem->text.textObject && elem->text.font && textEngineRef)
+            {
+                RGBA currentColor;
+                TTF_GetTextColor(elem->text.textObject, &currentColor.r, &currentColor.g, &currentColor.b, &currentColor.a);
+                
+                TTF_DestroyText(elem->text.textObject);
+                elem->text.textObject = TTF_CreateText(textEngineRef, elem->text.font, newText.c_str(), newText.length());
+                if (elem->text.textObject)
+                {
+                    TTF_SetTextColor(elem->text.textObject, currentColor.r, currentColor.g, currentColor.b, currentColor.a);
+                }
+            }
         }
     }
 }
