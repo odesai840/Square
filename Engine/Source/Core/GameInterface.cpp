@@ -110,6 +110,16 @@ namespace SquareCore
         }
     }
     
+    void GameInterface::AddTagToEntity(uint32_t entityID, std::string tag)
+    {
+        if (entityManagerRef) entityManagerRef->AddTagToEntity(entityID, tag);
+    }
+    
+    void GameInterface::RemoveTagFromEntity(uint32_t entityID, std::string tag)
+    {
+        if (entityManagerRef) entityManagerRef->RemoveTagFromEntity(entityID, tag);
+    }
+    
     bool GameInterface::GetKeyPressed(SDL_Scancode key) {
         if(inputRef) {
             return inputRef->GetKeyPressed(key);

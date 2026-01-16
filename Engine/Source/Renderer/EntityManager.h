@@ -77,6 +77,9 @@ public:
 
     // Thread-safe function to set the collider type for an entity
     void SetColliderType(uint32_t entityID, ColliderType type);
+    
+    void AddTagToEntity(uint32_t entityID, std::string tag);
+    void RemoveTagFromEntity(uint32_t entityID, std::string tag);
 
     // Thread-safe function to update the physics of all entities
     void UpdatePhysics(std::function<void(std::vector<Entity>&)> physicsUpdate);

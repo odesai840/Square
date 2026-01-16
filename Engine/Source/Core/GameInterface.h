@@ -105,6 +105,9 @@ namespace SquareCore
         // Sets an entity's collider type
         void SetColliderType(uint32_t entityID, ColliderType type);
 
+        void AddTagToEntity(uint32_t entityID, std::string tag);
+        void RemoveTagFromEntity(uint32_t entityID, std::string tag);
+
         bool GetKeyPressed(SDL_Scancode key);
         bool GetKeyHeld(SDL_Scancode key);
         bool GetKeyReleased(SDL_Scancode key);
@@ -248,8 +251,8 @@ namespace SquareCore
         bool IsAudioPaused(uint32_t id);
         bool IsAudioStopped(uint32_t id);
 
-        uint32_t AddUIRect(float x_pos = 0.0f, float y_pos = 0.0f, float width = 100.0f, float height = 50.0f, RGBA color = RGBA(255, 255, 255, 255), Border border = {false, RGBA(0, 0, 0, 255), 2.0f});
-        uint32_t AddUIButton(float x_pos = 0.0f, float y_pos = 0.0f, float width = 100.0f, float height = 50.0f, RGBA color = RGBA(255, 255, 255, 255), Border border = {false, RGBA(0, 0, 0, 255), 2.0f},
+        uint32_t AddUIRect(float x_pos = 0.0f, float y_pos = 0.0f, float width = 100.0f, float height = 50.0f, RGBA color = RGBA(255, 255, 255, 255), Border border = {RGBA(0, 0, 0, 255), 1.0f, 0.0f});
+        uint32_t AddUIButton(float x_pos = 0.0f, float y_pos = 0.0f, float width = 100.0f, float height = 50.0f, RGBA color = RGBA(255, 255, 255, 255), Border border = {RGBA(0, 0, 0, 255), 1.0f, 0.0f},
                              std::function<void()> onPress = nullptr);
         void RemoveUIElement(uint32_t elementID);
         void SetUIButtonCallback(uint32_t buttonID, std::function<void()> onPress);

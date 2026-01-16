@@ -13,8 +13,8 @@ namespace SquareCore
     class UIManager
     {
     public:
-        uint32_t AddRect(float x_pos, float y_pos, float width, float height, RGBA color, Border border = {false, RGBA(0, 0, 0, 255), 2.0f});
-        uint32_t AddButton(float x_pos, float y_pos, float width, float height, RGBA color, Border border = {false, RGBA(0, 0, 0, 255), 2.0f}, std::function<void()> onPress = nullptr);
+        uint32_t AddRect(float x_pos, float y_pos, float width, float height, RGBA color, Border border = {RGBA(0, 0, 0, 255), 1.0f, 0.0f});
+        uint32_t AddButton(float x_pos, float y_pos, float width, float height, RGBA color, Border border = {RGBA(0, 0, 0, 255), 1.0f, 0.0f}, std::function<void()> onPress = nullptr);
         void DeleteElement(uint32_t id);
         void ClearElements();
 

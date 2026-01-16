@@ -91,7 +91,7 @@ namespace SquareCore
             SDL_RenderFillRect(rendererRef, &rect);
 
             const UIRect* rectElement = static_cast<const UIRect*>(element);
-            if (rectElement->border.enabled)
+            if (rectElement->border.thickness > 0.0f)
             {
                 SDL_SetRenderDrawColor(rendererRef, rectElement->border.color.r, rectElement->border.color.g, rectElement->border.color.b, rectElement->border.color.a);
         
