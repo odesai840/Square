@@ -11,7 +11,7 @@ void MainBehavior::OnStart() {
 
     ui_rect = AddUIRect(0.0f, 0.0f, 100.0f, 50.0f, SquareCore::RGBA(255, 255, 255, 255));
     
-    ui_button = AddUIButton(500.0f, 500.0f, 200.0f, 50.0f, SquareCore::RGBA(255, 255, 255, 255),
+    ui_button = AddUIButton(500.0f, 500.0f, 200.0f, 50.0f, SquareCore::RGBA(255, 255, 255, 255), {true, SquareCore::RGBA(0, 0, 0, 255), 5.0f},
     [] {
         SDL_Log("Pressed button");
     });

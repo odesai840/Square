@@ -2,7 +2,7 @@
 
 namespace SquareCore
 {
-    uint32_t UIManager::AddRect(float x_pos, float y_pos, float width, float height, RGBA color)
+    uint32_t UIManager::AddRect(float x_pos, float y_pos, float width, float height, RGBA color, Border border)
     {
         std::lock_guard<std::mutex> lock(uiMutex);
 
@@ -13,12 +13,13 @@ namespace SquareCore
         rect->width = width;
         rect->height = height;
         rect->color = color;
+        rect->border = border;
 
         elements[rect->ID] = rect;
         return rect->ID;
     }
 
-    uint32_t UIManager::AddButton(float x_pos, float y_pos, float width, float height, RGBA color,
+    uint32_t UIManager::AddButton(float x_pos, float y_pos, float width, float height, RGBA color, Border border,
                                   std::function<void()> onPress)
     {
         std::lock_guard<std::mutex> lock(uiMutex);
@@ -30,6 +31,7 @@ namespace SquareCore
         button->width = width;
         button->height = height;
         button->color = color;
+        button->border = border;
         button->onPress = onPress;
 
         elements[button->ID] = button;

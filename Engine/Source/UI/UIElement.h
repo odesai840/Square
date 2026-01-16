@@ -14,6 +14,13 @@ namespace SquareCore
         BUTTON
     };
 
+    struct Border
+    {
+        bool enabled = true;
+        RGBA color = RGBA(0, 0, 0, 255);
+        float thickness = 10.0f;
+    };
+
     struct UIElement
     {
         uint32_t ID = 0;
@@ -25,6 +32,7 @@ namespace SquareCore
         bool visible = true;
         RGBA color = RGBA(255, 255, 255, 255);
         int zIndex = 0;
+        Border border = {false, RGBA(0, 0, 0, 255), 2.0f};
     };
 
     struct UIRect : UIElement

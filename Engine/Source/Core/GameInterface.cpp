@@ -640,13 +640,13 @@ namespace SquareCore
         return false;
     }
 
-    uint32_t GameInterface::AddUIRect(float x, float y, float width, float height, RGBA color) {
-        if (uiManagerRef) return uiManagerRef->AddRect(x, y, width, height, color);
+    uint32_t GameInterface::AddUIRect(float x, float y, float width, float height, RGBA color, Border border) {
+        if (uiManagerRef) return uiManagerRef->AddRect(x, y, width, height, color, border);
         return 0;
     }
 
-    uint32_t GameInterface::AddUIButton(float x, float y, float width, float height, RGBA color, std::function<void()> onPress) {
-        if (uiManagerRef) return uiManagerRef->AddButton(x, y, width, height, color, onPress);
+    uint32_t GameInterface::AddUIButton(float x, float y, float width, float height, RGBA color, Border border, std::function<void()> onPress) {
+        if (uiManagerRef) return uiManagerRef->AddButton(x, y, width, height, color, border, onPress);
         return 0;
     }
 

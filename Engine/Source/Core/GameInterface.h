@@ -248,9 +248,9 @@ namespace SquareCore
         bool IsAudioPaused(uint32_t id);
         bool IsAudioStopped(uint32_t id);
 
-        uint32_t AddUIRect(float x_pos, float y_pos, float width, float height, RGBA color);
-        uint32_t AddUIButton(float x_pos, float y_pos, float width, float height, RGBA color,
-                             std::function<void()> onPress);
+        uint32_t AddUIRect(float x_pos = 0.0f, float y_pos = 0.0f, float width = 100.0f, float height = 50.0f, RGBA color = RGBA(255, 255, 255, 255), Border border = {false, RGBA(0, 0, 0, 255), 2.0f});
+        uint32_t AddUIButton(float x_pos = 0.0f, float y_pos = 0.0f, float width = 100.0f, float height = 50.0f, RGBA color = RGBA(255, 255, 255, 255), Border border = {false, RGBA(0, 0, 0, 255), 2.0f},
+                             std::function<void()> onPress = nullptr);
         void RemoveUIElement(uint32_t elementID);
         void SetUIButtonCallback(uint32_t buttonID, std::function<void()> onPress);
         void SetUIElementVisible(uint32_t elementID, bool visible);

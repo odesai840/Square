@@ -90,15 +90,23 @@ namespace SquareCore
             SDL_SetRenderDrawBlendMode(rendererRef, SDL_BLENDMODE_BLEND);
             SDL_RenderFillRect(rendererRef, &rect);
 
-            /*if (element->type == UIElementType::RECT)
+            const UIRect* rectElement = static_cast<const UIRect*>(element);
+            if (rectElement->border.enabled)
             {
-                const UIRect* rectElement = static_cast<const UIRect*>(element);
-                if (rectElement->hasBorder)
-                {
-                    SDL_SetRenderDrawColor(rendererRef, rectElement->borderColor.r, rectElement->borderColor.g, rectElement->borderColor.b, rectElement->borderColor.a);
-                    SDL_RenderRect(rendererRef, &rect);
-                }
-            }*/
+                SDL_SetRenderDrawColor(rendererRef, rectElement->border.color.r, rectElement->border.color.g, rectElement->border.color.b, rectElement->border.color.a);
+        
+                float thickness = rectElement->border.thickness;
+        
+                SDL_FRect top = { rect.x - thickness, rect.y - thickness, rect.w + (thickness * 2), thickness };
+                SDL_FRect bottom = { rect.x - thickness, rect.y + rect.h, rect.w + (thickness * 2), thickness };
+                SDL_FRect left = { rect.x - thickness, rect.y, thickness, rect.h };
+                SDL_FRect right = { rect.x + rect.w, rect.y, thickness, rect.h };
+        
+                SDL_RenderFillRect(rendererRef, &top);
+                SDL_RenderFillRect(rendererRef, &bottom);
+                SDL_RenderFillRect(rendererRef, &left);
+                SDL_RenderFillRect(rendererRef, &right);
+            }
         }
     }
 
