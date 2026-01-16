@@ -162,8 +162,8 @@ namespace SquareCore
             };
 
             // Set draw color with alpha
-            SDL_SetRenderDrawColor(rendererRef, entity.spritelessR, entity.spritelessG, entity.spritelessB,
-                                   entity.spritelessA);
+            SDL_SetRenderDrawColor(rendererRef, entity.spritelessColor.r, entity.spritelessColor.g,
+                entity.spritelessColor.b, entity.spritelessColor.a);
             SDL_SetRenderDrawBlendMode(rendererRef, SDL_BLENDMODE_BLEND);
 
             // Draw filled rectangle

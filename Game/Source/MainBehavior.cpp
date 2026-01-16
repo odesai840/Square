@@ -18,7 +18,7 @@ void MainBehavior::OnStart() {
     
     ui_text = AddUIText(555.0f, 515.0f, 24.0f, SquareCore::RGBA(255, 0, 0, 255), "Resources/Fonts/Helvetica.ttf", "YIPPIE!");
     
-    mouseFollower = AddSpritelessEntity(20.0f, 20.0f, 255, 0, 0, 255, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, false);
+    mouseFollower = AddSpritelessEntity(20.0f, 20.0f, SquareCore::RGBA(255, 0, 0, 255), 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, false);
     SetColliderType(mouseFollower, SquareCore::ColliderType::NONE);
 }
 

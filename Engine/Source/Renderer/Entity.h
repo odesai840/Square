@@ -2,7 +2,8 @@
 #define ENTITIES_H
 
 #include "Math/Math.h"
-#include "SDL3/SDL_render.h"
+#include "UI/Color.h"
+#include <SDL3/SDL_render.h>
 #include <vector>
 #include <string>
 
@@ -56,10 +57,7 @@ struct Entity {
     
     // Spriteless rendering support
     bool isSpriteless = false;         // Flag to indicate this is a spriteless entity
-    uint8_t spritelessR = 255;          // Red component (0-255)
-    uint8_t spritelessG = 255;          // Green component (0-255)
-    uint8_t spritelessB = 255;          // Blue component (0-255)
-    uint8_t spritelessA = 255;          // Alpha component (0-255)
+    RGBA spritelessColor = RGBA(0, 0, 0, 255);
     float spritelessWidth = 10.0f;      // Width of spriteless entity
     float spritelessHeight = 10.0f;     // Height of spriteless entity
 

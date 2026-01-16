@@ -25,23 +25,15 @@ namespace SquareCore
         virtual ~GameInterface() = default;
 
         // Runs before the main game loop at the start of the game
-        virtual void OnStart()
-        {
-        }
+        virtual void OnStart() {}
 
         // Runs for every frame
-        virtual void OnUpdate(float deltaTime)
-        {
-        }
+        virtual void OnUpdate(float deltaTime) {}
 
         // Optional callbacks for server mode
-        virtual void OnClientConnected(uint32_t clientID)
-        {
-        }
+        virtual void OnClientConnected(uint32_t clientID) {}
 
-        virtual void OnClientDisconnected(uint32_t clientID)
-        {
-        }
+        virtual void OnClientDisconnected(uint32_t clientID) {}
 
         // Set the internal renderer reference (for use in the engine core only)
         void SetRenderer(Renderer* renderer) { this->rendererRef = renderer; }
@@ -74,13 +66,10 @@ namespace SquareCore
                            float Xscale = 1.0f, float Yscale = 1.0f, bool physEnabled = false, std::vector<std::string> tags = {});
         // Add an animated entity to the scene
         uint32_t AddAnimatedEntity(const char* spritePath, int totalFrames, float fps, float Xpos = 0.0f,
-                                   float Ypos = 0.0f,
-                                   float rotation = 0.0f, float Xscale = 1.0f, float Yscale = 1.0f,
-                                   bool physEnabled = false);
+            float Ypos = 0.0f, float rotation = 0.0f, float Xscale = 1.0f, float Yscale = 1.0f, bool physEnabled = false);
         // Add a spriteless entity to the scene
-        uint32_t AddSpritelessEntity(float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a,
-                                     float Xpos = 0.0f, float Ypos = 0.0f, float rotation = 0.0f, float Xscale = 1.0f,
-                                     float Yscale = 1.0f, bool physEnabled = false);
+        uint32_t AddSpritelessEntity(float width, float height, RGBA color, float Xpos = 0.0f, float Ypos = 0.0f,
+            float rotation = 0.0f, float Xscale = 1.0f, float Yscale = 1.0f, bool physEnabled = false);
         
         std::vector<uint32_t> GetAllEntityIDsWithTag(std::string tag);
         

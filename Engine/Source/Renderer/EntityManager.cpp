@@ -118,9 +118,8 @@ namespace SquareCore
         return newEntity.ID;
     }
 
-    uint32_t EntityManager::AddSpritelessEntity(float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a,
-                                                float Xpos, float Ypos, float rotation, float Xscale, float Yscale,
-                                                bool physEnabled)
+    uint32_t EntityManager::AddSpritelessEntity(float width, float height, RGBA color, float Xpos, float Ypos,
+                                                float rotation, float Xscale, float Yscale, bool physEnabled)
     {
         std::lock_guard<std::mutex> lock(entityMutex);
 
@@ -129,10 +128,7 @@ namespace SquareCore
         newEntity.isSpriteless = true;
         newEntity.spritelessWidth = width;
         newEntity.spritelessHeight = height;
-        newEntity.spritelessR = r;
-        newEntity.spritelessG = g;
-        newEntity.spritelessB = b;
-        newEntity.spritelessA = a;
+        newEntity.spritelessColor = color;
         newEntity.position = Vec2(Xpos, Ypos);
         newEntity.rotation = rotation;
         newEntity.scale = Vec2(Xscale, Yscale);

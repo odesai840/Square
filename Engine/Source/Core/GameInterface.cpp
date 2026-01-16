@@ -29,11 +29,11 @@ namespace SquareCore
         return 0;
     }
 
-    uint32_t GameInterface::AddSpritelessEntity(float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a,
-        float Xpos, float Ypos, float rotation, float Xscale, float Yscale, bool physEnabled)
+    uint32_t GameInterface::AddSpritelessEntity(float width, float height, RGBA color, float Xpos, float Ypos,
+        float rotation, float Xscale, float Yscale, bool physEnabled)
     {
         if(entityManagerRef) {
-            return entityManagerRef->AddSpritelessEntity(width, height, r, g, b, a, Xpos, Ypos, rotation, Xscale, Yscale, physEnabled);
+            return entityManagerRef->AddSpritelessEntity(width, height, color, Xpos, Ypos, rotation, Xscale, Yscale, physEnabled);
         }
         return 0;
     }
