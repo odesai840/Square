@@ -121,15 +121,16 @@ namespace SquareCore
 
     void UIManager::Update()
     {
+        if (!inputRef) return;
+
         std::function<void()> callbackExecute = nullptr;
 
         {
             std::lock_guard<std::mutex> lock(uiMutex);
 
-            previousLeftButtonDown = leftButtonDown;
-
-            SDL_MouseButtonFlags mouseState = SDL_GetMouseState(&mouseX, &mouseY);
-            leftButtonDown = (mouseState & SDL_BUTTON_MASK(SDL_BUTTON_LEFT)) != 0;
+            Vec2 mousePos = inputRef->GetMousePosition();
+            bool leftButtonPressed = inputRef->GetMouseButtonPressed(0);
+            bool leftButtonReleased = inputRef->GetMouseButtonReleased(0);
 
             for (auto& pair : elements)
             {
@@ -138,10 +139,10 @@ namespace SquareCore
 
                 UIButton* button = static_cast<UIButton*>(elem);
 
-                button->isHovered = PointInRect(mouseX, mouseY, button->x, button->y, button->width, button->height);
-                button->isPressed = button->isHovered && leftButtonDown;
+                button->isHovered = PointInRect(mousePos.x, mousePos.y, button->x, button->y, button->width, button->height);
+                button->isPressed = button->isHovered && leftButtonPressed;
 
-                if (button->isHovered && !leftButtonDown && previousLeftButtonDown)
+                if (button->isHovered && leftButtonReleased)
                 {
                     if (button->onPress)
                     {
@@ -242,21 +243,6 @@ namespace SquareCore
     bool UIManager::PointInRect(float px, float py, float rx, float ry, float rw, float rh) const
     {
         return px >= rx && px <= rx + rw && py >= ry && py <= ry + rh;
-    }
-
-    Vec2 UIManager::GetMousePosition() const
-    {
-        return Vec2(mouseX, mouseY);
-    }
-
-    bool UIManager::IsMouseButtonDown() const
-    {
-        return leftButtonDown;
-    }
-
-    bool UIManager::IsMouseButtonPressed() const
-    {
-        return leftButtonDown && !previousLeftButtonDown;
     }
 
     void UIManager::SetUIText(uint32_t elementID, const std::string& newText)
