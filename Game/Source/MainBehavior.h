@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameInterface.h"
+#include "GameStateManager.h"
 
 class MainBehavior : public SquareCore::GameInterface {
 public:
@@ -8,6 +9,8 @@ public:
     void OnUpdate(float deltaTime) override;
 
 private:
+    PlayerData player_data;
+    
     uint32_t player;
     uint32_t marcus;
     uint32_t music;

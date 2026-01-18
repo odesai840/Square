@@ -1,4 +1,5 @@
 #include "MainBehavior.h"
+#include "GameStateManager.h"
 
 void OnButtonPressedTest()
 {
@@ -6,7 +7,9 @@ void OnButtonPressedTest()
 }
 
 void MainBehavior::OnStart() {
-    player = AddEntity("Resources/Sprites/GaelPingu.png", 0.0f, 0.0f, 0.0f, 0.1f, 0.1f, true);
+    player_data = GameStateManager::LoadPlayerData("Saves/S_001.square");
+    
+    player = AddEntity("Resources/Sprites/GaelPingu.png", player_data.x_pos, player_data.y_pos, 0.0f, 0.1f, 0.1f, true);
     marcus = AddEntity("Resources/Sprites/marcus.png", 0.0f, -300.0f, 0.0f, 5.0f, 0.5f, false);
     
     music = AddAudioClip("Resources/Audio/Cathedral KF.mp3");
@@ -53,6 +56,14 @@ void MainBehavior::OnUpdate(float deltaTime) {
     if (GetKeyPressed(SDL_SCANCODE_W) && IsGrounded(player)) {
         float jumpVelocity = 600.0f;
         SetVelocity(player, newVelocityX, jumpVelocity);
+    }
+
+    player_data.x_pos = GetPosition(player).x;
+    player_data.y_pos = GetPosition(player).y;
+
+    if (GetKeyPressed(SDL_SCANCODE_P))
+    {
+        GameStateManager::SavePlayerData("Saves/S_001.square", player_data);
     }
 }
 
