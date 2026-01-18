@@ -253,12 +253,6 @@ namespace SquareCore
         void SetUIElementZIndex(uint32_t elementID, int zIndex);
         void SetUITextColor(uint32_t elementID, RGBA color);
 
-        // REPLACE LATER WITH INPUT CLASS
-        Vec2 GetUIMousePosition() const;
-        bool IsUIMouseButtonDown() const;
-        bool IsUIMouseButtonPressed() const;
-        // --
-
     private:
         // Internal renderer reference (internal use only)
         Renderer* rendererRef = nullptr;

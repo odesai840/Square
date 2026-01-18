@@ -90,6 +90,7 @@ namespace SquareCore
         // Initialize renderer
         renderer.Init(window.GetNativeWindow());
         uiManager.SetTextEngine(renderer.GetTextEngine());
+        uiManager.SetInput(&input);
         // Initialize entity manager
         entityManager.SetRenderer(renderer.GetRenderer());
 
@@ -150,6 +151,7 @@ namespace SquareCore
         // Initialize renderer
         renderer.Init(window.GetNativeWindow());
         uiManager.SetTextEngine(renderer.GetTextEngine());
+        uiManager.SetInput(&input);
         // Initialize entity manager
         entityManager.SetRenderer(renderer.GetRenderer());
         server->GetEntityManager().SetRenderer(renderer.GetRenderer());

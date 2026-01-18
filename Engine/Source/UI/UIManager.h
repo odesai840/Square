@@ -1,11 +1,10 @@
 ﻿#pragma once
 
 #include "UIElement.h"
+#include "Input/Input.h"
 #include <unordered_map>
 #include <mutex>
-#include <memory>
 #include <functional>
-#include "SDL3/SDL_mouse.h"
 #include "Math/Math.h"
 
 namespace SquareCore
@@ -31,13 +30,10 @@ namespace SquareCore
         void SetElementColor(uint32_t elementID, RGBA color);
         void SetElementZIndex(uint32_t elementID, int zIndex);
         void SetTextColor(uint32_t elementID, RGBA color);
-
-        Vec2 GetMousePosition() const;
-        bool IsMouseButtonDown() const;
-        bool IsMouseButtonPressed() const;
-        
         void SetUIText(uint32_t elementID, const std::string& newText);
+        
         void SetTextEngine(TTF_TextEngine* textEngine) { textEngineRef = textEngine; }
+        void SetInput(Input* input) { inputRef = input; }
 
     private:
         mutable std::mutex uiMutex;
@@ -45,11 +41,7 @@ namespace SquareCore
         uint32_t nextElementID = 1;
         
         TTF_TextEngine* textEngineRef = nullptr;
-    
-        float mouseX = 0.0f;
-        float mouseY = 0.0f;
-        bool leftButtonDown = false;
-        bool previousLeftButtonDown = false;
+        Input* inputRef = nullptr;
     
         bool PointInRect(float px, float py, float rx, float ry, float rw, float rh) const;
     };

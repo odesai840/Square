@@ -893,24 +893,6 @@ namespace SquareCore
         uiManagerRef->SetElementZIndex(elementID, zIndex);
     }
 
-    Vec2 GameInterface::GetUIMousePosition() const
-    {
-        if (!uiManagerRef) return Vec2(0.0f, 0.0f);
-        return uiManagerRef->GetMousePosition();
-    }
-
-    bool GameInterface::IsUIMouseButtonDown() const
-    {
-        if (!uiManagerRef) return false;
-        return uiManagerRef->IsMouseButtonDown();
-    }
-
-    bool GameInterface::IsUIMouseButtonPressed() const
-    {
-        if (!uiManagerRef) return false;
-        return uiManagerRef->IsMouseButtonPressed();
-    }
-
     void GameInterface::SetUITextColor(uint32_t elementID, RGBA color)
     {
         if (!uiManagerRef) return;
