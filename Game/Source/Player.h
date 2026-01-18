@@ -21,6 +21,7 @@ private:
     void Move(float delta_time);
     void Jump(float delta_time);
     void Dash(float delta_time);
+    void Slash(float delta_time);
 
 private:
     PlayerData player_data;
@@ -32,6 +33,9 @@ private:
     float acceleration = 15.0f;
     float jump_velocity = 600.0f;
     float dash_velocity = 1800.0f;
+
+    uint32_t active_attack = 0;
+    uint32_t attack_
 
     // keybinds
     SDL_Scancode move_left_bind = SDL_SCANCODE_A;

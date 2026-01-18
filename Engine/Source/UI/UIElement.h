@@ -45,6 +45,7 @@ namespace SquareCore
         int zIndex = 0;
         Border border;
         Text text;
+        std::vector<std::string> tags;
     };
 
     struct UIRect : UIElement

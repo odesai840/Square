@@ -262,6 +262,12 @@ namespace SquareCore
         void SetUIElementColor(uint32_t elementID, RGBA color);
         void SetUIElementZIndex(uint32_t elementID, int zIndex);
         void SetUITextColor(uint32_t elementID, RGBA color);
+        
+        void AddTagToUIElement(uint32_t elementID, const std::string& tag);
+        void RemoveTagFromUIElement(uint32_t elementID, const std::string& tag);
+        std::vector<uint32_t> GetAllUIElementsWithTag(std::string tag);
+        uint32_t GetFirstUIElementWithTag(std::string tag);
+        bool UIElementHasTag(uint32_t elementID, std::string tag);
 
     private:
         // Internal renderer reference (internal use only)

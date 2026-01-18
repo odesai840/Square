@@ -927,4 +927,34 @@ namespace SquareCore
         if (!uiManagerRef) return;
         uiManagerRef->SetTextColor(elementID, color);
     }
+
+    void Script::AddTagToUIElement(uint32_t elementID, const std::string& tag)
+    {
+        if (!uiManagerRef) return;
+        return uiManagerRef->AddTagToUIElement(elementID, tag);
+    }
+
+    void Script::RemoveTagFromUIElement(uint32_t elementID, const std::string& tag)
+    {
+        if (!uiManagerRef) return;
+        return uiManagerRef->RemoveTagFromUIElement(elementID, tag);
+    }
+
+    std::vector<uint32_t> Script::GetAllUIElementsWithTag(std::string tag)
+    {
+        if (!uiManagerRef) return {};
+        return uiManagerRef->GetAllUIElementsWithTag(tag);
+    }
+
+    uint32_t Script::GetFirstUIElementWithTag(std::string tag)
+    {
+        if (!uiManagerRef) return 0;
+        return uiManagerRef->GetFirstUIElementWithTag(tag);
+    }
+
+    bool Script::UIElementHasTag(uint32_t elementID, std::string tag)
+    {
+        if (!uiManagerRef) return false;
+        return uiManagerRef->UIElementHasTag(elementID, tag);
+    }
 }

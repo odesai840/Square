@@ -15,6 +15,7 @@ void Player::OnUpdate(float delta_time)
     Move(delta_time);
     Jump(delta_time);
     Dash(delta_time);
+    Slash(delta_time);
 
     // DEBUG KEYS
     if (GetKeyPressed(debug_save))
@@ -63,6 +64,16 @@ void Player::Dash(float delta_time)
     if (GetKeyPressed(dash_bind))
         SetVelocity(player, (current_direction == Direction::LEFT ? -dash_velocity : dash_velocity) + player_velocity.x, player_velocity.y);
 }
+
+void Player::Slash(float delta_time)
+{
+    SquareCore::Vec2 player_velocity = GetVelocity(player);
+    if (player_velocity.x > 600.0f) return;
+
+    if (GetMouseButtonHeld(0))
+    {
+    }
+} 
 
 bool Player::IsGrounded(uint32_t playerId)
 {

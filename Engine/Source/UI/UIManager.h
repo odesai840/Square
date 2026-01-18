@@ -32,6 +32,12 @@ namespace SquareCore
         void SetTextColor(uint32_t elementID, RGBA color);
         void SetUIText(uint32_t elementID, const std::string& newText);
         
+        void AddTagToUIElement(uint32_t elementID, const std::string& tag);
+        void RemoveTagFromUIElement(uint32_t elementID, const std::string& tag);
+        std::vector<uint32_t> GetAllUIElementsWithTag(std::string tag);
+        uint32_t GetFirstUIElementWithTag(std::string tag);
+        bool UIElementHasTag(uint32_t elementID, std::string tag);
+        
         void SetTextEngine(TTF_TextEngine* textEngine) { textEngineRef = textEngine; }
         void SetInput(Input* input) { inputRef = input; }
         

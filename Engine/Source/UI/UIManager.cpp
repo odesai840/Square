@@ -292,7 +292,87 @@ namespace SquareCore
             }
         }
     }
-    
+
+    void UIManager::AddTagToUIElement(uint32_t elementID, const std::string& tag)
+    {
+        std::lock_guard<std::mutex> lock(uiMutex);
+
+        auto it = elements.find(elementID);
+        if (it != elements.end())
+        {
+            it->second->tags.push_back(tag);
+        }
+    }
+
+    void UIManager::RemoveTagFromUIElement(uint32_t elementID, const std::string& tag)
+    {
+        std::lock_guard<std::mutex> lock(uiMutex);
+
+        auto it = elements.find(elementID);
+        if (it != elements.end())
+        {
+            auto& tagVec = it->second->tags;
+            auto tagIt = std::find(tagVec.begin(), tagVec.end(), tag);
+            if (tagIt != tagVec.end())
+            {
+                tagVec.erase(tagIt);
+            }
+        }
+    }
+
+    std::vector<uint32_t> UIManager::GetAllUIElementsWithTag(std::string tag)
+    {
+        std::lock_guard<std::mutex> lock(uiMutex);
+        std::vector<uint32_t> elementIDs;
+
+        for (auto& pair : elements)
+        {
+            UIElement* element = pair.second;
+            for (const auto& elementTag : element->tags)
+            {
+                if (elementTag == tag)
+                {
+                    elementIDs.push_back(element->ID);
+                    break;
+                }
+            }
+        }
+
+        return elementIDs;
+    }
+
+    uint32_t UIManager::GetFirstUIElementWithTag(std::string tag)
+    {
+        std::lock_guard<std::mutex> lock(uiMutex);
+
+        for (auto& pair : elements)
+        {
+            UIElement* element = pair.second;
+            for (const auto& elementTag : element->tags)
+            {
+                if (elementTag == tag)
+                {
+                    return element->ID;
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    bool UIManager::UIElementHasTag(uint32_t elementID, std::string tag)
+    {
+        std::lock_guard<std::mutex> lock(uiMutex);
+
+        auto it = elements.find(elementID);
+        if (it != elements.end())
+        {
+            return std::find(it->second->tags.begin(), it->second->tags.end(), tag) != it->second->tags.end();
+        }
+        
+        return false;
+    }
+
     void UIManager::OnWindowResize(int windowWidth, int windowHeight, float baseWidth, float baseHeight)
     {
         std::lock_guard<std::mutex> lock(uiMutex);
