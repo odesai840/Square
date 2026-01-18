@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "EnemyManager.h"
 #include "Map.h"
+#include "UserInterface.h"
 
 int main(int argc, char* argv[]) {
     // River application
@@ -14,9 +15,11 @@ int main(int argc, char* argv[]) {
     Player* player = new Player();
     EnemyManager* enemy_manager = new EnemyManager();
     Map* map = new Map();
+    UserInterface* userInterface = new UserInterface();
     app.PushScript(player);
     app.PushScript(enemy_manager);
     app.PushScript(map);
+    app.PushScript(userInterface);
 
     // Parse command line arguments
     if (argc > 1) {

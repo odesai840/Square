@@ -25,6 +25,8 @@ namespace SquareCore
     struct Text
     {
         std::string text = "";
+        std::string fontPath = "";
+        float fontSize = 4.0f;
         TTF_Font* font = nullptr;
         TTF_Text* textObject = nullptr;
         RGBA color;

@@ -46,6 +46,7 @@ namespace SquareCore
         {
             windowWidth = newWidth;
             windowHeight = newHeight;
+            uiManagerRef->OnWindowResize(windowWidth, windowHeight, baseWindowWidth, baseWindowHeight);
             camera.SetViewportSize(windowWidth, windowHeight);
         }
 
@@ -72,24 +73,32 @@ namespace SquareCore
         SDL_RenderPresent(rendererRef);
     }
 
-    void Renderer::RenderUI(UIManager& uiManager)
+    void Renderer::RenderUI()
     {
-        std::unordered_map<uint32_t, UIElement*>& elements = uiManager.GetElements();
+        std::unordered_map<uint32_t, UIElement*>& elements = uiManagerRef->GetElements();
+        
+        float scaleX = static_cast<float>(windowWidth) / baseWindowWidth;
+        float scaleY = static_cast<float>(windowHeight) / baseWindowHeight;
 
         for (auto& [id, element] : elements)
         {
             if (!element->visible) continue;
+            
+            float scaledX = element->x * scaleX;
+            float scaledY = element->y * scaleY;
+            float scaledWidth = element->width * scaleX;
+            float scaledHeight = element->height * scaleY;
 
             if (element->type == UIElementType::TEXT)
             {
                 if (element->text.textObject)
                 {
-                    TTF_DrawRendererText(element->text.textObject, element->x, element->y);
+                    TTF_DrawRendererText(element->text.textObject, scaledX, scaledY);
                 }
                 continue;
             }
 
-            SDL_FRect rect = {element->x, element->y, element->width, element->height};
+            SDL_FRect rect = {scaledX, scaledY, scaledWidth, scaledHeight};
             RGBA color = element->color;
 
             if (element->type == UIElementType::BUTTON)
@@ -110,7 +119,7 @@ namespace SquareCore
                 SDL_SetRenderDrawColor(rendererRef, element->border.color.r, element->border.color.g,
                                        element->border.color.b, element->border.color.a);
 
-                float thickness = element->border.thickness;
+                float thickness = element->border.thickness * std::min(scaleX, scaleY);
 
                 SDL_FRect top = {rect.x - thickness, rect.y - thickness, rect.w + (thickness * 2), thickness};
                 SDL_FRect bottom = {rect.x - thickness, rect.y + rect.h, rect.w + (thickness * 2), thickness};
@@ -128,8 +137,8 @@ namespace SquareCore
                 int textWidth, textHeight;
                 TTF_GetTextSize(element->text.textObject, &textWidth, &textHeight);
 
-                float textX = element->x + (element->width / 2.0f) - (static_cast<float>(textWidth) / 2.0f);
-                float textY = element->y + (element->height / 2.0f) - (static_cast<float>(textHeight) / 2.0f);
+                float textX = scaledX + (scaledWidth / 2.0f) - (static_cast<float>(textWidth) / 2.0f);
+                float textY = scaledY + (scaledHeight / 2.0f) - (static_cast<float>(textHeight) / 2.0f);
 
                 TTF_DrawRendererText(element->text.textObject, textX, textY);
             }
@@ -370,5 +379,11 @@ namespace SquareCore
             (cameraRelativeX / zoom) + camPos.x,
             (cameraRelativeY / zoom) + camPos.y
         );
+    }
+
+    void Renderer::SetUIManager(UIManager* uiManager)
+    {
+        uiManagerRef = uiManager;
+        uiManagerRef->OnWindowResize(windowWidth, windowHeight, baseWindowWidth, baseWindowHeight);
     }
 }

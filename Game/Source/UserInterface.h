@@ -1,0 +1,18 @@
+#pragma once
+
+#include "Script.h"
+#include "DialogManager.h"
+
+class UserInterface : public SquareCore::Script
+{
+public:
+    void OnStart() override;
+    void OnUpdate(float deltaTime) override;
+
+private:
+    DialogManager dialogManager;
+    uint32_t dialogBox = 0;
+    uint32_t speakerText = 0;
+    uint32_t dialogText = 0;
+    
+};

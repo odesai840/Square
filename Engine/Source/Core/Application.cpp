@@ -91,6 +91,7 @@ namespace SquareCore
         renderer.Init(window.GetNativeWindow());
         uiManager.SetTextEngine(renderer.GetTextEngine());
         uiManager.SetInput(&input);
+        renderer.SetUIManager(&uiManager);
         // Initialize entity manager
         entityManager.SetRenderer(renderer.GetRenderer());
 
@@ -141,7 +142,7 @@ namespace SquareCore
 
             // Render the frame
             renderer.BeginFrame(effectiveDeltaTime, entityManager);
-            renderer.RenderUI(uiManager);
+            renderer.RenderUI();
             renderer.EndFrame();
         }
     }
@@ -193,7 +194,7 @@ namespace SquareCore
 
             // Render the frame
             renderer.BeginFrame(effectiveDeltaTime, server->GetEntityManager());
-            renderer.RenderUI(uiManager);
+            renderer.RenderUI();
             renderer.EndFrame();
         }
     }

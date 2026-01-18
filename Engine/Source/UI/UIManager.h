@@ -34,6 +34,8 @@ namespace SquareCore
         
         void SetTextEngine(TTF_TextEngine* textEngine) { textEngineRef = textEngine; }
         void SetInput(Input* input) { inputRef = input; }
+        
+        void OnWindowResize(int windowWidth, int windowHeight, float baseWidth = 1920.0f, float baseHeight = 1080.0f);
 
     private:
         mutable std::mutex uiMutex;
@@ -42,6 +44,9 @@ namespace SquareCore
         
         TTF_TextEngine* textEngineRef = nullptr;
         Input* inputRef = nullptr;
+        
+        float currentScaleX = 1.0f;
+        float currentScaleY = 1.0f;
     
         bool PointInRect(float px, float py, float rx, float ry, float rw, float rh) const;
     };

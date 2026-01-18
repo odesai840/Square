@@ -31,7 +31,7 @@ public:
     // Ends the render pass for the current frame
     void EndFrame();
 
-    void RenderUI(UIManager& uiManager);
+    void RenderUI();
 
     // Function to toggle the scaling mode
     void ToggleScalingMode();
@@ -47,11 +47,14 @@ public:
     TTF_TextEngine* GetTextEngine() const { return textEngineRef; }
     
     Vec2 ScreenToWorld(const Vec2& screenPos) const;
+    
+    void SetUIManager(UIManager* uiManager);
 
 private:
     // Internal pointer to the underlying SDL renderer
     SDL_Renderer* rendererRef = nullptr;
     TTF_TextEngine* textEngineRef = nullptr;
+    UIManager* uiManagerRef = nullptr;
     // Stores the width of the application window
     int windowWidth;
     // Stores the height of the application window

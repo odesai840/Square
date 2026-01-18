@@ -17,7 +17,13 @@ namespace SquareCore
 
         if (!textStr.empty() && !fontPath.empty() && textEngineRef)
         {
-            rect->text.font = TTF_OpenFont(fontPath.c_str(), fontSize);
+            rect->text.fontPath = fontPath;
+            rect->text.fontSize = fontSize;
+            
+            float scale = std::min(currentScaleX, currentScaleY);
+            float scaledFontSize = fontSize * scale;
+            
+            rect->text.font = TTF_OpenFont(fontPath.c_str(), scaledFontSize);
             rect->text.text = textStr;
             if (rect->text.font)
             {
@@ -49,7 +55,13 @@ namespace SquareCore
 
         if (!textStr.empty() && !fontPath.empty() && textEngineRef)
         {
-            button->text.font = TTF_OpenFont(fontPath.c_str(), fontSize);
+            button->text.fontPath = fontPath;
+            button->text.fontSize = fontSize;
+            
+            float scale = std::min(currentScaleX, currentScaleY);
+            float scaledFontSize = fontSize * scale;
+            
+            button->text.font = TTF_OpenFont(fontPath.c_str(), scaledFontSize);
             button->text.text = textStr;
             if (button->text.font)
             {
@@ -74,7 +86,13 @@ namespace SquareCore
         ui_text->x = x_pos;
         ui_text->y = y_pos;
         ui_text->color = color;
-        TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);
+        ui_text->text.fontPath = fontPath;
+        ui_text->text.fontSize = fontSize;
+        
+        float scale = std::min(currentScaleX, currentScaleY);
+        float scaledFontSize = fontSize * scale;
+        
+        TTF_Font* font = TTF_OpenFont(fontPath.c_str(), scaledFontSize);
         ui_text->text.font = font;
         ui_text->text.text = textStr;
         
@@ -139,7 +157,12 @@ namespace SquareCore
 
                 UIButton* button = static_cast<UIButton*>(elem);
 
-                button->isHovered = PointInRect(mousePos.x, mousePos.y, button->x, button->y, button->width, button->height);
+                float scaledX = button->x * currentScaleX;
+                float scaledY = button->y * currentScaleY;
+                float scaledW = button->width * currentScaleX;
+                float scaledH = button->height * currentScaleY;
+
+                button->isHovered = PointInRect(mousePos.x, mousePos.y, scaledX, scaledY, scaledW, scaledH);
                 button->isPressed = button->isHovered && leftButtonPressed;
 
                 if (button->isHovered && leftButtonReleased)
@@ -265,6 +288,59 @@ namespace SquareCore
                 if (elem->text.textObject)
                 {
                     TTF_SetTextColor(elem->text.textObject, currentColor.r, currentColor.g, currentColor.b, currentColor.a);
+                }
+            }
+        }
+    }
+    
+    void UIManager::OnWindowResize(int windowWidth, int windowHeight, float baseWidth, float baseHeight)
+    {
+        std::lock_guard<std::mutex> lock(uiMutex);
+
+        float newScaleX = static_cast<float>(windowWidth) / baseWidth;
+        float newScaleY = static_cast<float>(windowHeight) / baseHeight;
+        float newScale = std::min(newScaleX, newScaleY);
+        float oldScale = std::min(currentScaleX, currentScaleY);
+        
+        if (std::abs(newScale - oldScale) < 0.001f)
+            return;
+
+        currentScaleX = newScaleX;
+        currentScaleY = newScaleY;
+
+        for (auto& [id, element] : elements)
+        {
+            if (element->text.fontPath.empty() || element->text.fontSize <= 0.0f)
+                continue;
+            
+            float scaledFontSize = element->text.fontSize * newScale;
+            
+            RGBA textColor = element->text.color;
+            if (element->text.textObject)
+            {
+                TTF_GetTextColor(element->text.textObject, &textColor.r, &textColor.g, &textColor.b, &textColor.a);
+            }
+            
+            if (element->text.textObject)
+            {
+                TTF_DestroyText(element->text.textObject);
+                element->text.textObject = nullptr;
+            }
+            if (element->text.font)
+            {
+                TTF_CloseFont(element->text.font);
+                element->text.font = nullptr;
+            }
+            
+            element->text.font = TTF_OpenFont(element->text.fontPath.c_str(), scaledFontSize);
+            if (element->text.font && textEngineRef && !element->text.text.empty())
+            {
+                element->text.textObject = TTF_CreateText(textEngineRef, element->text.font,
+                                                          element->text.text.c_str(),
+                                                          element->text.text.length());
+                if (element->text.textObject)
+                {
+                    TTF_SetTextColor(element->text.textObject, textColor.r, textColor.g, textColor.b, textColor.a);
                 }
             }
         }
