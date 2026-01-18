@@ -2,7 +2,7 @@
 #define APPLICATION_H
 
 #include "Window.h"
-#include "GameInterface.h"
+#include "Script.h"
 #include "NetworkMode.h"
 #include "Renderer/Renderer.h"
 #include "Input/Input.h"
@@ -41,7 +41,7 @@ public:
     // Starts the client loop with server connection
     void RunClient(const std::string& serverAddress);
     // Pushes a script to the script stack
-    void PushScript(GameInterface* script);
+    void PushScript(Script* script);
 
     // Provides access to the entity manager
     EntityManager& GetEntityManager() { return entityManager; }
@@ -68,7 +68,7 @@ private:
     UIManager uiManager;
     
     // Script collection for game logic
-    std::vector<GameInterface*> scripts;
+    std::vector<Script*> scripts;
 
     // Current network mode
     NetworkMode currentMode = NetworkMode::STANDALONE;

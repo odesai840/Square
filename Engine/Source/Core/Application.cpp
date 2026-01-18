@@ -214,7 +214,7 @@ namespace SquareCore
         }
     }
 
-    void Application::PushScript(GameInterface* script)
+    void Application::PushScript(Script* script)
     {
         if (script)
             scripts.push_back(script);

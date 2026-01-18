@@ -1,17 +1,17 @@
-#include "GameInterface.h"
+#include "Script.h"
 #include "Networking/Server.h"
 #include "Networking/ServerInputManager.h"
 #include "Networking/NetworkProtocol.h"
 
 namespace SquareCore
 {
-    std::vector<uint32_t> GameInterface::GetAllEntityIDsWithTag(std::string tag)
+    std::vector<uint32_t> Script::GetAllEntityIDsWithTag(std::string tag)
     {
         if (entityManagerRef) return entityManagerRef->GetAllEntityIDsWithTag(tag);
         return {};
     }
 
-    uint32_t GameInterface::AddEntity(const char* spritePath, float Xpos, float Ypos, float rotation,
+    uint32_t Script::AddEntity(const char* spritePath, float Xpos, float Ypos, float rotation,
                                       float Xscale, float Yscale, bool physEnabled, std::vector<std::string> tags)
     {
         if (entityManagerRef)
@@ -21,7 +21,7 @@ namespace SquareCore
         return 0;
     }
 
-    uint32_t GameInterface::AddAnimatedEntity(const char* spritePath, int totalFrames, float fps,
+    uint32_t Script::AddAnimatedEntity(const char* spritePath, int totalFrames, float fps,
                                               float Xpos, float Ypos, float rotation, float Xscale, float Yscale,
                                               bool physEnabled)
     {
@@ -33,7 +33,7 @@ namespace SquareCore
         return 0;
     }
 
-    uint32_t GameInterface::AddSpritelessEntity(float width, float height, RGBA color, float Xpos, float Ypos,
+    uint32_t Script::AddSpritelessEntity(float width, float height, RGBA color, float Xpos, float Ypos,
                                                 float rotation, float Xscale, float Yscale, bool physEnabled)
     {
         if (entityManagerRef)
@@ -44,7 +44,7 @@ namespace SquareCore
         return 0;
     }
 
-    void GameInterface::RemoveEntity(uint32_t entityID)
+    void Script::RemoveEntity(uint32_t entityID)
     {
         if (entityManagerRef)
         {
@@ -52,7 +52,7 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::UpdateEntityPosition(uint32_t entityID, float newX, float newY)
+    void Script::UpdateEntityPosition(uint32_t entityID, float newX, float newY)
     {
         if (entityManagerRef)
         {
@@ -60,7 +60,7 @@ namespace SquareCore
         }
     }
 
-    std::vector<std::pair<uint32_t, int>> GameInterface::GetEntityCollisions(uint32_t entityID)
+    std::vector<std::pair<uint32_t, int>> Script::GetEntityCollisions(uint32_t entityID)
     {
         if (entityManagerRef)
         {
@@ -77,7 +77,7 @@ namespace SquareCore
         return {};
     }
 
-    void GameInterface::FlipSprite(uint32_t entityID, bool flipX, bool flipY)
+    void Script::FlipSprite(uint32_t entityID, bool flipX, bool flipY)
     {
         if (entityManagerRef)
         {
@@ -85,7 +85,7 @@ namespace SquareCore
         }
     }
 
-    bool GameInterface::GetFlipX(uint32_t entityID)
+    bool Script::GetFlipX(uint32_t entityID)
     {
         if (entityManagerRef)
         {
@@ -94,7 +94,7 @@ namespace SquareCore
         return false;
     }
 
-    bool GameInterface::GetFlipY(uint32_t entityID)
+    bool Script::GetFlipY(uint32_t entityID)
     {
         if (entityManagerRef)
         {
@@ -103,7 +103,7 @@ namespace SquareCore
         return false;
     }
 
-    bool GameInterface::GetFlipState(uint32_t entityID, bool& flipX, bool& flipY)
+    bool Script::GetFlipState(uint32_t entityID, bool& flipX, bool& flipY)
     {
         if (entityManagerRef)
         {
@@ -114,7 +114,7 @@ namespace SquareCore
         return false;
     }
 
-    void GameInterface::ToggleFlipX(uint32_t entityID)
+    void Script::ToggleFlipX(uint32_t entityID)
     {
         if (entityManagerRef)
         {
@@ -122,7 +122,7 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::ToggleFlipY(uint32_t entityID)
+    void Script::ToggleFlipY(uint32_t entityID)
     {
         if (entityManagerRef)
         {
@@ -130,7 +130,7 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::SetColliderType(uint32_t entityID, ColliderType type)
+    void Script::SetColliderType(uint32_t entityID, ColliderType type)
     {
         if (entityManagerRef)
         {
@@ -138,17 +138,28 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::AddTagToEntity(uint32_t entityID, std::string tag)
+    void Script::SetEntityColor(uint32_t entityID, RGBA color)
+    {
+        if (entityManagerRef) entityManagerRef->SetColor(entityID, color);
+    }
+
+    bool Script::EntityHasTag(uint32_t entityID, std::string tag)
+    {
+        if (entityManagerRef) return entityManagerRef->EntityHasTag(entityID, tag);
+        return false;
+    }
+
+    void Script::AddTagToEntity(uint32_t entityID, std::string tag)
     {
         if (entityManagerRef) entityManagerRef->AddTagToEntity(entityID, tag);
     }
 
-    void GameInterface::RemoveTagFromEntity(uint32_t entityID, std::string tag)
+    void Script::RemoveTagFromEntity(uint32_t entityID, std::string tag)
     {
         if (entityManagerRef) entityManagerRef->RemoveTagFromEntity(entityID, tag);
     }
 
-    bool GameInterface::GetKeyPressed(SDL_Scancode key)
+    bool Script::GetKeyPressed(SDL_Scancode key)
     {
         if (inputRef)
         {
@@ -157,7 +168,7 @@ namespace SquareCore
         return false;
     }
 
-    bool GameInterface::GetKeyHeld(SDL_Scancode key)
+    bool Script::GetKeyHeld(SDL_Scancode key)
     {
         if (inputRef)
         {
@@ -166,7 +177,7 @@ namespace SquareCore
         return false;
     }
 
-    bool GameInterface::GetKeyReleased(SDL_Scancode key)
+    bool Script::GetKeyReleased(SDL_Scancode key)
     {
         if (inputRef)
         {
@@ -175,7 +186,7 @@ namespace SquareCore
         return false;
     }
 
-    bool GameInterface::GetMouseButtonPressed(int button)
+    bool Script::GetMouseButtonPressed(int button)
     {
         if (inputRef)
         {
@@ -184,7 +195,7 @@ namespace SquareCore
         return false;
     }
 
-    bool GameInterface::GetMouseButtonHeld(int button)
+    bool Script::GetMouseButtonHeld(int button)
     {
         if (inputRef)
         {
@@ -193,7 +204,7 @@ namespace SquareCore
         return false;
     }
 
-    bool GameInterface::GetMouseButtonReleased(int button)
+    bool Script::GetMouseButtonReleased(int button)
     {
         if (inputRef)
         {
@@ -202,7 +213,7 @@ namespace SquareCore
         return false;
     }
 
-    Vec2 GameInterface::GetMousePosition()
+    Vec2 Script::GetMousePosition()
     {
         if (inputRef)
         {
@@ -211,7 +222,7 @@ namespace SquareCore
         return {};
     }
 
-    Vec2 GameInterface::GetMouseDelta()
+    Vec2 Script::GetMouseDelta()
     {
         if (inputRef)
         {
@@ -220,7 +231,7 @@ namespace SquareCore
         return {};
     }
 
-    Vec2 GameInterface::GetMouseScroll()
+    Vec2 Script::GetMouseScroll()
     {
         if (inputRef)
         {
@@ -229,7 +240,7 @@ namespace SquareCore
         return {};
     }
 
-    void GameInterface::SetGravity(float gravity)
+    void Script::SetGravity(float gravity)
     {
         if (physicsRef)
         {
@@ -237,7 +248,7 @@ namespace SquareCore
         }
     }
 
-    float GameInterface::GetGravity()
+    float Script::GetGravity()
     {
         if (physicsRef)
         {
@@ -246,7 +257,7 @@ namespace SquareCore
         return 0.0f;
     }
 
-    void GameInterface::ApplyForce(uint32_t entityID, float forceX, float forceY)
+    void Script::ApplyForce(uint32_t entityID, float forceX, float forceY)
     {
         if (entityManagerRef && physicsRef)
         {
@@ -258,7 +269,7 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::ApplyImpulse(uint32_t entityID, float impulseX, float impulseY)
+    void Script::ApplyImpulse(uint32_t entityID, float impulseX, float impulseY)
     {
         if (entityManagerRef && physicsRef)
         {
@@ -270,7 +281,7 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::SetVelocity(uint32_t entityID, float velX, float velY)
+    void Script::SetVelocity(uint32_t entityID, float velX, float velY)
     {
         if (entityManagerRef && physicsRef)
         {
@@ -282,7 +293,19 @@ namespace SquareCore
         }
     }
 
-    Vec2 GameInterface::GetVelocity(uint32_t entityID)
+    void Script::SetMass(uint32_t entityID, float mass)
+    {
+        if (entityManagerRef && physicsRef)
+        {
+            Entity* entity = entityManagerRef->GetEntityByID(entityID);
+            if (entity)
+            {
+                physicsRef->SetMass(*entity, mass);
+            }
+        }
+    }
+
+    Vec2 Script::GetVelocity(uint32_t entityID)
     {
         if (entityManagerRef)
         {
@@ -295,7 +318,7 @@ namespace SquareCore
         return Vec2::zero();
     }
 
-    void GameInterface::SetPosition(uint32_t entityID, float newX, float newY)
+    void Script::SetPosition(uint32_t entityID, float newX, float newY)
     {
         if (entityManagerRef)
         {
@@ -303,7 +326,7 @@ namespace SquareCore
         }
     }
 
-    Vec2 GameInterface::GetPosition(uint32_t entityID)
+    Vec2 Script::GetPosition(uint32_t entityID)
     {
         if (entityManagerRef)
         {
@@ -316,7 +339,7 @@ namespace SquareCore
         return Vec2::zero();
     }
 
-    void GameInterface::ToggleScalingMode()
+    void Script::ToggleScalingMode()
     {
         if (rendererRef)
         {
@@ -324,7 +347,7 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::ToggleDebugCollisions()
+    void Script::ToggleDebugCollisions()
     {
         if (rendererRef)
         {
@@ -332,7 +355,7 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::SetCameraPosition(const Vec2& pos)
+    void Script::SetCameraPosition(const Vec2& pos)
     {
         if (rendererRef)
         {
@@ -340,12 +363,12 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::SetCameraPosition(float x, float y)
+    void Script::SetCameraPosition(float x, float y)
     {
         SetCameraPosition(Vec2(x, y));
     }
 
-    Vec2 GameInterface::GetCameraPosition() const
+    Vec2 Script::GetCameraPosition() const
     {
         if (rendererRef)
         {
@@ -354,7 +377,7 @@ namespace SquareCore
         return Vec2::zero();
     }
 
-    void GameInterface::MoveCamera(const Vec2& delta)
+    void Script::MoveCamera(const Vec2& delta)
     {
         if (rendererRef)
         {
@@ -362,12 +385,12 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::MoveCamera(float deltaX, float deltaY)
+    void Script::MoveCamera(float deltaX, float deltaY)
     {
         MoveCamera(Vec2(deltaX, deltaY));
     }
 
-    void GameInterface::SnapCameraToPosition(const Vec2& pos)
+    void Script::SnapCameraToPosition(const Vec2& pos)
     {
         if (rendererRef)
         {
@@ -375,7 +398,7 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::SetCameraZoom(float zoom)
+    void Script::SetCameraZoom(float zoom)
     {
         if (rendererRef)
         {
@@ -383,7 +406,7 @@ namespace SquareCore
         }
     }
 
-    float GameInterface::GetCameraZoom() const
+    float Script::GetCameraZoom() const
     {
         if (rendererRef)
         {
@@ -392,7 +415,7 @@ namespace SquareCore
         return 1.0f;
     }
 
-    void GameInterface::SetCameraZoomLimits(float min, float max)
+    void Script::SetCameraZoomLimits(float min, float max)
     {
         if (rendererRef)
         {
@@ -400,7 +423,7 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::SetCameraBounds(const Vec2& min, const Vec2& max)
+    void Script::SetCameraBounds(const Vec2& min, const Vec2& max)
     {
         if (rendererRef)
         {
@@ -408,12 +431,12 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::SetCameraBounds(float minX, float minY, float maxX, float maxY)
+    void Script::SetCameraBounds(float minX, float minY, float maxX, float maxY)
     {
         SetCameraBounds(Vec2(minX, minY), Vec2(maxX, maxY));
     }
 
-    void GameInterface::EnableCameraBounds(bool enable)
+    void Script::EnableCameraBounds(bool enable)
     {
         if (rendererRef)
         {
@@ -421,7 +444,7 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::FollowCameraTarget(const Vec2& targetPos, float smoothing, float deltaTime)
+    void Script::FollowCameraTarget(const Vec2& targetPos, float smoothing, float deltaTime)
     {
         if (rendererRef)
         {
@@ -429,12 +452,12 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::FollowCameraTarget(float targetX, float targetY, float smoothing, float deltaTime)
+    void Script::FollowCameraTarget(float targetX, float targetY, float smoothing, float deltaTime)
     {
         FollowCameraTarget(Vec2(targetX, targetY), smoothing, deltaTime);
     }
 
-    void GameInterface::SetCameraDeadZone(float width, float height)
+    void Script::SetCameraDeadZone(float width, float height)
     {
         if (rendererRef)
         {
@@ -442,7 +465,7 @@ namespace SquareCore
         }
     }
 
-    bool GameInterface::IsCameraInDeadZone(const Vec2& targetPos) const
+    bool Script::IsCameraInDeadZone(const Vec2& targetPos) const
     {
         if (rendererRef)
         {
@@ -451,7 +474,7 @@ namespace SquareCore
         return false;
     }
 
-    Vec2 GameInterface::GetVisibleWorldMin() const
+    Vec2 Script::GetVisibleWorldMin() const
     {
         if (rendererRef)
         {
@@ -460,7 +483,7 @@ namespace SquareCore
         return Vec2::zero();
     }
 
-    Vec2 GameInterface::GetVisibleWorldMax() const
+    Vec2 Script::GetVisibleWorldMax() const
     {
         if (rendererRef)
         {
@@ -469,7 +492,7 @@ namespace SquareCore
         return Vec2::zero();
     }
 
-    bool GameInterface::IsWorldPositionVisible(const Vec2& worldPos, const Vec2& size) const
+    bool Script::IsWorldPositionVisible(const Vec2& worldPos, const Vec2& size) const
     {
         if (rendererRef)
         {
@@ -478,14 +501,14 @@ namespace SquareCore
         return false;
     }
 
-    Vec2 GameInterface::ScreenToWorld(const Vec2& screenPos) const
+    Vec2 Script::ScreenToWorld(const Vec2& screenPos) const
     {
         if (rendererRef)
             return rendererRef->ScreenToWorld(screenPos);
         return screenPos;
     }
 
-    float GameInterface::GetCurrentTime() const
+    float Script::GetCurrentTime() const
     {
         if (timelineRef)
         {
@@ -494,7 +517,7 @@ namespace SquareCore
         return 0.0f;
     }
 
-    void GameInterface::SetTimeScale(float scale)
+    void Script::SetTimeScale(float scale)
     {
         if (timelineRef)
         {
@@ -502,7 +525,7 @@ namespace SquareCore
         }
     }
 
-    float GameInterface::GetTimeScale() const
+    float Script::GetTimeScale() const
     {
         if (timelineRef)
         {
@@ -511,7 +534,7 @@ namespace SquareCore
         return 1.0f;
     }
 
-    void GameInterface::IncreaseTimeScale()
+    void Script::IncreaseTimeScale()
     {
         if (timelineRef)
         {
@@ -519,7 +542,7 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::DecreaseTimeScale()
+    void Script::DecreaseTimeScale()
     {
         if (timelineRef)
         {
@@ -527,7 +550,7 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::SetPaused(bool isPaused)
+    void Script::SetPaused(bool isPaused)
     {
         if (timelineRef)
         {
@@ -535,7 +558,7 @@ namespace SquareCore
         }
     }
 
-    bool GameInterface::IsPaused() const
+    bool Script::IsPaused() const
     {
         if (timelineRef)
         {
@@ -544,7 +567,7 @@ namespace SquareCore
         return false;
     }
 
-    InputState GameInterface::GetInputForClient(uint32_t clientID)
+    InputState Script::GetInputForClient(uint32_t clientID)
     {
         if (serverInputManagerRef)
         {
@@ -553,7 +576,7 @@ namespace SquareCore
         return {};
     }
 
-    std::vector<uint32_t> GameInterface::GetConnectedClients()
+    std::vector<uint32_t> Script::GetConnectedClients()
     {
         if (serverRef)
         {
@@ -562,7 +585,7 @@ namespace SquareCore
         return {};
     }
 
-    uint32_t GameInterface::GetPlayerEntityForClient(uint32_t clientID)
+    uint32_t Script::GetPlayerEntityForClient(uint32_t clientID)
     {
         if (serverRef)
         {
@@ -571,7 +594,7 @@ namespace SquareCore
         return 0;
     }
 
-    void GameInterface::RegisterPlayerEntity(uint32_t clientID, uint32_t entityID)
+    void Script::RegisterPlayerEntity(uint32_t clientID, uint32_t entityID)
     {
         if (serverRef)
         {
@@ -579,7 +602,7 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::SendInputToServer(const std::unordered_map<std::string, bool>& buttons)
+    void Script::SendInputToServer(const std::unordered_map<std::string, bool>& buttons)
     {
         if (networkManagerRef)
         {
@@ -587,7 +610,7 @@ namespace SquareCore
         }
     }
 
-    uint32_t GameInterface::GetLocalClientId()
+    uint32_t Script::GetLocalClientId()
     {
         if (networkManagerRef)
         {
@@ -596,7 +619,7 @@ namespace SquareCore
         return 0;
     }
 
-    uint32_t GameInterface::GetLocalPlayerEntity()
+    uint32_t Script::GetLocalPlayerEntity()
     {
         if (networkManagerRef)
         {
@@ -605,7 +628,7 @@ namespace SquareCore
         return 0;
     }
 
-    void GameInterface::BroadcastEntitySpawn(uint32_t entityID, uint32_t ownerClientID, uint32_t excludeClientID)
+    void Script::BroadcastEntitySpawn(uint32_t entityID, uint32_t ownerClientID, uint32_t excludeClientID)
     {
         if (serverRef && entityManagerRef)
         {
@@ -628,7 +651,7 @@ namespace SquareCore
         }
     }
 
-    void GameInterface::BroadcastEntityDespawn(uint32_t entityID, uint32_t excludeClientID)
+    void Script::BroadcastEntityDespawn(uint32_t entityID, uint32_t excludeClientID)
     {
         if (serverRef)
         {
@@ -636,7 +659,7 @@ namespace SquareCore
         }
     }
 
-    int GameInterface::Alloc()
+    int Script::Alloc()
     {
         if (allocatorRef)
         {
@@ -645,7 +668,7 @@ namespace SquareCore
         return -1;
     }
 
-    void GameInterface::FreeSlot(int id)
+    void Script::FreeSlot(int id)
     {
         if (allocatorRef)
         {
@@ -653,7 +676,7 @@ namespace SquareCore
         }
     }
 
-    void* GameInterface::GetPointer(int id)
+    void* Script::GetPointer(int id)
     {
         if (allocatorRef)
         {
@@ -662,7 +685,7 @@ namespace SquareCore
         return nullptr;
     }
 
-    int GameInterface::GetUsed()
+    int Script::GetUsed()
     {
         if (allocatorRef)
         {
@@ -671,7 +694,7 @@ namespace SquareCore
         return -1;
     }
 
-    int GameInterface::GetTotal()
+    int Script::GetTotal()
     {
         if (allocatorRef)
         {
@@ -680,7 +703,7 @@ namespace SquareCore
         return -1;
     }
 
-    float GameInterface::GetUsedPercent()
+    float Script::GetUsedPercent()
     {
         if (allocatorRef)
         {
@@ -689,7 +712,7 @@ namespace SquareCore
         return 0.0f;
     }
 
-    uint32_t GameInterface::AddAudioClip(const std::string& path)
+    uint32_t Script::AddAudioClip(const std::string& path)
     {
         if (audioManagerRef)
         {
@@ -698,7 +721,7 @@ namespace SquareCore
         return 0;
     }
 
-    void GameInterface::PlayAudioClip(uint32_t id)
+    void Script::PlayAudioClip(uint32_t id)
     {
         if (audioManagerRef)
         {
@@ -707,7 +730,7 @@ namespace SquareCore
         return;
     }
 
-    void GameInterface::PauseAudioClip(uint32_t id)
+    void Script::PauseAudioClip(uint32_t id)
     {
         if (audioManagerRef)
         {
@@ -716,7 +739,7 @@ namespace SquareCore
         return;
     }
 
-    void GameInterface::StopAudioClip(uint32_t id)
+    void Script::StopAudioClip(uint32_t id)
     {
         if (audioManagerRef)
         {
@@ -725,7 +748,7 @@ namespace SquareCore
         return;
     }
 
-    void GameInterface::SetAudioVolume(uint32_t id, float volume)
+    void Script::SetAudioVolume(uint32_t id, float volume)
     {
         if (audioManagerRef)
         {
@@ -734,7 +757,7 @@ namespace SquareCore
         return;
     }
 
-    float GameInterface::GetAudioVolume(uint32_t id)
+    float Script::GetAudioVolume(uint32_t id)
     {
         if (audioManagerRef)
         {
@@ -743,7 +766,7 @@ namespace SquareCore
         return 0.0f;
     }
 
-    void GameInterface::SetAudioMasterVolume(float volume)
+    void Script::SetAudioMasterVolume(float volume)
     {
         if (audioManagerRef)
         {
@@ -752,7 +775,7 @@ namespace SquareCore
         return;
     }
 
-    float GameInterface::GetAudioMasterVolume()
+    float Script::GetAudioMasterVolume()
     {
         if (audioManagerRef)
         {
@@ -761,7 +784,7 @@ namespace SquareCore
         return 0.0f;
     }
 
-    void GameInterface::SetAudioLooping(uint32_t id, bool loop)
+    void Script::SetAudioLooping(uint32_t id, bool loop)
     {
         if (audioManagerRef)
         {
@@ -770,7 +793,7 @@ namespace SquareCore
         return;
     }
 
-    bool GameInterface::GetAudioLooping(uint32_t id)
+    bool Script::GetAudioLooping(uint32_t id)
     {
         if (audioManagerRef)
         {
@@ -779,7 +802,7 @@ namespace SquareCore
         return false;
     }
 
-    void GameInterface::SetAudioPlayOnAwake(uint32_t id, bool playOnAwake)
+    void Script::SetAudioPlayOnAwake(uint32_t id, bool playOnAwake)
     {
         if (audioManagerRef)
         {
@@ -788,7 +811,7 @@ namespace SquareCore
         return;
     }
 
-    bool GameInterface::GetAudioPlayOnAwake(uint32_t id)
+    bool Script::GetAudioPlayOnAwake(uint32_t id)
     {
         if (audioManagerRef)
         {
@@ -797,7 +820,7 @@ namespace SquareCore
         return false;
     }
 
-    void GameInterface::SetAudioSpatialization(uint32_t id, bool spatialization)
+    void Script::SetAudioSpatialization(uint32_t id, bool spatialization)
     {
         if (audioManagerRef)
         {
@@ -805,7 +828,7 @@ namespace SquareCore
         }
     }
 
-    bool GameInterface::IsAudioPlaying(uint32_t id)
+    bool Script::IsAudioPlaying(uint32_t id)
     {
         if (audioManagerRef)
         {
@@ -814,7 +837,7 @@ namespace SquareCore
         return false;
     }
 
-    bool GameInterface::IsAudioPaused(uint32_t id)
+    bool Script::IsAudioPaused(uint32_t id)
     {
         if (audioManagerRef)
         {
@@ -823,7 +846,7 @@ namespace SquareCore
         return false;
     }
 
-    bool GameInterface::IsAudioStopped(uint32_t id)
+    bool Script::IsAudioStopped(uint32_t id)
     {
         if (audioManagerRef)
         {
@@ -832,68 +855,68 @@ namespace SquareCore
         return false;
     }
 
-    uint32_t GameInterface::AddUIRect(float x_pos, float y_pos, float width, float height, RGBA color, std::string text, Border border, const std::string& fontPath, float fontSize, RGBA textColor)
+    uint32_t Script::AddUIRect(float x_pos, float y_pos, float width, float height, RGBA color, std::string text, Border border, const std::string& fontPath, float fontSize, RGBA textColor)
     {
         if (!uiManagerRef) return 0;
         return uiManagerRef->AddRect(x_pos, y_pos, width, height, color, text, border, fontPath, fontSize, textColor);
     }
 
-    uint32_t GameInterface::AddUIButton(float x_pos, float y_pos, float width, float height, RGBA color, std::string text, Border border, std::function<void()> onPress, const std::string& fontPath, float fontSize, RGBA textColor)
+    uint32_t Script::AddUIButton(float x_pos, float y_pos, float width, float height, RGBA color, std::string text, Border border, std::function<void()> onPress, const std::string& fontPath, float fontSize, RGBA textColor)
     {
         if (!uiManagerRef) return 0;
         return uiManagerRef->AddButton(x_pos, y_pos, width, height, color, text, border, onPress, fontPath, fontSize, textColor);
     }
 
-    uint32_t GameInterface::AddUIText(float x_pos, float y_pos, float fontSize, RGBA color, const std::string& fontPath,
+    uint32_t Script::AddUIText(float x_pos, float y_pos, float fontSize, RGBA color, const std::string& fontPath,
                                       const std::string& text)
     {
         if (!uiManagerRef) return 0;
         return uiManagerRef->AddText(x_pos, y_pos, fontSize, color, fontPath, text);
     }
 
-    void GameInterface::SetUIText(uint32_t textID, const std::string& text)
+    void Script::SetUIText(uint32_t textID, const std::string& text)
     {
         if (!uiManagerRef) return;
         uiManagerRef->SetUIText(textID, text);
     }
 
-    void GameInterface::RemoveUIElement(uint32_t elementID)
+    void Script::RemoveUIElement(uint32_t elementID)
     {
         if (!uiManagerRef) return;
         uiManagerRef->DeleteElement(elementID);
     }
 
-    void GameInterface::SetUIButtonCallback(uint32_t buttonID, std::function<void()> onPress)
+    void Script::SetUIButtonCallback(uint32_t buttonID, std::function<void()> onPress)
     {
         if (!uiManagerRef) return;
         uiManagerRef->SetButtonCallback(buttonID, onPress);
     }
 
-    void GameInterface::SetUIElementVisible(uint32_t elementID, bool visible)
+    void Script::SetUIElementVisible(uint32_t elementID, bool visible)
     {
         if (!uiManagerRef) return;
         uiManagerRef->SetElementVisible(elementID, visible);
     }
 
-    void GameInterface::SetUIElementPosition(uint32_t elementID, float x_pos, float y_pos)
+    void Script::SetUIElementPosition(uint32_t elementID, float x_pos, float y_pos)
     {
         if (!uiManagerRef) return;
         uiManagerRef->SetElementPosition(elementID, x_pos, y_pos);
     }
 
-    void GameInterface::SetUIElementColor(uint32_t elementID, RGBA color)
+    void Script::SetUIElementColor(uint32_t elementID, RGBA color)
     {
         if (!uiManagerRef) return;
         uiManagerRef->SetElementColor(elementID, color);
     }
 
-    void GameInterface::SetUIElementZIndex(uint32_t elementID, int zIndex)
+    void Script::SetUIElementZIndex(uint32_t elementID, int zIndex)
     {
         if (!uiManagerRef) return;
         uiManagerRef->SetElementZIndex(elementID, zIndex);
     }
 
-    void GameInterface::SetUITextColor(uint32_t elementID, RGBA color)
+    void Script::SetUITextColor(uint32_t elementID, RGBA color)
     {
         if (!uiManagerRef) return;
         uiManagerRef->SetTextColor(elementID, color);

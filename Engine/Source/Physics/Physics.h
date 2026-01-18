@@ -33,6 +33,7 @@ public:
     void ApplyImpulse(Entity& entity, const Vec2& impulse);
     // Sets the velocity of an entity
     void SetVelocity(Entity& entity, const Vec2& velocity);
+    void SetMass(Entity& entity, float mass);
 
 private:
     // Gravity constant

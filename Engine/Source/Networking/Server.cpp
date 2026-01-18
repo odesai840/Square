@@ -1,5 +1,5 @@
 #include "Server.h"
-#include "Core/GameInterface.h"
+#include "Core/Script.h"
 #include <zmq/zmq.hpp>
 #include <iostream>
 #include <sstream>
@@ -19,7 +19,7 @@ Server::~Server() {
     Stop();
 }
 
-void Server::Start(const std::vector<GameInterface*>& scripts) {
+void Server::Start(const std::vector<Script*>& scripts) {
     if (running.load()) {
         std::cout << "Server is already running\n";
         return;

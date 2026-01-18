@@ -254,7 +254,9 @@ namespace SquareCore
         {
             flipMode = SDL_FLIP_VERTICAL;
         }
-
+        
+        SDL_SetTextureColorMod(entity.spriteSheet, entity.color.r, entity.color.g, entity.color.b);
+        SDL_SetTextureAlphaMod(entity.spriteSheet, entity.color.a);
         bool success = SDL_RenderTextureRotated(rendererRef, entity.spriteSheet, &srcRect, &dstRect,
                                                 entity.rotation, nullptr, flipMode);
 

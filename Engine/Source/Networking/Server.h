@@ -17,7 +17,7 @@
 namespace SquareCore {
 
 // Forward declaration
-class GameInterface;
+class Script;
 
 // Client connection data
 struct ClientConnection {
@@ -37,7 +37,7 @@ public:
     ~Server();
 
     // Starts the server with game logic instance
-    void Start(const std::vector<GameInterface*>& scripts);
+    void Start(const std::vector<Script*>& scripts);
     // Stops the server gracefully
     void Stop();
 
@@ -70,7 +70,7 @@ private:
     Physics serverPhysics;
     Timeline serverTimeline;
     ServerInputManager inputManager;
-    std::vector<GameInterface*> scripts;
+    std::vector<Script*> scripts;
 
     // Client management
     std::unordered_map<uint32_t, uint32_t> clientPlayerMap;  // clientID -> player entityID

@@ -19,10 +19,10 @@ namespace SquareCore
     class Server;
     class ServerInputManager;
 
-    class GameInterface
+    class Script
     {
     public:
-        virtual ~GameInterface() = default;
+        virtual ~Script() = default;
 
         // Runs before the main game loop at the start of the game
         virtual void OnStart() {}
@@ -78,6 +78,12 @@ namespace SquareCore
         // Update an entity's position given its ID
         void UpdateEntityPosition(uint32_t entityID, float newX, float newY);
         // Returns an entity's collisions given its ID
+        /*
+         0 - top
+         1 - right
+         2 - bottom
+         3 - left
+         */
         std::vector<std::pair<uint32_t, int>> GetEntityCollisions(uint32_t entityID);
         // Flip an entity's sprite
         void FlipSprite(uint32_t entityID, bool flipX, bool flipY);
@@ -93,7 +99,9 @@ namespace SquareCore
         void ToggleFlipY(uint32_t entityID);
         // Sets an entity's collider type
         void SetColliderType(uint32_t entityID, ColliderType type);
+        void SetEntityColor(uint32_t entityID, RGBA color);
 
+        bool EntityHasTag(uint32_t entityID, std::string tag);
         void AddTagToEntity(uint32_t entityID, std::string tag);
         void RemoveTagFromEntity(uint32_t entityID, std::string tag);
 
@@ -117,6 +125,7 @@ namespace SquareCore
         void ApplyImpulse(uint32_t entityID, float impulseX, float impulseY);
         // Sets an entity's velocity
         void SetVelocity(uint32_t entityID, float velX, float velY);
+        void SetMass(uint32_t entityID, float mass);
         // Gets an entity's velocity
         Vec2 GetVelocity(uint32_t entityID);
         // Sets an entity's position

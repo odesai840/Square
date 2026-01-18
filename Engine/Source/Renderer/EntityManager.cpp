@@ -2,6 +2,8 @@
 #include <SDL3/SDL_log.h>
 #include <SDL3_image/SDL_image.h>
 
+#include "algorithm"
+
 namespace SquareCore
 {
     EntityManager::EntityManager()
@@ -405,6 +407,30 @@ namespace SquareCore
         {
             SDL_LogError(SDL_LOG_CATEGORY_ERROR, "SetColliderType: Entity ID %u not found", entityID);
         }
+    }
+
+    void EntityManager::SetColor(uint32_t entityID, RGBA color)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end()) {
+            entities[it->second].color = color;
+        }
+    }
+
+    bool EntityManager::EntityHasTag(uint32_t entityID, std::string tag)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            return std::find(entities[it->second].tags.begin(), entities[it->second].tags.end(), tag) != entities[it->second].tags.end();
+        }
+        
+        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "AddTagToEntity: Entity ID %u not found", entityID);
+        return false;
     }
 
     void EntityManager::AddTagToEntity(uint32_t entityID, std::string tag)

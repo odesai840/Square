@@ -1,15 +1,22 @@
 #include "Application.h"
-#include "MainBehavior.h"
 #include <string>
 #include <iostream>
+
+#include "Player.h"
+#include "EnemyManager.h"
+#include "Map.h"
 
 int main(int argc, char* argv[]) {
     // River application
     SquareCore::Application app;
     // Master script for gameplay logic
 
-    MainBehavior* mainBehavior = new MainBehavior();
-    app.PushScript(mainBehavior);
+    Player* player = new Player();
+    EnemyManager* enemy_manager = new EnemyManager();
+    Map* map = new Map();
+    app.PushScript(player);
+    app.PushScript(enemy_manager);
+    app.PushScript(map);
 
     // Parse command line arguments
     if (argc > 1) {
