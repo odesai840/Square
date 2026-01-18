@@ -1,8 +1,7 @@
 ﻿#include "GameStateManager.h"
-
+#include <SDL3/SDL_log.h>
+#include <filesystem>
 #include <fstream>
-
-#include "SDL3/SDL_log.h"
 
 PlayerData GameStateManager::LoadPlayerData(const std::string& save_path)
 {
@@ -45,6 +44,12 @@ void GameStateManager::SavePlayerData(const std::string& save_path, PlayerData d
     json["health"] = data.health;
     json["level"] = data.level;
 
+    std::filesystem::path path(save_path);
+    if (path.has_parent_path())
+    {
+        std::filesystem::create_directories(path.parent_path());
+    }
+    
     std::ofstream file(save_path);
     if (!file.is_open())
     {
