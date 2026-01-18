@@ -220,7 +220,7 @@ namespace SquareCore
         return &entities[it->second];
     }
 
-    std::vector<uint32_t> EntityManager::GetAllEntityIDsWithTag(std::string tag)
+    std::vector<uint32_t> EntityManager::GetAllEntitiesWithTag(std::string tag)
     {
         std::lock_guard<std::mutex> lock(entityMutex);
         std::vector<uint32_t> entityIDs;
@@ -238,6 +238,24 @@ namespace SquareCore
         }
 
         return entityIDs;
+    }
+
+    uint32_t EntityManager::GetFirstEntityWithTag(std::string tag)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+
+        for (Entity& entity : entities)
+        {
+            for (const auto& entityTag : entity.tags)
+            {
+                if (entityTag == tag)
+                {
+                    return entity.ID;
+                }
+            }
+        }
+
+        return 0;
     }
 
     size_t EntityManager::GetEntityCount() const

@@ -1,70 +1,75 @@
 #include "Player.h"
 #include "GameStateManager.h"
 
-// example for a ui button
-/*ui_button = AddUIButton(500.0f, 500.0f, 200.0f, 50.0f, 
-SquareCore::RGBA(255, 255, 255, 255), "Test", 
-{SquareCore::RGBA(0, 0, 0, 255), 5.0f, 0.0f},
-OnButtonPressedTest, "Resources/Fonts/Helvetica.ttf", 24.0f, 
-SquareCore::RGBA(255, 0, 0, 255));*/
-
-void Player::OnStart() {
+void Player::OnStart()
+{
     player_data = GameStateManager::LoadPlayerData("Saves/S_001.square");
-    player = AddEntity("Resources/Sprites/square.png", player_data.x_pos, player_data.y_pos, 0.0f, 0.1f, 0.1f, true);
+    player = AddEntity("Resources/Sprites/square.png", player_data.x_pos, player_data.y_pos, 0.0f, 0.05f, 0.05f, true);
 }
 
-void Player::OnUpdate(float deltaTime) {
-    SquareCore::Vec2 mousePos = ScreenToWorld(GetMousePosition());
-
-    float moveSpeed = 350.0f;
-    float acceleration = 15.0f;
-
-    SquareCore::Vec2 currentVelocity = GetVelocity(player);
-    float targetX = 0.0f;
-
-    if (GetKeyHeld(SDL_SCANCODE_A)) {
-        targetX = -moveSpeed;
-        FlipSprite(player, false, false);
-    }
-    if (GetKeyHeld(SDL_SCANCODE_D)) {
-        targetX = moveSpeed;
-        FlipSprite(player, true, false);
-    }
-
-    float newVelocityX = SquareCore::Lerp(currentVelocity.x, targetX, acceleration * deltaTime);
-    SetVelocity(player, newVelocityX, currentVelocity.y);
-    
-    if ((GetKeyPressed(SDL_SCANCODE_W) || GetKeyPressed(SDL_SCANCODE_SPACE)) && IsGrounded(player)) {
-        float jumpVelocity = 600.0f;
-        SetVelocity(player, newVelocityX, jumpVelocity);
-    }
-
-    player_data.x_pos = GetPosition(player).x;
-    player_data.y_pos = GetPosition(player).y;
-
-    std::vector<std::pair<uint32_t, int>> player_collisions = GetEntityCollisions(player);
-    for (std::pair<uint32_t, int> collision : player_collisions)
-    {
-        if (EntityHasTag(collision.first, "Enemy"))
-        {
-            SDL_Log("Collided with an enemy");
-        }
-    }
+void Player::OnUpdate(float delta_time)
+{
+    Move(delta_time);
+    Jump(delta_time);
+    Dash(delta_time);
 
     // DEBUG KEYS
-    if (GetKeyPressed(SDL_SCANCODE_P))
+    if (GetKeyPressed(debug_save))
         GameStateManager::SavePlayerData("Saves/S_001.square", player_data);
-    if (GetKeyPressed(SDL_SCANCODE_T))
+    if (GetKeyPressed(debug_collision))
         ToggleDebugCollisions();
     //
 }
 
-bool Player::IsGrounded(uint32_t playerId) {
+void Player::Move(float delta_time)
+{
+    SquareCore::Vec2 player_velocity = GetVelocity(player);
+
+    if (GetKeyHeld(move_left_bind))
+    {
+        current_direction = Direction::LEFT;
+        FlipSprite(player, false, false);
+    }
+    if (GetKeyHeld(move_right_bind))
+    {
+        current_direction = Direction::RIGHT;
+        FlipSprite(player, true, false);
+    }
+
+    float speed = current_direction == Direction::LEFT ? -move_speed : move_speed;
+    float target_x = SquareCore::Lerp(player_velocity.x, speed, acceleration * delta_time);
+    SetVelocity(player, target_x, player_velocity.y);
+
+    player_data.x_pos = GetPosition(player).x;
+    player_data.y_pos = GetPosition(player).y;
+}
+
+void Player::Jump(float delta_time)
+{
+    SquareCore::Vec2 player_velocity = GetVelocity(player);
+    
+    if (GetKeyPressed(jump_bind) && IsGrounded(player))
+        SetVelocity(player, player_velocity.x, jump_velocity);
+}
+
+void Player::Dash(float delta_time)
+{
+    SquareCore::Vec2 player_velocity = GetVelocity(player);
+    
+    if (GetKeyPressed(dash_bind))
+        SetVelocity(p)
+}
+
+bool Player::IsGrounded(uint32_t playerId)
+{
     auto collisions = GetEntityCollisions(playerId);
-    for (const auto& collision : collisions) {
-        if (collision.second == 2) {
+    for (const auto& collision : collisions)
+    {
+        if (collision.second == 2)
+        {
             SquareCore::Vec2 vel = GetVelocity(playerId);
-            if (vel.y < 0) {
+            if (vel.y < 0)
+            {
                 SetVelocity(playerId, vel.x, 0.0f);
             }
             return true;

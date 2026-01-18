@@ -50,7 +50,8 @@ public:
     // Thread-safe function to get the current entity count
     size_t GetEntityCount() const;
 
-    std::vector<uint32_t> GetAllEntityIDsWithTag(std::string tag);
+    std::vector<uint32_t> GetAllEntitiesWithTag(std::string tag);
+    uint32_t GetFirstEntityWithTag(std::string tag);
 
     // Thread-safe function to check if an entity exists
     bool EntityExists(uint32_t ID) const;

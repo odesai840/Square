@@ -5,10 +5,16 @@
 
 namespace SquareCore
 {
-    std::vector<uint32_t> Script::GetAllEntityIDsWithTag(std::string tag)
+    std::vector<uint32_t> Script::GetAllEntitiesWithTag(std::string tag)
     {
-        if (entityManagerRef) return entityManagerRef->GetAllEntityIDsWithTag(tag);
+        if (entityManagerRef) return entityManagerRef->GetAllEntitiesWithTag(tag);
         return {};
+    }
+
+    uint32_t Script::GetFirstEntityWithTag(std::string tag)
+    {
+        if (entityManagerRef) return entityManagerRef->GetFirstEntityWithTag(tag);
+        return 0;
     }
 
     uint32_t Script::AddEntity(const char* spritePath, float Xpos, float Ypos, float rotation,

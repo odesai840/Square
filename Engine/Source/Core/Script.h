@@ -71,7 +71,8 @@ namespace SquareCore
         uint32_t AddSpritelessEntity(float width, float height, RGBA color, float Xpos = 0.0f, float Ypos = 0.0f,
             float rotation = 0.0f, float Xscale = 1.0f, float Yscale = 1.0f, bool physEnabled = false);
         
-        std::vector<uint32_t> GetAllEntityIDsWithTag(std::string tag);
+        std::vector<uint32_t> GetAllEntitiesWithTag(std::string tag);
+        uint32_t GetFirstEntityWithTag(std::string tag);
         
         // Removes an entity from the screen
         void RemoveEntity(uint32_t entityID);
