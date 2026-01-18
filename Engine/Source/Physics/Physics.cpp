@@ -147,24 +147,31 @@ void Physics::UpdateCollisions(std::vector<Entity>& entities) {
                     }
                     // Case 3: A is dynamic, B is dynamic
                     else if (entityA.physApplied && entityB.physApplied) {
-                        // Resolve collision by moving B out of A along the smallest overlap
                         if (overlapX < overlapY) {
-                            // Horizontal separation
-                            if (entityB.position.x < entityA.position.x) {
-                                entityB.position.x = ax1 - (bWidth / 2.0f); // Push left
-                                entityB.velocity.x = std::min(0.0f, entityB.velocity.x);
-                            } else {
-                                entityB.position.x = ax2 + (bWidth / 2.0f); // Push right
+                            float halfOverlap = overlapX / 2.0f;
+                            if (entityA.position.x < entityB.position.x) {
+                                entityA.position.x -= halfOverlap;
+                                entityB.position.x += halfOverlap;
+                                entityA.velocity.x = std::min(0.0f, entityA.velocity.x);
                                 entityB.velocity.x = std::max(0.0f, entityB.velocity.x);
+                            } else {
+                                entityA.position.x += halfOverlap;
+                                entityB.position.x -= halfOverlap;
+                                entityA.velocity.x = std::max(0.0f, entityA.velocity.x);
+                                entityB.velocity.x = std::min(0.0f, entityB.velocity.x);
                             }
                         } else {
-                            // Vertical separation
-                            if (entityB.position.y < entityA.position.y) {
-                                entityB.position.y = ay1 - (bHeight / 2.0f); // Push up (B above A)
-                                entityB.velocity.y = std::min(0.0f, entityB.velocity.y);
-                            } else {
-                                entityB.position.y = ay2 + (bHeight / 2.0f); // Push down (B below A)
+                            float halfOverlap = overlapY / 2.0f;
+                            if (entityA.position.y < entityB.position.y) {
+                                entityA.position.y -= halfOverlap;
+                                entityB.position.y += halfOverlap;
+                                entityA.velocity.y = std::min(0.0f, entityA.velocity.y);
                                 entityB.velocity.y = std::max(0.0f, entityB.velocity.y);
+                            } else {
+                                entityA.position.y += halfOverlap;
+                                entityB.position.y -= halfOverlap;
+                                entityA.velocity.y = std::max(0.0f, entityA.velocity.y);
+                                entityB.velocity.y = std::min(0.0f, entityB.velocity.y);
                             }
                         }
                     }

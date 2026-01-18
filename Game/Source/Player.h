@@ -31,7 +31,7 @@ private:
     float move_speed = 350.0f;
     float acceleration = 15.0f;
     float jump_velocity = 600.0f;
-    float dash_velocity = 600.0f;
+    float dash_velocity = 1800.0f;
 
     // keybinds
     SDL_Scancode move_left_bind = SDL_SCANCODE_A;

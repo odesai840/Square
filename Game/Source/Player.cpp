@@ -5,6 +5,8 @@ void Player::OnStart()
 {
     player_data = GameStateManager::LoadPlayerData("Saves/S_001.square");
     player = AddEntity("Resources/Sprites/square.png", player_data.x_pos, player_data.y_pos, 0.0f, 0.05f, 0.05f, true);
+
+    SetGravity(-1500.0f);
 }
 
 void Player::OnUpdate(float delta_time)
@@ -24,20 +26,21 @@ void Player::OnUpdate(float delta_time)
 void Player::Move(float delta_time)
 {
     SquareCore::Vec2 player_velocity = GetVelocity(player);
+    float target_x = 0.0f;
 
     if (GetKeyHeld(move_left_bind))
     {
         current_direction = Direction::LEFT;
         FlipSprite(player, false, false);
+        target_x = SquareCore::Lerp(player_velocity.x, -move_speed, acceleration * delta_time);
     }
-    if (GetKeyHeld(move_right_bind))
+    else if (GetKeyHeld(move_right_bind))
     {
         current_direction = Direction::RIGHT;
         FlipSprite(player, true, false);
+        target_x = SquareCore::Lerp(player_velocity.x, move_speed, acceleration * delta_time);
     }
 
-    float speed = current_direction == Direction::LEFT ? -move_speed : move_speed;
-    float target_x = SquareCore::Lerp(player_velocity.x, speed, acceleration * delta_time);
     SetVelocity(player, target_x, player_velocity.y);
 
     player_data.x_pos = GetPosition(player).x;
@@ -55,9 +58,9 @@ void Player::Jump(float delta_time)
 void Player::Dash(float delta_time)
 {
     SquareCore::Vec2 player_velocity = GetVelocity(player);
-    
+
     if (GetKeyPressed(dash_bind))
-        SetVelocity(p)
+        SetVelocity(player, (current_direction == Direction::LEFT ? -dash_velocity : dash_velocity) + player_velocity.x, player_velocity.y);
 }
 
 bool Player::IsGrounded(uint32_t playerId)
