@@ -252,8 +252,8 @@ void Player::Slash(float delta_time)
 
 void Player::OnCollision(float delta_time)
 {
-    bool onlyCollidingWithTop = true;
     bool bouncing = false;
+    bool onlyCollidingWithTop = true;
     std::vector<std::pair<uint32_t, int>> collisions = GetEntityCollisions(player);
     for (const auto& collision : collisions)
     {
@@ -284,8 +284,8 @@ void Player::OnCollision(float delta_time)
     {
         bouncing = false;
         SquareCore::Vec2 player_velocity = GetVelocity(player);
-        float bounce = 25.0f;
-        SetVelocity(player, player_velocity.x, player_velocity.y + bounce);
+        float bounce = 1000.0f;
+        SetVelocity(player, player_velocity.x, bounce);
     }
 }
 
