@@ -2,6 +2,7 @@
 
 #include "Script.h"
 #include "GameStateManager.h"
+#include "Properties.h"
 
 enum class Direction : uint8_t
 {
@@ -9,11 +10,6 @@ enum class Direction : uint8_t
     RIGHT = 1,
     DOWN = 2,
     LEFT = 3,
-};
-
-struct Health : SquareCore::Property
-{
-    int value = 10;
 };
 
 class Player : public SquareCore::Script {

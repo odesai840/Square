@@ -1,6 +1,13 @@
 #pragma once
 
 #include "Script.h"
+#include "Properties.h"
+
+struct Enemy
+{
+    uint32_t id;
+    Health health;
+};
 
 class EnemyManager : public SquareCore::Script
 {
@@ -9,6 +16,6 @@ public:
     void OnUpdate(float deltaTime) override;
 
 private:
-    std::vector<uint32_t> enemies;
+    std::vector<Enemy> enemies;
     unsigned int enemy_count = 4;
 };

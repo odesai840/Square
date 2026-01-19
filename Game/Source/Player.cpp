@@ -8,8 +8,7 @@ void Player::OnStart()
     AddTagToEntity(player, "Player");
     SetEntityPersistent(player, true);
 
-    health = Health();
-    AddPropertyToEntity(player, &health);
+    AddPropertyToEntity(player, new Health());
 
     float slash_fps = 7.0f / slash_length;
     slash = AddAnimatedEntity("Resources/Sprites/slash-sheet.png", 7, slash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 0.04f, 0.1f, false);
@@ -19,12 +18,6 @@ void Player::OnStart()
     SetEntityPersistent(slash, true);
 
     SetGravity(-1500.0f);
-
-    for (auto& property : GetAllEntityProperties(player))
-    {
-        if (Health* health_property = dynamic_cast<Health*>(property))
-            SDL_Log(("Health: " + std::to_string(health_property->value)).c_str());
-    }
 }
 
 void Player::OnUpdate(float delta_time)
@@ -124,6 +117,15 @@ void Player::Slash(float delta_time)
                  
                 float knockback_x = (slash_direction == Direction::RIGHT ? 1.0f : -1.0f) * slash_knockback;
                 SetVelocity(collision.first, enemy_velocity.x + knockback_x, enemy_velocity.y + 200.0f);
+                
+                for (auto& property : GetAllEntityProperties(collision.first))
+                {
+                    if (Health* health_property = dynamic_cast<Health*>(property))
+                    {
+                        health_property->value -= 1;
+                        SDL_Log(("Enemy : " + std::to_string(collision.first) + " now has " + std::to_string(health_property->value) + " health").c_str());
+                    }
+                }
             }
         }
 

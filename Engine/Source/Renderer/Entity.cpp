@@ -3,6 +3,11 @@
 
 namespace SquareCore {
 
+Property::~Property()
+{
+}
+
+
 void Collider::AddCollision(uint32_t entityID, int side) {
     collisions.push_back({entityID, side});
 }

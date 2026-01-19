@@ -43,7 +43,7 @@ private:
 
 struct Property
 {
-    virtual ~Property() = default;
+    virtual ~Property();
 };
 
 // Data-only struct that defines variables for entities
