@@ -37,7 +37,13 @@ private:
     float move_speed = 350.0f;
     float acceleration = 15.0f;
     float jump_velocity = 1000.0f;
+
+    uint32_t dash = 0;
+    bool is_dashing = false;
+    float dash_length = 0.13f;
+    float dash_duration = 0.0f;
     float dash_velocity = 1800.0f;
+    float normal_player_scale_y = 0.05f;
 
     uint32_t slash = 0;
     bool is_slashing = false;
@@ -54,7 +60,6 @@ private:
     SDL_Scancode move_right_bind = SDL_SCANCODE_D;
     SDL_Scancode jump_bind = SDL_SCANCODE_SPACE;
     SDL_Scancode dash_bind = SDL_SCANCODE_LSHIFT;
-    SDL_Scancode slash_bind = SDL_SCANCODE_I;
 
     // debug keybinds
     SDL_Scancode debug_collision = SDL_SCANCODE_T;

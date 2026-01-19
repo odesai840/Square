@@ -64,6 +64,8 @@ public:
     void FlipSprite(uint32_t entityID, bool flipX, bool flipY);
     // Thread-safe function to set an entity's position
     void SetPosition(uint32_t entityID, const Vec2& position);
+    void SetScale(uint32_t entityID, const Vec2& scale);
+    void SetRotation(uint32_t entityID, float rotation);
 
     // Thread-safe function to get the X-axis flip state of an entity's sprite
     bool GetFlipX(uint32_t entityID) const;

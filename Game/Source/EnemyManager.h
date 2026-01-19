@@ -11,5 +11,5 @@ public:
 
 private:
     std::vector<uint32_t> enemies;
-    unsigned int enemy_count = 4;
+    unsigned int enemy_count = 1;
 };

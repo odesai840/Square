@@ -367,6 +367,36 @@ namespace SquareCore
         return Vec2::zero();
     }
 
+    void Script::SetScale(uint32_t entityID, const Vec2& scale)
+    {
+        if (entityManagerRef) entityManagerRef->SetScale(entityID, scale);
+    }
+
+    Vec2 Script::GetScale(uint32_t entityID)
+    {
+        if (entityManagerRef)
+        {
+            Entity* entity = entityManagerRef->GetEntityByID(entityID);
+            if (entity) return entity->scale;
+        }
+        return Vec2::zero();
+    }
+
+    void Script::SetRotation(uint32_t entityID, float rotation)
+    {
+        if (entityManagerRef) entityManagerRef->SetRotation(entityID, rotation);
+    }
+
+    float Script::GetRotation(uint32_t entityID)
+    {
+        if (entityManagerRef)
+        {
+            Entity* entity = entityManagerRef->GetEntityByID(entityID);
+            if (entity) return entity->rotation;
+        }
+        return 0.0f;
+    }
+
     void Script::ToggleScalingMode()
     {
         if (rendererRef) rendererRef->ToggleScalingMode();

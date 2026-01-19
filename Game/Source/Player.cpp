@@ -7,7 +7,6 @@ void Player::OnStart()
     player = AddEntity("Resources/Sprites/square.png", player_data.x_pos, player_data.y_pos, 0.0f, 0.05f, 0.05f, true);
     AddTagToEntity(player, "Player");
     SetEntityPersistent(player, true);
-
     AddPropertyToEntity(player, new Character(10));
 
     float slash_fps = 7.0f / slash_length;
@@ -16,6 +15,14 @@ void Player::OnStart()
     AddTagToEntity(slash, "PlayerSlash");
     SetEntityVisible(slash, false);
     SetEntityPersistent(slash, true);
+
+    float dash_fps = 6.0f / dash_length;
+    dash = AddAnimatedEntity("Resources/Sprites/dash-sheet.png", 6, dash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 1.0f, 0.5f, false);
+    SetColliderType(dash, SquareCore::ColliderType::TRIGGER);
+    AddTagToEntity(dash, "PlayerDash");
+    SetEntityVisible(dash, false);
+    SetEntityPersistent(dash, true);
+    SetEntityColor(dash, SquareCore::RGBA(200, 200, 200, 255));
 
     SetGravity(-1500.0f);
 }
@@ -85,9 +92,60 @@ void Player::Jump(float delta_time)
 void Player::Dash(float delta_time)
 {
     SquareCore::Vec2 player_velocity = GetVelocity(player);
+    SquareCore::Vec2 player_position = GetPosition(player);
+    if (player_velocity.x == 0.0f) return;
 
-    if (GetKeyPressed(dash_bind))
+    if (GetKeyPressed(dash_bind) && !is_dashing)
+    {
+        is_dashing = true;
         SetVelocity(player, (player_direction == Direction::LEFT ? -dash_velocity : dash_velocity) + player_velocity.x, player_velocity.y);
+
+        SquareCore::Vec2 offset_position = {0.0f, 0.0f};
+        if (player_direction == Direction::RIGHT)
+            offset_position.x = -25.0f;
+        else if (player_direction == Direction::LEFT)
+            offset_position.x = 25.0f;
+
+        ResetAnimation(dash);
+        SetPosition(dash, player_position.x + offset_position.x, player_position.y + offset_position.y);
+        FlipSprite(dash, !GetFlipX(player), false);
+        SetEntityVisible(dash, true);
+        
+        normal_player_scale_y = GetScale(player).y;
+    }
+
+    if (is_dashing)
+    {
+        dash_duration += delta_time;
+        
+        SquareCore::Vec2 player_scale = GetScale(player);
+        float squished_scale_y = normal_player_scale_y / 1.5f;
+        
+        float squish_start = dash_length * 0.1f;
+        float squish_end = dash_length * 0.9f;
+        
+        if (dash_duration <= squish_start)
+        {
+            float t = dash_duration / squish_start;
+            float new_scale_y = SquareCore::Lerp(normal_player_scale_y, squished_scale_y, t);
+            SetScale(player, {player_scale.x, new_scale_y});
+        }
+        else if (dash_duration >= squish_end)
+        {
+            float t = (dash_duration - squish_end) / (dash_length - squish_end);
+            float new_scale_y = SquareCore::Lerp(squished_scale_y, normal_player_scale_y, t);
+            SetScale(player, {player_scale.x, new_scale_y});
+        }
+
+        if (dash_duration >= dash_length)
+        {
+            SetEntityVisible(dash, false);
+            dash_duration = 0.0f;
+            is_dashing = false;
+            
+            SetScale(player, {player_scale.x, normal_player_scale_y});
+        }
+    }
 }
 
 void Player::Slash(float delta_time)
@@ -95,7 +153,7 @@ void Player::Slash(float delta_time)
     SquareCore::Vec2 player_velocity = GetVelocity(player);
     SquareCore::Vec2 player_position = GetPosition(player);
     
-    if (GetKeyPressed(slash_bind) && !is_slashing && !(player_velocity.x > 600.0f || player_velocity.x < -600.0f))
+    if (GetMouseButtonPressed(0) && !is_slashing && !(player_velocity.x > 600.0f || player_velocity.x < -600.0f))
     {
         is_slashing = true;
         slash_direction = player_direction;
@@ -172,8 +230,15 @@ void Player::OnCollision(float delta_time)
             
             float direction_x = player_pos.x - enemy_pos.x;
             float knockback_x = (direction_x > 0 ? 1.0f : -1.0f) * 7.0f;
+            float knockback_y = 1.0f;
             
-            SetVelocity(player, player_velocity.x + knockback_x, player_velocity.y + 2.0f);
+            SetVelocity(player, player_velocity.x + knockback_x, player_velocity.y + knockback_y);
+        }
+        if (EntityHasTag(collision.first, "Bounce"))
+        {
+            SquareCore::Vec2 player_velocity = GetVelocity(player);
+            float bounce = 10.0f;
+            SetVelocity(player, player_velocity.x, player_velocity.y + bounce);
         }
     }
 }

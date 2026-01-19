@@ -327,6 +327,36 @@ namespace SquareCore
             SDL_LogError(SDL_LOG_CATEGORY_ERROR, "SetPosition: Entity ID %u not found", entityID);
         }
     }
+    
+    void EntityManager::SetScale(uint32_t entityID, const Vec2& scale)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            entities[it->second].scale = scale;
+        }
+        else
+        {
+            SDL_LogError(SDL_LOG_CATEGORY_ERROR, "SetPosition: Entity ID %u not found", entityID);
+        }
+    }
+
+    void EntityManager::SetRotation(uint32_t entityID, float rotation)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            entities[it->second].rotation = rotation;
+        }
+        else
+        {
+            SDL_LogError(SDL_LOG_CATEGORY_ERROR, "SetRotation: Entity ID %u not found", entityID);
+        }
+    }
 
     bool EntityManager::GetFlipX(uint32_t entityID) const
     {
