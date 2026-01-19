@@ -42,6 +42,15 @@ void Player::OnUpdate(float delta_time)
     if (GetKeyPressed(debug_hot_reload))
         LoadScene("Resources/Scenes/test.square");
     //
+
+    if (!enemies_to_remove.empty())
+    {
+        for (uint32_t enemy : enemies_to_remove)
+        {
+            RemoveEntity(enemy);
+        }
+        enemies_to_remove.clear();
+    }
 }
 
 void Player::Move(float delta_time)
@@ -110,6 +119,8 @@ void Player::Slash(float delta_time)
         std::vector<std::pair<uint32_t, int>> collisions = GetEntityCollisions(slash);
         for (std::pair<uint32_t, int>& collision : collisions)
         {
+            if (!EntityExists(collision.first)) continue;
+            
             if (EntityHasTag(collision.first, "Enemy") && !EnemyHitByCurrentSlash(collision.first))
             {
                 damaged_by_slash_enemies.push_back(collision.first);
@@ -128,7 +139,7 @@ void Player::Slash(float delta_time)
                         if (health_property->health < 0)
                         {
                             SDL_Log(("Enemy : " + std::to_string(collision.first) + " died").c_str());
-                            RemoveEntity(collision.first);
+                            enemies_to_remove.push_back(collision.first);
                         }
                     }
                 }
@@ -150,6 +161,8 @@ void Player::OnCollision(float delta_time)
     std::vector<std::pair<uint32_t, int>> collisions = GetEntityCollisions(player);
     for (const auto& collision : collisions)
     {
+        if (!EntityExists(collision.first)) continue;
+        
         // player collides with an enemy
         if (EntityHasTag(collision.first, "Enemy"))
         {

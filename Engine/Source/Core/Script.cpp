@@ -202,6 +202,12 @@ namespace SquareCore
         return 0;
     }
 
+    bool Script::EntityExists(uint32_t ID) const
+    {
+        if (entityManagerRef) return entityManagerRef->EntityExists(ID);
+        return false;
+    }
+
     bool Script::GetKeyPressed(SDL_Scancode key)
     {
         if (inputRef)

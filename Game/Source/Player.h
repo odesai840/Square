@@ -47,6 +47,8 @@ private:
     Direction slash_direction = Direction::LEFT;
     std::vector<uint32_t> damaged_by_slash_enemies;
 
+    std::vector<uint32_t> enemies_to_remove;
+
     // keybinds
     SDL_Scancode move_left_bind = SDL_SCANCODE_A;
     SDL_Scancode move_right_bind = SDL_SCANCODE_D;

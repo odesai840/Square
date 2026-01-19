@@ -116,6 +116,8 @@ namespace SquareCore
 
         void SetZIndex(uint32_t entityID, int zIndex);
         int GetZIndex(uint32_t entityID);
+        
+        bool EntityExists(uint32_t ID) const;
 
         bool GetKeyPressed(SDL_Scancode key);
         bool GetKeyHeld(SDL_Scancode key);

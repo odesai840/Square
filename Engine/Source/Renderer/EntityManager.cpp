@@ -453,7 +453,7 @@ namespace SquareCore
             return std::find(entities[it->second].tags.begin(), entities[it->second].tags.end(), tag) != entities[it->second].tags.end();
         }
         
-        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "AddTagToEntity: Entity ID %u not found", entityID);
+        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "EntityHasTag: Entity ID %u not found", entityID);
         return false;
     }
 
