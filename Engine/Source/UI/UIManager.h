@@ -32,6 +32,8 @@ namespace SquareCore
         void SetElementZIndex(uint32_t elementID, int zIndex);
         void SetTextColor(uint32_t elementID, RGBA color);
         void SetUIText(uint32_t elementID, const std::string& newText);
+        void SetElementSprite(uint32_t elementID, std::string spritePath);
+        void SetButtonSprites(uint32_t elementID, std::string spritePath, std::string hoveredSpritePath, std::string pressedSpritePath);
         
         void AddTagToUIElement(uint32_t elementID, const std::string& tag);
         void RemoveTagFromUIElement(uint32_t elementID, const std::string& tag);

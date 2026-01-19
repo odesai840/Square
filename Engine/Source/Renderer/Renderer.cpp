@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <SDL3/SDL_log.h>
+#include <SDL3_image/SDL_image.h>
 
 namespace SquareCore
 {
@@ -104,19 +105,56 @@ namespace SquareCore
 
             SDL_FRect rect = {scaledX, scaledY, scaledWidth, scaledHeight};
             RGBA color = element->color;
+            SDL_Texture* texture = nullptr;
 
             if (element->type == UIElementType::BUTTON)
             {
-                const UIButton* button = static_cast<const UIButton*>(element);
+                UIButton* button = static_cast<UIButton*>(element);
+                
+                if (!button->spritePath.empty() && !button->sprite)
+                    button->sprite = LoadUITexture(button->spritePath);
+                if (!button->hoverSpritePath.empty() && !button->hoverSprite)
+                    button->hoverSprite = LoadUITexture(button->hoverSpritePath);
+                if (!button->pressedSpritePath.empty() && !button->pressedSprite)
+                    button->pressedSprite = LoadUITexture(button->pressedSpritePath);
+                
                 if (button->isPressed)
+                {
                     color = button->pressedColor;
+                    texture = button->pressedSprite ? button->pressedSprite : button->sprite;
+                }
                 else if (button->isHovered)
+                {
                     color = button->hoverColor;
+                    texture = button->hoverSprite ? button->hoverSprite : button->sprite;
+                }
+                else
+                {
+                    texture = button->sprite;
+                }
             }
-
-            SDL_SetRenderDrawColor(rendererRef, color.r, color.g, color.b, color.a);
-            SDL_SetRenderDrawBlendMode(rendererRef, SDL_BLENDMODE_BLEND);
-            SDL_RenderFillRect(rendererRef, &rect);
+            else if (element->type == UIElementType::RECT)
+            {
+                UIRect* uiRect = static_cast<UIRect*>(element);
+                
+                if (!uiRect->spritePath.empty() && !uiRect->sprite)
+                    uiRect->sprite = LoadUITexture(uiRect->spritePath);
+                
+                texture = uiRect->sprite;
+            }
+            
+            if (texture)
+            {
+                SDL_SetTextureColorMod(texture, color.r, color.g, color.b);
+                SDL_SetTextureAlphaMod(texture, color.a);
+                SDL_RenderTexture(rendererRef, texture, nullptr, &rect);
+            }
+            else
+            {
+                SDL_SetRenderDrawColor(rendererRef, color.r, color.g, color.b, color.a);
+                SDL_SetRenderDrawBlendMode(rendererRef, SDL_BLENDMODE_BLEND);
+                SDL_RenderFillRect(rendererRef, &rect);
+            }
 
             if (element->border.thickness > 0.0f)
             {
@@ -321,6 +359,27 @@ namespace SquareCore
             };
             SDL_RenderRect(rendererRef, &debugRect);
         }
+    }
+
+    SDL_Texture* Renderer::LoadUITexture(const std::string& path)
+    {
+        if (path.empty()) return nullptr;
+        
+        SDL_Surface* surface = IMG_Load(path.c_str());
+        if (!surface)
+        {
+            SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Failed to load image %s: %s", path.c_str(), SDL_GetError());
+            return nullptr;
+        }
+        
+        SDL_Texture* texture = SDL_CreateTextureFromSurface(rendererRef, surface);
+        if (!texture)
+        {
+            return nullptr;
+        }
+        SDL_DestroySurface(surface);
+        
+        return texture;
     }
 
     void Renderer::ToggleScalingMode()

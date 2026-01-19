@@ -119,6 +119,20 @@ namespace SquareCore
             UIElement* elem = it->second;
             if (elem->text.textObject) TTF_DestroyText(elem->text.textObject);
             if (elem->text.font) TTF_CloseFont(elem->text.font);
+            
+            if (elem->type == UIElementType::RECT)
+            {
+                UIRect* rect = static_cast<UIRect*>(elem);
+                if (rect->sprite) SDL_DestroyTexture(rect->sprite);
+            }
+            else if (elem->type == UIElementType::BUTTON)
+            {
+                UIButton* button = static_cast<UIButton*>(elem);
+                if (button->sprite) SDL_DestroyTexture(button->sprite);
+                if (button->hoverSprite) SDL_DestroyTexture(button->hoverSprite);
+                if (button->pressedSprite) SDL_DestroyTexture(button->pressedSprite);
+            }
+            
             delete elem;
             elements.erase(it);
         }
@@ -299,6 +313,59 @@ namespace SquareCore
                     TTF_SetTextColor(elem->text.textObject, currentColor.r, currentColor.g, currentColor.b, currentColor.a);
                 }
             }
+        }
+    }
+
+    void UIManager::SetElementSprite(uint32_t elementID, std::string spritePath)
+    {
+        auto it = elements.find(elementID);
+        if (it != elements.end())
+        {
+            if (it->second->type == UIElementType::TEXT || it->second->type == UIElementType::BUTTON)
+                return;
+            
+            UIRect* rect = static_cast<UIRect*>(it->second);
+            
+            if (rect->sprite)
+            {
+                SDL_DestroyTexture(rect->sprite);
+                rect->sprite = nullptr;
+            }
+            
+            rect->spritePath = spritePath;
+        }
+    }
+
+    void UIManager::SetButtonSprites(uint32_t elementID, std::string spritePath,
+                                     std::string hoveredSpritePath, std::string pressedSpritePath)
+    {
+        auto it = elements.find(elementID);
+        if (it != elements.end())
+        {
+            if (it->second->type == UIElementType::RECT || it->second->type == UIElementType::TEXT)
+                return;
+            
+            UIButton* button = static_cast<UIButton*>(it->second);
+            
+            if (button->sprite)
+            {
+                SDL_DestroyTexture(button->sprite);
+                button->sprite = nullptr;
+            }
+            if (button->hoverSprite)
+            {
+                SDL_DestroyTexture(button->hoverSprite);
+                button->hoverSprite= nullptr;
+            }
+            if (button->pressedSprite)
+            {
+                SDL_DestroyTexture(button->pressedSprite);
+                button->pressedSprite = nullptr;
+            }
+            
+            button->spritePath = spritePath;
+            button->hoverSpritePath = hoveredSpritePath;
+            button->pressedSpritePath = pressedSpritePath;
         }
     }
 

@@ -975,6 +975,19 @@ namespace SquareCore
         uiManagerRef->SetTextColor(elementID, color);
     }
 
+    void Script::SetElementSprite(uint32_t elementID, std::string spritePath)
+    {
+        if (!uiManagerRef) return;
+        uiManagerRef->SetElementSprite(elementID, spritePath);
+    }
+
+    void Script::SetButtonSprites(uint32_t elementID, std::string spritePath, std::string hoveredSpritePath,
+        std::string pressedSpritePath)
+    {
+        if (!uiManagerRef) return;
+        uiManagerRef->SetButtonSprites(elementID, spritePath, hoveredSpritePath, pressedSpritePath);
+    }
+
     void Script::AddTagToUIElement(uint32_t elementID, const std::string& tag)
     {
         if (!uiManagerRef) return;

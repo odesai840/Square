@@ -75,6 +75,8 @@ private:
 
     // Function to render an entity
     void RenderEntity(const Entity& entity, float globalScaleX, float globalScaleY) const;
+    
+    SDL_Texture* LoadUITexture(const std::string & path);
 };
 
 }

@@ -52,6 +52,9 @@ namespace SquareCore
     struct UIRect : UIElement
     {
         UIRect() { type = UIElementType::RECT; }
+        
+        std::string spritePath = "";
+        SDL_Texture* sprite = nullptr;
     };
 
     struct UIButton : UIElement
@@ -63,6 +66,14 @@ namespace SquareCore
 
         RGBA hoverColor = RGBA(200, 200, 200, 255);
         RGBA pressedColor = RGBA(150, 150, 150, 255);
+        
+        std::string spritePath = "";
+        std::string hoverSpritePath = "";
+        std::string pressedSpritePath = "";
+        
+        SDL_Texture* sprite = nullptr;
+        SDL_Texture* hoverSprite = nullptr;
+        SDL_Texture* pressedSprite = nullptr;
 
         std::function<void()> onPress;
     };
