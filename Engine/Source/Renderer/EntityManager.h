@@ -82,6 +82,9 @@ public:
     void SetColor(uint32_t entityID, RGBA color);
 
     bool EntityHasTag(uint32_t entityID, std::string tag);
+
+    void SetVisible(uint32_t entityID, bool visible);
+    void ResetAnimation(uint32_t entityID);
     
     void AddTagToEntity(uint32_t entityID, std::string tag);
     void RemoveTagFromEntity(uint32_t entityID, std::string tag);

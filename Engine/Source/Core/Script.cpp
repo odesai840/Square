@@ -149,6 +149,16 @@ namespace SquareCore
         if (entityManagerRef) entityManagerRef->SetColor(entityID, color);
     }
 
+    void Script::SetEntityVisible(uint32_t entityID, bool visible)
+    {
+        if (entityManagerRef) entityManagerRef->SetVisible(entityID, visible);
+    }
+
+    void Script::ResetAnimation(uint32_t entityID)
+    {
+        if (entityManagerRef) entityManagerRef->ResetAnimation(entityID);
+    }
+
     bool Script::EntityHasTag(uint32_t entityID, std::string tag)
     {
         if (entityManagerRef) return entityManagerRef->EntityHasTag(entityID, tag);
@@ -230,36 +240,24 @@ namespace SquareCore
 
     Vec2 Script::GetMouseDelta()
     {
-        if (inputRef)
-        {
-            return inputRef->GetMouseDelta();
-        }
+        if (inputRef) return inputRef->GetMouseDelta();
         return {};
     }
 
     Vec2 Script::GetMouseScroll()
     {
-        if (inputRef)
-        {
-            return inputRef->GetMouseScroll();
-        }
+        if (inputRef) return inputRef->GetMouseScroll();
         return {};
     }
 
     void Script::SetGravity(float gravity)
     {
-        if (physicsRef)
-        {
-            physicsRef->SetGravity(gravity);
-        }
+        if (physicsRef) physicsRef->SetGravity(gravity);
     }
 
     float Script::GetGravity()
     {
-        if (physicsRef)
-        {
-            return physicsRef->GetGravity();
-        }
+        if (physicsRef) return physicsRef->GetGravity();
         return 0.0f;
     }
 
@@ -280,10 +278,7 @@ namespace SquareCore
         if (entityManagerRef && physicsRef)
         {
             Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity)
-            {
-                physicsRef->ApplyImpulse(*entity, Vec2(impulseX, impulseY));
-            }
+            if (entity) physicsRef->ApplyImpulse(*entity, Vec2(impulseX, impulseY));
         }
     }
 
@@ -292,10 +287,7 @@ namespace SquareCore
         if (entityManagerRef && physicsRef)
         {
             Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity)
-            {
-                physicsRef->SetVelocity(*entity, Vec2(velX, velY));
-            }
+            if (entity) physicsRef->SetVelocity(*entity, Vec2(velX, velY));
         }
     }
 
@@ -304,10 +296,16 @@ namespace SquareCore
         if (entityManagerRef && physicsRef)
         {
             Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity)
-            {
-                physicsRef->SetMass(*entity, mass);
-            }
+            if (entity) physicsRef->SetMass(*entity, mass);
+        }
+    }
+
+    void Script::SetDrag(uint32_t entityID, float drag)
+    {
+        if (entityManagerRef && physicsRef)
+        {
+            Entity* entity = entityManagerRef->GetEntityByID(entityID);
+            if (entity) physicsRef->SetDrag(*entity, drag);
         }
     }
 
@@ -316,20 +314,14 @@ namespace SquareCore
         if (entityManagerRef)
         {
             Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity)
-            {
-                return entity->velocity;
-            }
+            if (entity) return entity->velocity;
         }
         return Vec2::zero();
     }
 
     void Script::SetPosition(uint32_t entityID, float newX, float newY)
     {
-        if (entityManagerRef)
-        {
-            entityManagerRef->SetPosition(entityID, Vec2(newX, newY));
-        }
+        if (entityManagerRef) entityManagerRef->SetPosition(entityID, Vec2(newX, newY));
     }
 
     Vec2 Script::GetPosition(uint32_t entityID)
@@ -337,36 +329,24 @@ namespace SquareCore
         if (entityManagerRef)
         {
             Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity)
-            {
-                return entity->position;
-            }
+            if (entity) return entity->position;
         }
         return Vec2::zero();
     }
 
     void Script::ToggleScalingMode()
     {
-        if (rendererRef)
-        {
-            rendererRef->ToggleScalingMode();
-        }
+        if (rendererRef) rendererRef->ToggleScalingMode();
     }
 
     void Script::ToggleDebugCollisions()
     {
-        if (rendererRef)
-        {
-            rendererRef->ToggleDebugCollisions();
-        }
+        if (rendererRef) rendererRef->ToggleDebugCollisions();
     }
 
     void Script::SetCameraPosition(const Vec2& pos)
     {
-        if (rendererRef)
-        {
-            rendererRef->GetCamera().SetPosition(pos);
-        }
+        if (rendererRef) rendererRef->GetCamera().SetPosition(pos);
     }
 
     void Script::SetCameraPosition(float x, float y)
@@ -376,19 +356,13 @@ namespace SquareCore
 
     Vec2 Script::GetCameraPosition() const
     {
-        if (rendererRef)
-        {
-            return rendererRef->GetCamera().GetPosition();
-        }
+        if (rendererRef) return rendererRef->GetCamera().GetPosition();
         return Vec2::zero();
     }
 
     void Script::MoveCamera(const Vec2& delta)
     {
-        if (rendererRef)
-        {
-            rendererRef->GetCamera().Move(delta);
-        }
+        if (rendererRef) rendererRef->GetCamera().Move(delta);
     }
 
     void Script::MoveCamera(float deltaX, float deltaY)
@@ -398,26 +372,17 @@ namespace SquareCore
 
     void Script::SnapCameraToPosition(const Vec2& pos)
     {
-        if (rendererRef)
-        {
-            rendererRef->GetCamera().SnapToPosition(pos);
-        }
+        if (rendererRef) rendererRef->GetCamera().SnapToPosition(pos);
     }
 
     void Script::SetCameraZoom(float zoom)
     {
-        if (rendererRef)
-        {
-            rendererRef->GetCamera().SetZoom(zoom);
-        }
+        if (rendererRef) rendererRef->GetCamera().SetZoom(zoom);
     }
 
     float Script::GetCameraZoom() const
     {
-        if (rendererRef)
-        {
-            return rendererRef->GetCamera().GetZoom();
-        }
+        if (rendererRef) return rendererRef->GetCamera().GetZoom();
         return 1.0f;
     }
 

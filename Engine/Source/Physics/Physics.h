@@ -34,6 +34,7 @@ public:
     // Sets the velocity of an entity
     void SetVelocity(Entity& entity, const Vec2& velocity);
     void SetMass(Entity& entity, float mass);
+    void SetDrag(Entity& entity, float drag);
 
 private:
     // Gravity constant

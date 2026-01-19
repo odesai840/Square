@@ -101,6 +101,8 @@ namespace SquareCore
         // Sets an entity's collider type
         void SetColliderType(uint32_t entityID, ColliderType type);
         void SetEntityColor(uint32_t entityID, RGBA color);
+        void SetEntityVisible(uint32_t entityID, bool visible);
+        void ResetAnimation(uint32_t entityID);
 
         bool EntityHasTag(uint32_t entityID, std::string tag);
         void AddTagToEntity(uint32_t entityID, std::string tag);
@@ -127,6 +129,7 @@ namespace SquareCore
         // Sets an entity's velocity
         void SetVelocity(uint32_t entityID, float velX, float velY);
         void SetMass(uint32_t entityID, float mass);
+        void SetDrag(uint32_t entityID, float drag);
         // Gets an entity's velocity
         Vec2 GetVelocity(uint32_t entityID);
         // Sets an entity's position

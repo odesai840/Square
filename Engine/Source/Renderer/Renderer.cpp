@@ -64,6 +64,7 @@ namespace SquareCore
         // Render all entities
         for (const auto& entity : entities)
         {
+            if (!entity.visible) continue;
             RenderEntity(entity, globalScaleX, globalScaleY);
         }
     }

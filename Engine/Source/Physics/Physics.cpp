@@ -30,9 +30,11 @@ void Physics::UpdateCollisions(std::vector<Entity>& entities) {
     // Check collisions between all entity pairs
     for (size_t i = 0; i < entities.size(); ++i) {
         Entity& entityA = entities[i];
+        if (!entityA.visible) continue;
 
         for (size_t j = i + 1; j < entities.size(); ++j) {
             Entity& entityB = entities[j];
+            if (!entityB.visible) continue;
 
             // Skip if either entity has no collision
             if (entityA.collider.type == ColliderType::NONE ||
@@ -245,6 +247,11 @@ void Physics::IntegrateVelocity(Entity& entity, float fixedDeltaTime) {
 
     // Reset acceleration (forces need to be applied each frame)
     entity.acceleration = Vec2::zero();
+}
+
+void Physics::SetDrag(Entity& entity, float drag)
+{
+    entity.drag = drag;
 }
 
 }

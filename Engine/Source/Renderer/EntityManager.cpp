@@ -451,6 +451,29 @@ namespace SquareCore
         return false;
     }
 
+    void EntityManager::SetVisible(uint32_t entityID, bool visible)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+        
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            entities[it->second].visible = visible;
+        }
+        
+    }
+
+    void EntityManager::ResetAnimation(uint32_t entityID)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            entities[it->second].currentFrame = 0;
+            entities[it->second].elapsedTime = 0.0f;
+        }
+    }
+
     void EntityManager::AddTagToEntity(uint32_t entityID, std::string tag)
     {
         std::lock_guard<std::mutex> lock(entityMutex);

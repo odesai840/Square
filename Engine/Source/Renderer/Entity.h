@@ -49,6 +49,8 @@ struct Entity {
     float spriteWidth;                 // Width of sprite frame(s)
     float spriteHeight;                // Height of sprite frame(s)
 
+    bool visible = true;
+
     // Sprite animation
     int currentFrame = 0;              // Current animation frame
     int totalFrames = 1;               // Total frames in the animation
