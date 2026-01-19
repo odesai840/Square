@@ -26,13 +26,13 @@ bool DialogManager::Load(const std::string& path)
     for (auto& entry : json)
     {
         int id = entry["id"];
-        std::vector<DialogLine> dialogLines;
+        std::vector<DialogLine*> dialogLines;
 
         for (auto& line : entry["lines"])
         {
-            DialogLine dl;
-            dl.speaker = line.value("speaker", "");
-            dl.text = line.value("text", "");
+            DialogLine* dl = new DialogLine();
+            dl->speaker = line.value("speaker", "");
+            dl->text = line.value("text", "");
             dialogLines.push_back(dl);
         }
 
@@ -49,6 +49,9 @@ void DialogManager::Start(int entryId)
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Dialog entry not found: %d", entryId);
         return;
     }
+    
+    if (seenEntries.count(entryId) > 0)
+        return;
 
     currentEntry = entryId;
     currentLine = 0;
@@ -68,15 +71,18 @@ void DialogManager::Advance()
 
 void DialogManager::Close()
 {
+    if (currentEntry >= 0)
+        seenEntries.insert(currentEntry);
+    
     active = false;
     currentLine = 0;
     currentEntry = -1;
 }
 
-DialogLine DialogManager::GetCurrentLine() const
+DialogLine* DialogManager::GetCurrentLine() const
 {
     if (!active || entries.find(currentEntry) == entries.end())
-        return {"", ""};
+        return nullptr;
 
     return entries.at(currentEntry)[currentLine];
 }

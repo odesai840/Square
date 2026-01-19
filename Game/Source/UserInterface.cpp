@@ -23,7 +23,7 @@ void UserInterface::OnStart()
 
 void UserInterface::OnUpdate(float deltaTime)
 {
-    if (!dialogManager.IsActive())
+    if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(0))
     {
         auto collisions = GetEntityCollisions(dialogTestTrigger);
         for (const auto& collision : collisions)
@@ -50,14 +50,15 @@ void UserInterface::OnUpdate(float deltaTime)
 
 void UserInterface::DialogUpdate()
 {
+    DialogLine* line = dialogManager.GetCurrentLine();
+    if (!line) return;
+    
     SetUIElementVisible(dialogBox, true);
     SetUIElementVisible(speakerText, true);
     SetUIElementVisible(dialogText, true);
     
-    DialogLine line = dialogManager.GetCurrentLine();
-    
-    SetUIText(speakerText, line.speaker);
-    SetUIText(dialogText, line.text);
+    SetUIText(speakerText, line->speaker);
+    SetUIText(dialogText, line->text);
     
     if (GetMouseButtonPressed(0))
     {

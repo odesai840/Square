@@ -2,28 +2,6 @@
     "entities": [
         {
             "color": [
-                70,
-                70,
-                70,
-                255
-            ],
-            "isSpriteless": false,
-            "position": [
-                400.0,
-                -300.0
-            ],
-            "scale": [
-                0.3,
-                0.5
-            ],
-            "spritePath": "Resources/Sprites/square.png",
-            "tags": [
-                "Ground"
-            ],
-            "zIndex": 0
-        },
-        {
-            "color": [
                 0,
                 50,
                 0,
@@ -43,6 +21,50 @@
                 "Ground"
             ],
             "zIndex": 1
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -500.0,
+                100.0
+            ],
+            "scale": [
+                0.3,
+                0.05
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                400.0,
+                0.0
+            ],
+            "scale": [
+                0.3,
+                0.05
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 0
         }
     ],
     "ui": []
