@@ -38,8 +38,8 @@ void UserInterface::OnStart()
     SetUIElementPersistent(pauseMenuResumeButton, true);
     SetUIElementPersistent(pauseMenuQuitButton, true);
 
-    SetButtonSprites(pauseMenuResumeButton, "Resources/Sprites/albinauric_fatty.png", "Resources/Sprites/fish.png","Resources/Sprites/albinauric_fatty.jpg");
-    SetButtonSprites(pauseMenuQuitButton, "Resources/Sprites/fish.png", "Resources/Sprites/albinauric_fatty.png","Resources/Sprites/albinauric_fatty.jpg");
+    SetButtonSprites(pauseMenuResumeButton, "Resources/Sprites/albinauric_fatty.png", "Resources/Sprites/fish.png","Resources/Sprites/albinauric_fatty.png");
+    SetButtonSprites(pauseMenuQuitButton, "Resources/Sprites/fish.png", "Resources/Sprites/albinauric_fatty.png","Resources/Sprites/albinauric_fatty.png");
 
     LoadScene("Resources/Scenes/test.square");
 }
