@@ -11,4 +11,5 @@ public:
 private:
     uint32_t ground;
     uint32_t music;
+    uint32_t dialogTestTrigger = 0;
 };

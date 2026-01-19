@@ -20,7 +20,6 @@ public:
     void Close();
     
     bool IsActive() const { return active; }
-    bool HasNext();
     
     DialogLine GetCurrentLine() const;
     

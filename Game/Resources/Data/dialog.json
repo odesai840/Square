@@ -1,0 +1,17 @@
+[
+    {
+        "id": 0,
+        "lines": [
+            {"speaker": "Test Guy", "text": "Hello!"},
+            {"speaker": "Test Guy", "text": "I am Test Guy."},
+            {"speaker": "Test Guy", "text": "Nice to meet you!"}
+        ]
+    },
+    {
+        "id": 1,
+        "lines": [
+            {"speaker": "Other Test Guy", "text": "I am Other Test Guy."},
+            {"speaker": "Other Test Guy", "text": "I am the better Test Guy."}
+        ]
+    }
+]

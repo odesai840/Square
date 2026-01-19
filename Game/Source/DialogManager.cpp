@@ -73,12 +73,6 @@ void DialogManager::Close()
     currentEntry = -1;
 }
 
-bool DialogManager::HasNext()
-{
-    if (!active) return false;
-    return currentLine + 1 < entries[currentEntry].size();
-}
-
 DialogLine DialogManager::GetCurrentLine() const
 {
     if (!active || entries.find(currentEntry) == entries.end())

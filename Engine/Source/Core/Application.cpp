@@ -14,9 +14,6 @@ namespace SquareCore
         // Initialize the internal window class object
         window = Window();
 
-        // Initialize the input handler object
-        input = Input();
-
         // Initialize the physics class object
         physics = Physics();
     }
@@ -128,6 +125,8 @@ namespace SquareCore
             // Release lock allow rendering events
             lock.unlock();
 
+            input.ProcessEvents();
+            
             uiManager.Update();
 
             // Update animations
@@ -139,6 +138,8 @@ namespace SquareCore
             // Update game logic
             for (auto* script : scripts)
                 script->OnUpdate(effectiveDeltaTime);
+            
+            input.EndFrame();
 
             // Render the frame
             renderer.BeginFrame(effectiveDeltaTime, entityManager);
@@ -190,7 +191,11 @@ namespace SquareCore
             // Release lock allow rendering events
             lock.unlock();
             
+            input.ProcessEvents();
+            
             uiManager.Update();
+            
+            input.EndFrame();
 
             // Render the frame
             renderer.BeginFrame(effectiveDeltaTime, server->GetEntityManager());
@@ -269,22 +274,22 @@ namespace SquareCore
                     break;
                 case SDL_EVENT_KEY_DOWN:
                     if (!event.key.repeat)
-                        input.UpdateKeyState(event.key.scancode, true);
+                        input.QueueKeyEvent(event.key.scancode, true);
                     break;
                 case SDL_EVENT_KEY_UP:
-                    input.UpdateKeyState(event.key.scancode, false);
+                    input.QueueKeyEvent(event.key.scancode, false);
                     break;
                 case SDL_EVENT_MOUSE_BUTTON_DOWN:
-                    input.UpdateMouseButtonState(event.button.button - 1, true);
+                    input.QueueMouseButtonEvent(event.button.button - 1, true);
                     break;
                 case SDL_EVENT_MOUSE_BUTTON_UP:
-                    input.UpdateMouseButtonState(event.button.button - 1, false);
+                    input.QueueMouseButtonEvent(event.button.button - 1, false);
                     break;
                 case SDL_EVENT_MOUSE_MOTION:
-                    input.UpdateMousePosition(event.motion.x, event.motion.y);
+                    input.QueueMouseMove(event.motion.x, event.motion.y);
                     break;
                 case SDL_EVENT_MOUSE_WHEEL:
-                    input.UpdateMouseScroll(event.wheel.x, event.wheel.y);
+                    input.QueueMouseScroll(event.wheel.x, event.wheel.y);
                     break;
                 }
             }
@@ -295,8 +300,6 @@ namespace SquareCore
                 renderReady = true;
             }
             renderCondition.notify_one();
-            
-            input.ResetDeltas();
         }
 
         // Signal threads to stop
@@ -439,27 +442,24 @@ namespace SquareCore
                 {
                     switch (event.type)
                     {
-                    case SDL_EVENT_QUIT:
-                        done = true;
-                        break;
                     case SDL_EVENT_KEY_DOWN:
                         if (!event.key.repeat)
-                            input.UpdateKeyState(event.key.scancode, true);
+                            input.QueueKeyEvent(event.key.scancode, true);
                         break;
                     case SDL_EVENT_KEY_UP:
-                        input.UpdateKeyState(event.key.scancode, false);
+                        input.QueueKeyEvent(event.key.scancode, false);
                         break;
                     case SDL_EVENT_MOUSE_BUTTON_DOWN:
-                        input.UpdateMouseButtonState(event.button.button - 1, true);
+                        input.QueueMouseButtonEvent(event.button.button - 1, true);
                         break;
                     case SDL_EVENT_MOUSE_BUTTON_UP:
-                        input.UpdateMouseButtonState(event.button.button - 1, false);
+                        input.QueueMouseButtonEvent(event.button.button - 1, false);
                         break;
                     case SDL_EVENT_MOUSE_MOTION:
-                        input.UpdateMousePosition(event.motion.x, event.motion.y);
+                        input.QueueMouseMove(event.motion.x, event.motion.y);
                         break;
                     case SDL_EVENT_MOUSE_WHEEL:
-                        input.UpdateMouseScroll(event.wheel.x, event.wheel.y);
+                        input.QueueMouseScroll(event.wheel.x, event.wheel.y);
                         break;
                     }
                 }
@@ -470,8 +470,6 @@ namespace SquareCore
                     renderReady = true;
                 }
                 renderCondition.notify_one();
-                
-                input.ResetDeltas();
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(16));
             }
@@ -554,27 +552,24 @@ namespace SquareCore
             {
                 switch (event.type)
                 {
-                case SDL_EVENT_QUIT:
-                    done = true;
-                    break;
                 case SDL_EVENT_KEY_DOWN:
                     if (!event.key.repeat)
-                        input.UpdateKeyState(event.key.scancode, true);
+                        input.QueueKeyEvent(event.key.scancode, true);
                     break;
                 case SDL_EVENT_KEY_UP:
-                    input.UpdateKeyState(event.key.scancode, false);
+                    input.QueueKeyEvent(event.key.scancode, false);
                     break;
                 case SDL_EVENT_MOUSE_BUTTON_DOWN:
-                    input.UpdateMouseButtonState(event.button.button - 1, true);
+                    input.QueueMouseButtonEvent(event.button.button - 1, true);
                     break;
                 case SDL_EVENT_MOUSE_BUTTON_UP:
-                    input.UpdateMouseButtonState(event.button.button - 1, false);
+                    input.QueueMouseButtonEvent(event.button.button - 1, false);
                     break;
                 case SDL_EVENT_MOUSE_MOTION:
-                    input.UpdateMousePosition(event.motion.x, event.motion.y);
+                    input.QueueMouseMove(event.motion.x, event.motion.y);
                     break;
                 case SDL_EVENT_MOUSE_WHEEL:
-                    input.UpdateMouseScroll(event.wheel.x, event.wheel.y);
+                    input.QueueMouseScroll(event.wheel.x, event.wheel.y);
                     break;
                 }
             }
@@ -585,8 +580,6 @@ namespace SquareCore
                 renderReady = true;
             }
             renderCondition.notify_one();
-            
-            input.ResetDeltas();
         }
 
         // Disconnect from server

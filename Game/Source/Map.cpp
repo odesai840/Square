@@ -2,7 +2,7 @@
 
 void Map::OnStart()
 {
-    ground = AddEntity("Resources/Sprites/square.png", 0.0f, -800.0f, 0.0f, 100.0f, 1.0f, false);
+    ground = AddEntity("Resources/Sprites/square.png", 0.0f, -800.0f, 0.0f, 5.0f, 1.0f, false);
     SetEntityColor(ground, SquareCore::RGBA(0, 50, 0, 255));
     AddTagToEntity(ground, "Ground");
     
@@ -10,6 +10,10 @@ void Map::OnStart()
     SetAudioVolume(music, 0.05f);
     SetAudioLooping(music, true);
     PlayAudioClip(music);
+    
+    dialogTestTrigger = AddSpritelessEntity(10, 10, SquareCore::RGBA(0,0,0,0), 200, -250);
+    SetColliderType(dialogTestTrigger, SquareCore::ColliderType::TRIGGER);
+    AddTagToEntity(dialogTestTrigger, "DialogTrigger");
 }
 
 void Map::OnUpdate(float deltaTime)

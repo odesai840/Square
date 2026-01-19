@@ -3,11 +3,62 @@
 void UserInterface::OnStart()
 {
     dialogBox = AddUIRect(50, 800, 1820, 250, SquareCore::RGBA(20, 20, 20, 220), "", {SquareCore::RGBA(255, 255, 255, 255), 2.0f, 5.0f});
-    speakerText = AddUIText(100, 850, 32, SquareCore::RGBA(255, 200, 100, 255), "Resources/Fonts/Helvetica.ttf", "Speaker");
-    dialogText = AddUIText(100, 900, 24, SquareCore::RGBA(255, 255, 255, 255), "Resources/Fonts/Helvetica.ttf", "Hello my name is Speaker. Nice to meet you!");
+    speakerText = AddUIText(100, 850, 32, SquareCore::RGBA(255, 200, 100, 255), "Resources/Fonts/Helvetica.ttf", "");
+    dialogText = AddUIText(100, 900, 24, SquareCore::RGBA(255, 255, 255, 255), "Resources/Fonts/Helvetica.ttf", "");
+
+    SetUIElementVisible(dialogBox, false);
+    SetUIElementVisible(speakerText, false);
+    SetUIElementVisible(dialogText, false);
+    
+    dialogTestTrigger = GetFirstEntityWithTag("DialogTrigger");
+    
+    dialogManager.Load("Resources/Data/dialog.json");
 }
 
 void UserInterface::OnUpdate(float deltaTime)
 {
+    if (!dialogManager.IsActive())
+    {
+        auto collisions = GetEntityCollisions(dialogTestTrigger);
+        for (const auto& collision : collisions)
+        {
+            if (EntityHasTag(collision.first, "Player"))
+            {
+                if (counter%2==0)
+                    dialogManager.Start(0);
+                else
+                    dialogManager.Start(1);
+                counter++;
+                break;
+            }
+        }
+    }
     
+    if (dialogManager.IsActive())
+    {
+        DialogUpdate();
+    }
+    else
+    {
+        SetUIElementVisible(dialogBox, false);
+        SetUIElementVisible(speakerText, false);
+        SetUIElementVisible(dialogText, false);
+    }
+}
+
+void UserInterface::DialogUpdate()
+{
+    SetUIElementVisible(dialogBox, true);
+    SetUIElementVisible(speakerText, true);
+    SetUIElementVisible(dialogText, true);
+    
+    DialogLine line = dialogManager.GetCurrentLine();
+    
+    SetUIText(speakerText, line.speaker);
+    SetUIText(dialogText, line.text);
+    
+    if (GetMouseButtonPressed(0))
+    {
+        dialogManager.Advance();
+    }
 }
