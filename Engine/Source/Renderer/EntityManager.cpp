@@ -533,7 +533,12 @@ namespace SquareCore
                     entities[i].velocity = entitiesCopy[i].velocity;
                 }
                 // Update colliders
-                entities[i].collider = entitiesCopy[i].collider;
+                entities[i].collider.ClearCollisions();
+                for (const auto& collision : entitiesCopy[i].collider.GetCollisions())
+                {
+                    entities[i].collider.AddCollision(collision.first, collision.second);
+                }
+                //entities[i].collider = entitiesCopy[i].collider;
             }
         }
     }

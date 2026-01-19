@@ -92,7 +92,7 @@ void Player::Slash(float delta_time)
             offset_position.x = -50.0f;
 
         ResetAnimation(slash);
-        SetPosition(slash, player_position.x + offset_position.x + (player_velocity.x / 7.0f), player_position.y + offset_position.y);
+        SetPosition(slash, player_position.x + offset_position.x + (player_velocity.x / 5.0f), player_position.y + offset_position.y);
         FlipSprite(slash, GetFlipX(player), false);
         SetEntityVisible(slash, true);
     }
@@ -159,7 +159,7 @@ bool Player::IsGrounded(uint32_t playerId)
     auto collisions = GetEntityCollisions(playerId);
     for (const auto& collision : collisions)
     {
-        if (collision.second == 2)
+        if (collision.second == 2 && !EntityHasTag(collision.first, "PlayerSlash"))
         {
             SquareCore::Vec2 vel = GetVelocity(playerId);
             if (vel.y < 0)
