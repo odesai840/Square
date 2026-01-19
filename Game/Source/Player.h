@@ -32,6 +32,9 @@ private:
     uint32_t player = 0;
     int level = 0;
 
+    // upgrades
+    bool has_double_dash = true;
+
     Direction player_direction = Direction::LEFT;
 
     float move_speed = 350.0f;
@@ -42,8 +45,14 @@ private:
     bool is_dashing = false;
     float dash_length = 0.13f;
     float dash_duration = 0.0f;
-    float dash_velocity = 1800.0f;
+    float dash_velocity = 3200.0f;
     float normal_player_scale_y = 0.05f;
+    float dash_cooldown = 1.0f;
+    float dash_cooldown_elapsed = 0.0f;
+    float double_dash_window = 0.3f;
+    int dashes_used = 0;
+    float time_since_last_dash = 0.0f;
+    bool in_cooldown = false;
 
     uint32_t slash = 0;
     bool is_slashing = false;
@@ -65,4 +74,6 @@ private:
     SDL_Scancode debug_collision = SDL_SCANCODE_T;
     SDL_Scancode debug_save = SDL_SCANCODE_P;
     SDL_Scancode debug_hot_reload = SDL_SCANCODE_F5;
+    SDL_Scancode debug_mouse_cursor = SDL_SCANCODE_Y;
+    bool mouse_visible = true;
 };

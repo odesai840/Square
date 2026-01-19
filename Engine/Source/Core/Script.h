@@ -153,6 +153,7 @@ namespace SquareCore
         Vec2 GetScale(uint32_t entityID);
         void SetRotation(uint32_t entityID, float rotation);
         float GetRotation(uint32_t entityID);
+        void SetMouseVisible(bool visible);
 
         // Toggles scaling mode
         void ToggleScalingMode();

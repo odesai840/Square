@@ -1,6 +1,28 @@
 {
     "entities": [
-        
+
+        {
+            "color": [
+                0,
+                70,
+                150,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.1,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Bounce"
+            ],
+            "zIndex": 1
+        },
         {
             "color": [
                 0,

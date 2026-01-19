@@ -283,6 +283,12 @@ namespace SquareCore
         return {};
     }
 
+    void Script::SetMouseVisible(bool visible)
+    {
+        if (visible) SDL_ShowCursor();
+        else SDL_HideCursor();
+    }
+
     void Script::SetGravity(float gravity)
     {
         if (physicsRef) physicsRef->SetGravity(gravity);

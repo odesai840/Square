@@ -10,7 +10,7 @@ void Player::OnStart()
     AddPropertyToEntity(player, new Character(10));
 
     float slash_fps = 7.0f / slash_length;
-    slash = AddAnimatedEntity("Resources/Sprites/slash-sheet.png", 7, slash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 0.04f, 0.1f, false);
+    slash = AddAnimatedEntity("Resources/Sprites/slash-sheet.png", 7, slash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 0.25f, 0.1f, false);
     SetColliderType(slash, SquareCore::ColliderType::TRIGGER);
     AddTagToEntity(slash, "PlayerSlash");
     SetEntityVisible(slash, false);
@@ -48,6 +48,8 @@ void Player::OnUpdate(float delta_time)
         ToggleDebugCollisions();
     if (GetKeyPressed(debug_hot_reload))
         LoadScene("Resources/Scenes/test.square");
+    if (GetKeyPressed(debug_mouse_cursor))
+        SetMouseVisible(!mouse_visible);
     //
 
     if (!enemies_to_remove.empty())
@@ -58,6 +60,8 @@ void Player::OnUpdate(float delta_time)
         }
         enemies_to_remove.clear();
     }
+    
+    FollowCameraTarget(GetPosition(player), 20.0f, delta_time);
 }
 
 void Player::Move(float delta_time)
@@ -93,12 +97,21 @@ void Player::Dash(float delta_time)
 {
     SquareCore::Vec2 player_velocity = GetVelocity(player);
     SquareCore::Vec2 player_position = GetPosition(player);
-    if (player_velocity.x == 0.0f) return;
 
-    if (GetKeyPressed(dash_bind) && !is_dashing)
+    if (GetKeyPressed(dash_bind) && !is_dashing && player_velocity.x != 0.0f && !in_cooldown)
     {
         is_dashing = true;
-        SetVelocity(player, (player_direction == Direction::LEFT ? -dash_velocity : dash_velocity) + player_velocity.x, player_velocity.y);
+        dashes_used++;
+        time_since_last_dash = 0.0f;
+
+        int max_dashes = has_double_dash ? 2 : 1;
+        if (dashes_used >= max_dashes)
+        {
+            in_cooldown = true;
+            dash_cooldown_elapsed = 0.0f;
+        }
+        
+        SetVelocity(player, (player_direction == Direction::LEFT ? -dash_velocity : dash_velocity) + player_velocity.x, 0.0f);
 
         SquareCore::Vec2 offset_position = {0.0f, 0.0f};
         if (player_direction == Direction::RIGHT)
@@ -144,6 +157,29 @@ void Player::Dash(float delta_time)
             is_dashing = false;
             
             SetScale(player, {player_scale.x, normal_player_scale_y});
+        }
+    }
+
+    int max_dashes = has_double_dash ? 2 : 1;
+    if (!in_cooldown && dashes_used > 0 && dashes_used < max_dashes)
+    {
+        time_since_last_dash += delta_time;
+        if (time_since_last_dash > double_dash_window)
+        {
+            in_cooldown = true;
+            dash_cooldown_elapsed = 0.0f;
+        }
+    }
+
+    if (in_cooldown)
+    {
+        dash_cooldown_elapsed += delta_time;
+        if (dash_cooldown_elapsed >= dash_cooldown)
+        {
+            in_cooldown = false;
+            dashes_used = 0;
+            time_since_last_dash = 0.0f;
+            dash_cooldown_elapsed = 0.0f;
         }
     }
 }
@@ -194,7 +230,7 @@ void Player::Slash(float delta_time)
                         health_property->health -= 1;
                         SDL_Log(("Enemy : " + std::to_string(collision.first) + " now has " + std::to_string(health_property->health) + " health").c_str());
 
-                        if (health_property->health < 0)
+                        if (health_property->health <= 0)
                         {
                             SDL_Log(("Enemy : " + std::to_string(collision.first) + " died").c_str());
                             enemies_to_remove.push_back(collision.first);
@@ -216,6 +252,8 @@ void Player::Slash(float delta_time)
 
 void Player::OnCollision(float delta_time)
 {
+    bool onlyCollidingWithTop = true;
+    bool bouncing = false;
     std::vector<std::pair<uint32_t, int>> collisions = GetEntityCollisions(player);
     for (const auto& collision : collisions)
     {
@@ -236,10 +274,18 @@ void Player::OnCollision(float delta_time)
         }
         if (EntityHasTag(collision.first, "Bounce"))
         {
-            SquareCore::Vec2 player_velocity = GetVelocity(player);
-            float bounce = 10.0f;
-            SetVelocity(player, player_velocity.x, player_velocity.y + bounce);
+            bouncing = true;
+            if (collision.second != 2)
+                onlyCollidingWithTop = false;
         }
+    }
+
+    if (bouncing && onlyCollidingWithTop)
+    {
+        bouncing = false;
+        SquareCore::Vec2 player_velocity = GetVelocity(player);
+        float bounce = 25.0f;
+        SetVelocity(player, player_velocity.x, player_velocity.y + bounce);
     }
 }
 
