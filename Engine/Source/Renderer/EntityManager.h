@@ -80,6 +80,8 @@ public:
     // Thread-safe function to set the collider type for an entity
     void SetColliderType(uint32_t entityID, ColliderType type);
     void SetColor(uint32_t entityID, RGBA color);
+    
+    void SetEntityPersistent(uint32_t entityID, bool persistent);
 
     bool EntityHasTag(uint32_t entityID, std::string tag);
 

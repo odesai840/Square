@@ -10,6 +10,7 @@
 #include "NetworkMode.h"
 #include "Memory/PoolAllocator.h"
 #include "Audio/AudioManager.h"
+#include "SceneManager.h"
 #include <vector>
 #include <string>
 
@@ -59,6 +60,7 @@ namespace SquareCore
         void SetPoolAllocator(PoolAllocator* allocator) { this->allocatorRef = allocator; }
         void SetAudioManager(AudioManager* audioManager) { this->audioManagerRef = audioManager; }
         void SetUIManager(UIManager* uiManager) { this->uiManagerRef = uiManager; }
+        void SetSceneManager(SceneManager* sceneManager) { this->sceneManagerRef = sceneManager; }
 
     protected:
         // Add an entity to the scene
@@ -102,6 +104,7 @@ namespace SquareCore
         void SetColliderType(uint32_t entityID, ColliderType type);
         void SetEntityColor(uint32_t entityID, RGBA color);
         void SetEntityVisible(uint32_t entityID, bool visible);
+        void SetEntityPersistent(uint32_t entityID, bool persistent);
         void ResetAnimation(uint32_t entityID);
 
         bool EntityHasTag(uint32_t entityID, std::string tag);
@@ -261,6 +264,7 @@ namespace SquareCore
         void RemoveUIElement(uint32_t elementID);
         void SetUIButtonCallback(uint32_t buttonID, std::function<void()> onPress);
         void SetUIElementVisible(uint32_t elementID, bool visible);
+        void SetUIElementPersistent(uint32_t elementID, bool persistent);
         void SetUIElementPosition(uint32_t elementID, float x_pos, float y_pos);
         void SetUIElementColor(uint32_t elementID, RGBA color);
         void SetUIElementZIndex(uint32_t elementID, int zIndex);
@@ -271,6 +275,9 @@ namespace SquareCore
         std::vector<uint32_t> GetAllUIElementsWithTag(std::string tag);
         uint32_t GetFirstUIElementWithTag(std::string tag);
         bool UIElementHasTag(uint32_t elementID, std::string tag);
+        
+        bool SaveScene(const std::string& filepath);
+        bool LoadScene(const std::string& filepath);
 
     private:
         // Internal renderer reference (internal use only)
@@ -293,6 +300,7 @@ namespace SquareCore
         PoolAllocator* allocatorRef = nullptr;
         AudioManager* audioManagerRef = nullptr;
         UIManager* uiManagerRef = nullptr;
+        SceneManager* sceneManagerRef = nullptr;
 
         // Current network mode
         NetworkMode currentMode = NetworkMode::STANDALONE;

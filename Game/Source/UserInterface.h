@@ -20,5 +20,4 @@ private:
     
     uint32_t dialogTestTrigger = 0;
     
-    int counter = 1;
 };

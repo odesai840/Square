@@ -57,4 +57,5 @@ private:
     // debug keybinds
     SDL_Scancode debug_collision = SDL_SCANCODE_T;
     SDL_Scancode debug_save = SDL_SCANCODE_P;
+    SDL_Scancode debug_hot_reload = SDL_SCANCODE_F5;
 };

@@ -50,6 +50,7 @@ struct Entity {
     float spriteHeight;                // Height of sprite frame(s)
 
     bool visible = true;
+    bool persistent = false;           // If true, this entity will survive scene transitions
 
     // Sprite animation
     int currentFrame = 0;              // Current animation frame

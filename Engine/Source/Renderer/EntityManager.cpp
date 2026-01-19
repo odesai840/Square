@@ -186,19 +186,17 @@ namespace SquareCore
     void EntityManager::ClearEntities()
     {
         std::lock_guard<std::mutex> lock(entityMutex);
-
-        // Clean up all textures
-        for (auto& entity : entities)
-        {
-            if (entity.spriteSheet != nullptr)
-            {
-                SDL_DestroyTexture(entity.spriteSheet);
+        
+        for (int i = static_cast<int>(entities.size()) - 1; i >= 0; --i) {
+            if (!entities[i].persistent) {
+                if (entities[i].spriteSheet) {
+                    SDL_DestroyTexture(entities[i].spriteSheet);
+                }
+                entities.erase(entities.begin() + i);
             }
         }
 
-        entities.clear();
-        idToIndex.clear();
-        nextEntityID = 1;
+        UpdateIndexMap();
     }
 
     std::vector<Entity> EntityManager::GetEntitiesCopy() const
@@ -434,6 +432,14 @@ namespace SquareCore
         auto it = idToIndex.find(entityID);
         if (it != idToIndex.end()) {
             entities[it->second].color = color;
+        }
+    }
+
+    void EntityManager::SetEntityPersistent(uint32_t entityID, bool persistent)
+    {
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end()) {
+            entities[it->second].persistent = persistent;
         }
     }
 

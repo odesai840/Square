@@ -66,6 +66,7 @@ private:
     PoolAllocator allocator;
     AudioManager audioManager;
     UIManager uiManager;
+    SceneManager sceneManager;
     
     // Script collection for game logic
     std::vector<Script*> scripts;

@@ -41,6 +41,7 @@ namespace SquareCore
         float width = 100.0f;
         float height = 50.0f;
         bool visible = true;
+        bool persistent = false;
         RGBA color = RGBA(255, 255, 255, 255);
         int zIndex = 0;
         Border border;

@@ -154,6 +154,11 @@ namespace SquareCore
         if (entityManagerRef) entityManagerRef->SetVisible(entityID, visible);
     }
 
+    void Script::SetEntityPersistent(uint32_t entityID, bool persistent)
+    {
+        if (entityManagerRef) entityManagerRef->SetEntityPersistent(entityID, persistent);
+    }
+
     void Script::ResetAnimation(uint32_t entityID)
     {
         if (entityManagerRef) entityManagerRef->ResetAnimation(entityID);
@@ -868,6 +873,12 @@ namespace SquareCore
         if (!uiManagerRef) return;
         uiManagerRef->SetElementVisible(elementID, visible);
     }
+    
+    void Script::SetUIElementPersistent(uint32_t elementID, bool persistent)
+    {
+        if (!uiManagerRef) return;
+        uiManagerRef->SetElementPersistent(elementID, persistent);
+    }
 
     void Script::SetUIElementPosition(uint32_t elementID, float x_pos, float y_pos)
     {
@@ -921,5 +932,16 @@ namespace SquareCore
     {
         if (!uiManagerRef) return false;
         return uiManagerRef->UIElementHasTag(elementID, tag);
+    }
+    
+    bool Script::SaveScene(const std::string& filepath) {
+        if (!sceneManagerRef) return false;
+        return sceneManagerRef->SaveScene(filepath);
+    }
+
+    bool Script::LoadScene(const std::string& filepath)
+    {
+        if (!sceneManagerRef) return false;
+        return sceneManagerRef->LoadScene(filepath);
     }
 }

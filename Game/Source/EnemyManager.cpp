@@ -8,6 +8,7 @@ void EnemyManager::OnStart()
         SetEntityColor(enemies[i], SquareCore::RGBA(120, 0, 0, 255));
         AddTagToEntity(enemies[i], "Enemy");
         SetDrag(enemies[i], 5.0f);
+        SetEntityPersistent(enemies[i], true);
     }
 }
 

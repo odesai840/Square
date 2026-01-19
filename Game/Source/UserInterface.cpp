@@ -10,9 +10,15 @@ void UserInterface::OnStart()
     SetUIElementVisible(speakerText, false);
     SetUIElementVisible(dialogText, false);
     
+    SetUIElementPersistent(dialogBox, true);
+    SetUIElementPersistent(speakerText, true);
+    SetUIElementPersistent(dialogText, true);
+    
     dialogTestTrigger = GetFirstEntityWithTag("DialogTrigger");
     
     dialogManager.Load("Resources/Data/dialog.json");
+    
+    LoadScene("Resources/Scenes/testScene.square");
 }
 
 void UserInterface::OnUpdate(float deltaTime)
@@ -24,11 +30,7 @@ void UserInterface::OnUpdate(float deltaTime)
         {
             if (EntityHasTag(collision.first, "Player"))
             {
-                if (counter%2==0)
-                    dialogManager.Start(0);
-                else
-                    dialogManager.Start(1);
-                counter++;
+                dialogManager.Start(0);
                 break;
             }
         }

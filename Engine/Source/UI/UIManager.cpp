@@ -128,13 +128,14 @@ namespace SquareCore
     {
         std::lock_guard<std::mutex> lock(uiMutex);
 
-        for (auto& [id, element] : elements)
-        {
-            if (element->text.textObject) TTF_DestroyText(element->text.textObject);
-            if (element->text.font) TTF_CloseFont(element->text.font);
-            delete element;
+        for (auto it = elements.begin(); it != elements.end(); ) {
+            if (!it->second->persistent) {
+                delete it->second;
+                it = elements.erase(it);
+            } else {
+                ++it;
+            }
         }
-        elements.clear();
     }
 
     void UIManager::Update()
@@ -215,6 +216,14 @@ namespace SquareCore
         if (it != elements.end())
         {
             it->second->visible = visible;
+        }
+    }
+
+    void UIManager::SetElementPersistent(uint32_t elementID, bool persistent)
+    {
+        auto it = elements.find(elementID);
+        if (it != elements.end()) {
+            it->second->persistent = persistent;
         }
     }
 

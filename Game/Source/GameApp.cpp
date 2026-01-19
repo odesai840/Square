@@ -8,17 +8,16 @@
 #include "UserInterface.h"
 
 int main(int argc, char* argv[]) {
-    // River application
+    // Square application
     SquareCore::Application app;
-    // Master script for gameplay logic
 
+    Map* map = new Map();
     Player* player = new Player();
     EnemyManager* enemy_manager = new EnemyManager();
-    Map* map = new Map();
     UserInterface* userInterface = new UserInterface();
+    app.PushScript(map);
     app.PushScript(player);
     app.PushScript(enemy_manager);
-    app.PushScript(map);
     app.PushScript(userInterface);
 
     // Parse command line arguments

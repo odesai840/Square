@@ -26,6 +26,7 @@ namespace SquareCore
         
         void SetButtonCallback(uint32_t buttonID, std::function<void()> onPress);
         void SetElementVisible(uint32_t elementID, bool visible);
+        void SetElementPersistent(uint32_t elementID, bool persistent);
         void SetElementPosition(uint32_t elementID, float x, float y);
         void SetElementColor(uint32_t elementID, RGBA color);
         void SetElementZIndex(uint32_t elementID, int zIndex);

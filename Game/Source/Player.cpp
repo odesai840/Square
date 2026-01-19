@@ -6,12 +6,14 @@ void Player::OnStart()
     player_data = GameStateManager::LoadPlayerData("Saves/S_001.square");
     player = AddEntity("Resources/Sprites/square.png", player_data.x_pos, player_data.y_pos, 0.0f, 0.05f, 0.05f, true);
     AddTagToEntity(player, "Player");
+    SetEntityPersistent(player, true);
 
     float slash_fps = 7.0f / slash_length;
     slash = AddAnimatedEntity("Resources/Sprites/slash-sheet.png", 7, slash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 0.05f, 0.08f, false);
     SetColliderType(slash, SquareCore::ColliderType::TRIGGER);
     AddTagToEntity(slash, "PlayerSlash");
     SetEntityVisible(slash, false);
+    SetEntityPersistent(slash, true);
 
     SetGravity(-1500.0f);
 }
@@ -35,6 +37,8 @@ void Player::OnUpdate(float delta_time)
         GameStateManager::SavePlayerData("Saves/S_001.square", player_data);
     if (GetKeyPressed(debug_collision))
         ToggleDebugCollisions();
+    if (GetKeyPressed(debug_hot_reload))
+        LoadScene("Resources/Scenes/testScene.square");
     //
 }
 

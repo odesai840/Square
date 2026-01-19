@@ -91,6 +91,8 @@ namespace SquareCore
         renderer.SetUIManager(&uiManager);
         // Initialize entity manager
         entityManager.SetRenderer(renderer.GetRenderer());
+        sceneManager.SetEntityManager(&entityManager);
+        sceneManager.SetUIManager(&uiManager);
 
         for (auto* script : scripts)
             script->OnStart();
@@ -156,6 +158,8 @@ namespace SquareCore
         uiManager.SetInput(&input);
         // Initialize entity manager
         entityManager.SetRenderer(renderer.GetRenderer());
+        sceneManager.SetEntityManager(&entityManager);
+        sceneManager.SetUIManager(&uiManager);
         server->GetEntityManager().SetRenderer(renderer.GetRenderer());
 
         for (auto* script : scripts)
@@ -248,6 +252,7 @@ namespace SquareCore
             script->SetPoolAllocator(&allocator);
             script->SetAudioManager(&audioManager);
             script->SetUIManager(&uiManager);
+            script->SetSceneManager(&sceneManager);
         }
 
         // Start worker threads
