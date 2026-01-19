@@ -10,6 +10,8 @@ public:
     void OnUpdate(float deltaTime) override;
 
 private:
+    uint32_t player = 0;
+    
     std::vector<uint32_t> enemies;
-    unsigned int enemy_count = 1;
+    unsigned int jump_enemy_count = 1;
 };

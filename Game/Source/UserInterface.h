@@ -25,5 +25,4 @@ private:
     uint32_t pauseMenuResumeButton = 0;
     uint32_t pauseMenuQuitButton = 0;
     bool paused = false;
-    
 };

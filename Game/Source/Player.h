@@ -26,6 +26,7 @@ private:
     void OnCollision(float delta_time);
     bool IsGrounded(uint32_t playerId);
     bool EnemyHitByCurrentSlash(uint32_t enemy_id);
+    bool RecentlyHitByEnemy(uint32_t enemy_id);
 
 private:
     PlayerData player_data;
@@ -61,6 +62,10 @@ private:
     float slash_knockback = 600.0f;
     Direction slash_direction = Direction::LEFT;
     std::vector<uint32_t> damaged_by_slash_enemies;
+
+    std::vector<uint32_t> recently_hit_by_enemies;
+    float invicibility_duration = 0.5f;
+    float invincibility_timer = 0.0f;
 
     std::vector<uint32_t> enemies_to_remove;
 };

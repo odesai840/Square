@@ -14,4 +14,5 @@ inline SDL_Scancode debug_collision = SDL_SCANCODE_T;
 inline SDL_Scancode debug_save = SDL_SCANCODE_P;
 inline SDL_Scancode debug_hot_reload = SDL_SCANCODE_F5;
 inline SDL_Scancode debug_mouse_cursor = SDL_SCANCODE_Y;
+inline SDL_Scancode debug_restart_game = SDL_SCANCODE_N;
 inline bool mouse_visible = true;
