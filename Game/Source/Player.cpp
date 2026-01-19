@@ -71,7 +71,7 @@ void Player::OnUpdate(float delta_time)
         enemies_to_remove.clear();
     }
     
-    FollowCameraTarget(GetPosition(player), 20.0f, delta_time);
+    FollowCameraTarget(GetPosition(player), 10.0f, delta_time);
 }
 
 void Player::Move(float delta_time)
@@ -91,6 +91,11 @@ void Player::Move(float delta_time)
         FlipSprite(player, true, false);
         target_x = SquareCore::Lerp(player_velocity.x, move_speed, acceleration * delta_time);
     }
+
+    if (GetKeyHeld(look_up_bind))
+        is_looking_up = true;
+    else
+        is_looking_up = false;
 
     SetVelocity(player, target_x, player_velocity.y);
 }
@@ -207,18 +212,38 @@ void Player::Slash(float delta_time)
     if (GetMouseButtonPressed(0) && !is_slashing && !(player_velocity.x > 600.0f || player_velocity.x < -600.0f))
     {
         is_slashing = true;
-        slash_direction = player_direction;
-    
-        SquareCore::Vec2 offset_position = {0.0f, 10.0f};
-        if (slash_direction == Direction::RIGHT)
-            offset_position.x = 75.0f;
-        else if (slash_direction == Direction::LEFT)
-            offset_position.x = -75.0f;
+        
+        if (is_looking_up)
+        {
+            slash_direction = Direction::UP;
+            SquareCore::Vec2 offset_position = {0.0f, 75.0f};
+            
+            ResetAnimation(slash);
+            SetPosition(slash, player_position.x + offset_position.x+ (player_velocity.x / 10.0f), player_position.y + offset_position.y);
+            SetRotation(slash, 90.0f);
+            SetScale(slash, SquareCore::Vec2(0.2f, 0.15f));
+            FlipSprite(slash, false, true);
+            SetEntityVisible(slash, true);
+        }
+        else
+        {
+            slash_direction = player_direction;
+            SquareCore::Vec2 offset_position = {0.0f, 10.0f};
+            if (slash_direction == Direction::RIGHT)
+                offset_position.x = 100.0f;
+            else if (slash_direction == Direction::LEFT)
+                offset_position.x = -100.0f;
 
-        ResetAnimation(slash);
-        SetPosition(slash, player_position.x + offset_position.x + (player_velocity.x / 10.0f), player_position.y + offset_position.y);
-        FlipSprite(slash, GetFlipX(player), false);
-        SetEntityVisible(slash, true);
+            if (slash_direction == Direction::UP)
+                offset_position.y = 0.0f;
+
+            ResetAnimation(slash);
+            SetPosition(slash, player_position.x + offset_position.x + (player_velocity.x / 10.0f), player_position.y + offset_position.y);
+            SetRotation(slash, 0.0f);
+            SetScale(slash, SquareCore::Vec2(0.25f, 0.1f));
+            FlipSprite(slash, GetFlipX(player), false);
+            SetEntityVisible(slash, true);
+        }
     }
 
     if (is_slashing)
@@ -234,9 +259,22 @@ void Player::Slash(float delta_time)
             {
                 damaged_by_slash_enemies.push_back(collision.first);
                 SquareCore::Vec2 enemy_velocity = GetVelocity(collision.first);
-                 
-                float knockback_x = (slash_direction == Direction::RIGHT ? 1.0f : -1.0f) * slash_knockback;
-                SetVelocity(collision.first, enemy_velocity.x + knockback_x, enemy_velocity.y + 200.0f);
+                SquareCore::Vec2 enemy_position = GetPosition(collision.first);
+
+                float direction_x = enemy_position.x - player_position.x;
+                float knockback_x = (direction_x > 0 ? 1.0f : -1.0f) * slash_knockback;
+                float knockback_y = 0.0f;
+                
+                if (slash_direction == Direction::UP)
+                {
+                    knockback_y = slash_knockback;
+                }
+                else
+                {
+                    knockback_y = 200.0f;
+                }
+                
+                SetVelocity(collision.first, enemy_velocity.x + knockback_x, enemy_velocity.y + knockback_y);
                 
                 for (auto& property : GetAllEntityProperties(collision.first))
                 {
@@ -337,7 +375,7 @@ void Player::OnCollision(float delta_time)
     {
         bouncing = false;
         SquareCore::Vec2 player_velocity = GetVelocity(player);
-        float bounce = 1000.0f;
+        float bounce = 1200.0f;
         SetVelocity(player, player_velocity.x, bounce);
     }
 }

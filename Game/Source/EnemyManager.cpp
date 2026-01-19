@@ -4,13 +4,13 @@ void EnemyManager::OnStart()
 {
     for (unsigned int i = 0; i < jump_enemy_count; i++)
     {
-        enemies.insert(enemies.end(), AddEntity("Resources/Sprites/triangle.png", 300.0f, -100.0f, 0.0f, 0.05f, 0.05f, true));
+        enemies.insert(enemies.end(), AddEntity("Resources/Sprites/triangle.png", 300.0f + (i * 50.0f), -100.0f, 0.0f, 0.05f, 0.05f, true));
         SetEntityColor(enemies[i], SquareCore::RGBA(120, 0, 0, 255));
         AddTagToEntity(enemies[i], "Enemy");
         SetDrag(enemies[i], 5.0f);
         SetEntityPersistent(enemies[i], true);
         AddPropertyToEntity(enemies[i], new Character(5));
-        AddPropertyToEntity(enemies[i], new JumpEnemy(200.0f, 3.0f, {800.0f, 1200.0f}));
+        AddPropertyToEntity(enemies[i], new JumpEnemy(200.0f, 3.0f, {1000.0f, 1600.0f}));
     }
 
     player = GetFirstEntityWithTag("Player");

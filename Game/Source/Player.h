@@ -32,15 +32,18 @@ private:
     PlayerData player_data;
     uint32_t player = 0;
     int level = 0;
-
+    
     // upgrades
     bool has_double_dash = true;
+    bool has_up_attack = false;
 
     Direction player_direction = Direction::LEFT;
 
     float move_speed = 350.0f;
     float acceleration = 15.0f;
     float jump_velocity = 1000.0f;
+
+    bool is_looking_up = false;
 
     uint32_t dash = 0;
     bool is_dashing = false;
