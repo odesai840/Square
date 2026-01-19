@@ -11,6 +11,7 @@ public:
 
 private:
     void DialogUpdate();
+    void Pause();
     
 private:
     DialogManager dialogManager;
@@ -19,5 +20,10 @@ private:
     uint32_t dialogText = 0;
     
     uint32_t dialogTestTrigger = 0;
+
+    uint32_t pauseMenuBox = 0;
+    uint32_t pauseMenuResumeButton = 0;
+    uint32_t pauseMenuQuitButton = 0;
+    bool paused = false;
     
 };

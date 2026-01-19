@@ -63,6 +63,7 @@ namespace SquareCore
         void SetSceneManager(SceneManager* sceneManager) { this->sceneManagerRef = sceneManager; }
 
     protected:
+        void Quit();
         // Add an entity to the scene
         uint32_t AddEntity(const char* spritePath, float Xpos = 0.0f, float Ypos = 0.0f, float rotation = 0.0f,
                            float Xscale = 1.0f, float Yscale = 1.0f, bool physEnabled = false, std::vector<std::string> tags = {});

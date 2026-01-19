@@ -63,17 +63,4 @@ private:
     std::vector<uint32_t> damaged_by_slash_enemies;
 
     std::vector<uint32_t> enemies_to_remove;
-
-    // keybinds
-    SDL_Scancode move_left_bind = SDL_SCANCODE_A;
-    SDL_Scancode move_right_bind = SDL_SCANCODE_D;
-    SDL_Scancode jump_bind = SDL_SCANCODE_SPACE;
-    SDL_Scancode dash_bind = SDL_SCANCODE_LSHIFT;
-
-    // debug keybinds
-    SDL_Scancode debug_collision = SDL_SCANCODE_T;
-    SDL_Scancode debug_save = SDL_SCANCODE_P;
-    SDL_Scancode debug_hot_reload = SDL_SCANCODE_F5;
-    SDL_Scancode debug_mouse_cursor = SDL_SCANCODE_Y;
-    bool mouse_visible = true;
 };

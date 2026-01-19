@@ -5,6 +5,13 @@
 
 namespace SquareCore
 {
+    void Script::Quit()
+    {
+        SDL_Event quit_event;
+        quit_event.type = SDL_EVENT_QUIT;
+        SDL_PushEvent(&quit_event);
+    }
+    
     std::vector<uint32_t> Script::GetAllEntitiesWithTag(std::string tag)
     {
         if (entityManagerRef) return entityManagerRef->GetAllEntitiesWithTag(tag);

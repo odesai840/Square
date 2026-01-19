@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "GameStateManager.h"
+#include "PlayerKeybinds.h"
 
 void Player::OnStart()
 {
