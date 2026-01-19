@@ -70,6 +70,7 @@ struct Entity {
     float spritelessHeight = 10.0f;     // Height of spriteless entity
 
     RGBA color = RGBA(255, 255, 255, 255);
+    int zIndex = 0;
 
     // Transform
     Vec2 position = Vec2::zero();      // Position (default: Vec2::zero())

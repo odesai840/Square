@@ -87,6 +87,9 @@ public:
 
     void SetVisible(uint32_t entityID, bool visible);
     void ResetAnimation(uint32_t entityID);
+
+    void SetZIndex(uint32_t entityID, int zIndex);
+    int GetZIndex(uint32_t entityID);
     
     void AddTagToEntity(uint32_t entityID, std::string tag);
     void RemoveTagFromEntity(uint32_t entityID, std::string tag);

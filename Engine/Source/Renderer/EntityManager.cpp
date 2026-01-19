@@ -480,6 +480,35 @@ namespace SquareCore
         }
     }
 
+    void EntityManager::SetZIndex(uint32_t entityID, int zIndex)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            entities[it->second].zIndex = zIndex;
+        }
+        else
+        {
+            SDL_LogError(SDL_LOG_CATEGORY_ERROR, "SetZIndex: Entity ID %u not found", entityID);
+        }
+    }
+
+    int EntityManager::GetZIndex(uint32_t entityID)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            return entities[it->second].zIndex;
+        }
+        
+        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "GetZIndex: Entity ID %u not found", entityID);
+        return 0;
+    }
+
     void EntityManager::AddTagToEntity(uint32_t entityID, std::string tag)
     {
         std::lock_guard<std::mutex> lock(entityMutex);

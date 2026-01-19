@@ -114,6 +114,9 @@ namespace SquareCore
         void AddPropertyToEntity(uint32_t entityID, Property* property);
         std::vector<Property*> GetAllEntityProperties(uint32_t entityID);
 
+        void SetZIndex(uint32_t entityID, int zIndex);
+        int GetZIndex(uint32_t entityID);
+
         bool GetKeyPressed(SDL_Scancode key);
         bool GetKeyHeld(SDL_Scancode key);
         bool GetKeyReleased(SDL_Scancode key);

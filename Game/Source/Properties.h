@@ -2,7 +2,10 @@
 
 #include "Script.h"
 
-struct Health : SquareCore::Property
+struct Character : SquareCore::Property
 {
-    int value = 10;
+    int health = 10;
+
+    Character(int health) { this->health = health; }
 };
+

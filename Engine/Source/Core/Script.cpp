@@ -191,6 +191,17 @@ namespace SquareCore
         return {};
     }
 
+    void Script::SetZIndex(uint32_t entityID, int zIndex)
+    {
+        if (entityManagerRef) entityManagerRef->SetZIndex(entityID, zIndex);
+    }
+
+    int Script::GetZIndex(uint32_t entityID)
+    {
+        if (entityManagerRef) return entityManagerRef->GetZIndex(entityID);
+        return 0;
+    }
+
     bool Script::GetKeyPressed(SDL_Scancode key)
     {
         if (inputRef)

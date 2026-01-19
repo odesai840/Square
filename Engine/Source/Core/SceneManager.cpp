@@ -46,6 +46,8 @@ namespace SquareCore
             if (entity.color.r != 255 || entity.color.g != 255 || entity.color.b != 255 || entity.color.a != 255) {
                 entityJson["color"] = { entity.color.r, entity.color.g, entity.color.b, entity.color.a };
             }
+
+            entityJson["zIndex"] = entity.zIndex;
             
             if (entity.physApplied) entityJson["physApplied"] = true;
             if (entity.mass != 1.0f) entityJson["mass"] = entity.mass;
@@ -175,6 +177,7 @@ namespace SquareCore
                     scaleY = entityJson["scale"][1];
                 }
                 bool physEnabled = entityJson.value("physApplied", false);
+                int zIndex = entityJson["zIndex"];
 
                 std::vector<std::string> tags;
                 if (entityJson.contains("tags")) {
@@ -214,6 +217,7 @@ namespace SquareCore
                     entity->mass = entityJson.value("mass", 1.0f);
                     entity->drag = entityJson.value("drag", 0.0f);
                     entity->tags = tags;
+                    entity->zIndex = zIndex;
 
                     if (entityJson.contains("color")) {
                         entity->color = RGBA(

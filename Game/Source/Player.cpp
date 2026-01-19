@@ -8,7 +8,7 @@ void Player::OnStart()
     AddTagToEntity(player, "Player");
     SetEntityPersistent(player, true);
 
-    AddPropertyToEntity(player, new Health());
+    AddPropertyToEntity(player, new Character(10));
 
     float slash_fps = 7.0f / slash_length;
     slash = AddAnimatedEntity("Resources/Sprites/slash-sheet.png", 7, slash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 0.04f, 0.1f, false);
@@ -31,7 +31,7 @@ void Player::OnUpdate(float delta_time)
 
     player_data.x_pos = GetPosition(player).x;
     player_data.y_pos = GetPosition(player).y;
-    player_data.health = health.value;
+    player_data.health = 10;
     player_data.level = level;
 
     // DEBUG KEYS
@@ -93,12 +93,12 @@ void Player::Slash(float delta_time)
     
         SquareCore::Vec2 offset_position = {0.0f, 10.0f};
         if (slash_direction == Direction::RIGHT)
-            offset_position.x = 50.0f;
+            offset_position.x = 75.0f;
         else if (slash_direction == Direction::LEFT)
-            offset_position.x = -50.0f;
+            offset_position.x = -75.0f;
 
         ResetAnimation(slash);
-        SetPosition(slash, player_position.x + offset_position.x + (player_velocity.x / 5.0f), player_position.y + offset_position.y);
+        SetPosition(slash, player_position.x + offset_position.x + (player_velocity.x / 10.0f), player_position.y + offset_position.y);
         FlipSprite(slash, GetFlipX(player), false);
         SetEntityVisible(slash, true);
     }
@@ -120,10 +120,16 @@ void Player::Slash(float delta_time)
                 
                 for (auto& property : GetAllEntityProperties(collision.first))
                 {
-                    if (Health* health_property = dynamic_cast<Health*>(property))
+                    if (Character* health_property = dynamic_cast<Character*>(property))
                     {
-                        health_property->value -= 1;
-                        SDL_Log(("Enemy : " + std::to_string(collision.first) + " now has " + std::to_string(health_property->value) + " health").c_str());
+                        health_property->health -= 1;
+                        SDL_Log(("Enemy : " + std::to_string(collision.first) + " now has " + std::to_string(health_property->health) + " health").c_str());
+
+                        if (health_property->health < 0)
+                        {
+                            SDL_Log(("Enemy : " + std::to_string(collision.first) + " died").c_str());
+                            RemoveEntity(collision.first);
+                        }
                     }
                 }
             }

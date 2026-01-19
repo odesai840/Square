@@ -30,7 +30,6 @@ private:
 private:
     PlayerData player_data;
     uint32_t player = 0;
-    Health health;
     int level = 0;
 
     Direction player_direction = Direction::LEFT;

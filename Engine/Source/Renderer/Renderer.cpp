@@ -1,4 +1,6 @@
 #include "Renderer.h"
+
+#include <algorithm>
 #include <SDL3/SDL_log.h>
 
 namespace SquareCore
@@ -60,6 +62,7 @@ namespace SquareCore
 
         // Get entities copy for rendering (thread-safe)
         std::vector<Entity> entities = entityManager.GetEntitiesCopy();
+        std::sort(entities.begin(), entities.end(), [](const Entity& a, const Entity& b) { return a.zIndex < b.zIndex; });
 
         // Render all entities
         for (const auto& entity : entities)
