@@ -41,7 +41,7 @@ void UserInterface::OnStart()
     SetButtonSprites(pauseMenuResumeButton, "Resources/Sprites/albinauric_fatty.png", "Resources/Sprites/fish.png","Resources/Sprites/albinauric_fatty.png");
     SetButtonSprites(pauseMenuQuitButton, "Resources/Sprites/fish.png", "Resources/Sprites/albinauric_fatty.png","Resources/Sprites/albinauric_fatty.png");
 
-    LoadScene("Resources/Scenes/test.square");
+    LoadScene(level_path);
 }
 
 void UserInterface::OnUpdate(float deltaTime)

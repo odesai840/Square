@@ -48,7 +48,7 @@ void Player::OnUpdate(float delta_time)
     if (GetKeyPressed(debug_collision))
         ToggleDebugCollisions();
     if (GetKeyPressed(debug_hot_reload))
-        LoadScene("Resources/Scenes/test.square");
+        LoadScene(level_path);
     if (GetKeyPressed(debug_mouse_cursor))
         SetMouseVisible(!mouse_visible);
     if (GetKeyPressed(debug_restart_game))
