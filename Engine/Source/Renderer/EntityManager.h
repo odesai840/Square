@@ -91,6 +91,22 @@ public:
     void AddTagToEntity(uint32_t entityID, std::string tag);
     void RemoveTagFromEntity(uint32_t entityID, std::string tag);
 
+    void AddPropertyToEntity(uint32_t entityID, Property* property) {
+        std::lock_guard<std::mutex> lock(entityMutex);
+
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            entities[it->second].properties.push_back(property);
+        }
+        else
+        {
+            SDL_LogError(SDL_LOG_CATEGORY_ERROR, "AddPropertyToEntity: Entity ID %u not found", entityID);
+        }
+    }
+
+    std::vector<Property*> GetAllEntityProperties(uint32_t entityID);
+
     // Thread-safe function to update the physics of all entities
     void UpdatePhysics(std::function<void(std::vector<Entity>&)> physicsUpdate);
 

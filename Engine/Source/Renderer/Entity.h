@@ -41,6 +41,11 @@ private:
     std::vector<std::pair<uint32_t, int>> collisions;
 };
 
+struct Property
+{
+    virtual ~Property() = default;
+};
+
 // Data-only struct that defines variables for entities
 struct Entity {
     uint32_t ID = 0;                   // Internal identifier (default 0 for invalid entity)
@@ -84,6 +89,7 @@ struct Entity {
     Collider collider;                 // The collider for this entity
 
     std::vector<std::string> tags;
+    std::vector<Property*> properties;
 };
 
 }

@@ -515,6 +515,20 @@ namespace SquareCore
         }
     }
 
+    std::vector<Property*> EntityManager::GetAllEntityProperties(uint32_t entityID)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            return entities[it->second].properties;
+        }
+        
+        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "RemoveTagFromEntity: Entity ID %u not found", entityID);
+        return {};
+    }
+
     void EntityManager::UpdatePhysics(std::function<void(std::vector<Entity>&)> physicsUpdate)
     {
         // Copy entities to a new vector under a short lock

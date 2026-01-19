@@ -180,6 +180,17 @@ namespace SquareCore
         if (entityManagerRef) entityManagerRef->RemoveTagFromEntity(entityID, tag);
     }
 
+    void Script::AddPropertyToEntity(uint32_t entityID, Property* property)
+    {
+        if (entityManagerRef) entityManagerRef->AddPropertyToEntity(entityID, property);
+    }
+
+    std::vector<Property*> Script::GetAllEntityProperties(uint32_t entityID)
+    {
+        if (entityManagerRef) return entityManagerRef->GetAllEntityProperties(entityID);
+        return {};
+    }
+
     bool Script::GetKeyPressed(SDL_Scancode key)
     {
         if (inputRef)

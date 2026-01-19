@@ -110,6 +110,9 @@ namespace SquareCore
         bool EntityHasTag(uint32_t entityID, std::string tag);
         void AddTagToEntity(uint32_t entityID, std::string tag);
         void RemoveTagFromEntity(uint32_t entityID, std::string tag);
+        
+        void AddPropertyToEntity(uint32_t entityID, Property* property);
+        std::vector<Property*> GetAllEntityProperties(uint32_t entityID);
 
         bool GetKeyPressed(SDL_Scancode key);
         bool GetKeyHeld(SDL_Scancode key);

@@ -8,14 +8,23 @@ void Player::OnStart()
     AddTagToEntity(player, "Player");
     SetEntityPersistent(player, true);
 
+    health = Health();
+    AddPropertyToEntity(player, &health);
+
     float slash_fps = 7.0f / slash_length;
-    slash = AddAnimatedEntity("Resources/Sprites/slash-sheet.png", 7, slash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 0.05f, 0.08f, false);
+    slash = AddAnimatedEntity("Resources/Sprites/slash-sheet.png", 7, slash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 0.04f, 0.1f, false);
     SetColliderType(slash, SquareCore::ColliderType::TRIGGER);
     AddTagToEntity(slash, "PlayerSlash");
     SetEntityVisible(slash, false);
     SetEntityPersistent(slash, true);
 
     SetGravity(-1500.0f);
+
+    for (auto& property : GetAllEntityProperties(player))
+    {
+        if (Health* health_property = dynamic_cast<Health*>(property))
+            SDL_Log(("Health: " + std::to_string(health_property->value)).c_str());
+    }
 }
 
 void Player::OnUpdate(float delta_time)
@@ -29,7 +38,7 @@ void Player::OnUpdate(float delta_time)
 
     player_data.x_pos = GetPosition(player).x;
     player_data.y_pos = GetPosition(player).y;
-    player_data.health = health;
+    player_data.health = health.value;
     player_data.level = level;
 
     // DEBUG KEYS
@@ -38,7 +47,7 @@ void Player::OnUpdate(float delta_time)
     if (GetKeyPressed(debug_collision))
         ToggleDebugCollisions();
     if (GetKeyPressed(debug_hot_reload))
-        LoadScene("Resources/Scenes/testScene.square");
+        LoadScene("Resources/Scenes/test.square");
     //
 }
 

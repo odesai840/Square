@@ -18,7 +18,7 @@ void UserInterface::OnStart()
     
     dialogManager.Load("Resources/Data/dialog.json");
     
-    LoadScene("Resources/Scenes/testScene.square");
+    LoadScene("Resources/Scenes/test.square");
 }
 
 void UserInterface::OnUpdate(float deltaTime)

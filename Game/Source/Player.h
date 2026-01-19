@@ -11,6 +11,11 @@ enum class Direction : uint8_t
     LEFT = 3,
 };
 
+struct Health : SquareCore::Property
+{
+    int value = 10;
+};
+
 class Player : public SquareCore::Script {
 public:
     void OnStart() override;
@@ -29,10 +34,10 @@ private:
 private:
     PlayerData player_data;
     uint32_t player = 0;
-    int health = 10;
+    Health health;
     int level = 0;
 
-    Direction player_direction = Direction::RIGHT;
+    Direction player_direction = Direction::LEFT;
 
     float move_speed = 350.0f;
     float acceleration = 15.0f;
@@ -41,10 +46,10 @@ private:
 
     uint32_t slash = 0;
     bool is_slashing = false;
-    float slash_length = 0.2f;
+    float slash_length = 0.15f;
     float slash_duration = 0.0f;
     float slash_knockback = 600.0f;
-    Direction slash_direction = Direction::RIGHT;
+    Direction slash_direction = Direction::LEFT;
     std::vector<uint32_t> damaged_by_slash_enemies;
 
     // keybinds
