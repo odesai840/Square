@@ -21,6 +21,11 @@ private:
         SquareCore::Vec2(0.0f, 27.5f),
         SquareCore::Vec2(27.5f, -27.5f)
     };
+    std::vector<SquareCore::Vec2> boss_collider_vertices={
+        SquareCore::Vec2(-275.0f, -275.0f),
+        SquareCore::Vec2(0.0f, 275.0f),
+        SquareCore::Vec2(275.0f, -275.0f)
+    };
 
     uint32_t jump_boss = 0;
 };

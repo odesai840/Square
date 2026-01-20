@@ -7,7 +7,7 @@ void EnemyManager::OnStart()
         enemies.insert(enemies.end(),
                        AddEntity("Resources/Sprites/triangle.png", 300.0f, -100.0f, 0.0f, 0.05f, 0.05f,
                                  true)); // 0.05f
-        //SetEntityColor(enemies[i], SquareCore::RGBA(120, 0, 0, 255));
+        SetEntityColor(enemies[i], SquareCore::RGBA(120, 0, 0, 255));
         FlipSprite(enemies[enemies.size() - 1], true, false);
         AddTagToEntity(enemies[enemies.size() - 1], "Enemy");
         SetDrag(enemies[enemies.size() - 1], 5.0f);
@@ -21,7 +21,7 @@ void EnemyManager::OnStart()
         enemies.insert(enemies.end(),
                        AddEntity("Resources/Sprites/triangle.png", -300.0f, -100.0f, 0.0f, 0.05f, 0.05f,
                                  true)); // 0.05f
-        //SetEntityColor(enemies[i], SquareCore::RGBA(120, 0, 0, 255));
+        SetEntityColor(enemies[i], SquareCore::RGBA(120, 0, 0, 255));
         FlipSprite(enemies[enemies.size() - 1], true, false);
         AddTagToEntity(enemies[enemies.size() - 1], "Enemy");
         SetDrag(enemies[enemies.size() - 1], 5.0f);
@@ -31,16 +31,17 @@ void EnemyManager::OnStart()
         SetColliderPolygon(enemies[i], enemy_collider_vertices);
     }
 
-    /*
-    jump_boss = AddEntity("Resources/Sprites/triangle.png", -2000.0f, 0.0f, 0.0f, 0.5f, 0.5f, true);
+    
+    /*jump_boss = AddEntity("Resources/Sprites/triangle.png", -2000.0f, 0.0f, 0.0f, 0.5f, 0.5f, true);
     AddTagToEntity(jump_boss, "Enemy");
     AddTagToEntity(jump_boss, "JumpBoss");
     SetDrag(jump_boss, 5.0f);
     SetEntityPersistent(jump_boss, true);
     AddPropertyToEntity(jump_boss, new Character(50, 2));
     AddPropertyToEntity(jump_boss, new JumpBoss());
-    enemies.insert(enemies.end(), jump_boss);
-    */
+    SetColliderPolygon(jump_boss, boss_collider_vertices);
+    enemies.insert(enemies.end(), jump_boss);*/
+    
 
     player = GetFirstEntityWithTag("Player");
 }
