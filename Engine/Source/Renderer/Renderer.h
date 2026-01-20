@@ -77,6 +77,18 @@ private:
     void RenderEntity(const Entity& entity, float globalScaleX, float globalScaleY) const;
     
     SDL_Texture* LoadUITexture(const std::string & path);
+    
+    void DrawDebugCollider(const Entity& entity, float globalScaleX, float globalScaleY) const;
+    void DrawDebugBox(const Vec2& screenCenter, const Vec2& halfExtents, float rotationDegrees,
+                      float scaleX, float scaleY, RGBA color) const;
+    void DrawDebugCircle(const Vec2& screenCenter, float radius, float scaleX, float scaleY, RGBA color) const;
+    void DrawDebugCapsule(const Vec2& screenCenter, const Vec2& c1, const Vec2& c2, float radius,
+                          float rotationDegrees, float scaleX, float scaleY, RGBA color) const;
+    void DrawDebugPolygon(const Vec2& screenCenter, const std::vector<Vec2>& vertices,
+                          float rotationDegrees, float scaleX, float scaleY, RGBA color) const;
+    Vec2 WorldToScreen(const Vec2& worldPos, float globalScaleX, float globalScaleY) const;
+    Vec2 RotatePoint(const Vec2& point, float angleDegrees) const;
+    RGBA GetDebugColor(const Entity& entity) const;
 };
 
 }

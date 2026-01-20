@@ -57,6 +57,7 @@ namespace SquareCore
                 window.GetWidth(),
                 window.GetHeight(),
                 SDL_WINDOW_RESIZABLE | SDL_WINDOW_MAXIMIZED
+                //SDL_WINDOW_BORDERLESS | SDL_WINDOW_MAXIMIZED | SDL_WINDOW_MOUSE_GRABBED
             )
         );
 
@@ -254,6 +255,8 @@ namespace SquareCore
             script->SetUIManager(&uiManager);
             script->SetSceneManager(&sceneManager);
         }
+        
+        physics.Initialize();
 
         // Start worker threads
         physicsThread = std::thread(&Application::PhysicsThreadFunction, this);
@@ -320,6 +323,8 @@ namespace SquareCore
         {
             renderThread.join();
         }
+        
+        physics.Shutdown();
 
         // Clean up SDL resources
         SDL_DestroyRenderer(renderer.GetRenderer());
@@ -524,6 +529,8 @@ namespace SquareCore
             script->SetAudioManager(&audioManager);
             script->SetUIManager(&uiManager);
         }
+        
+        physics.Initialize();
 
         // Start worker threads
         physicsThread = std::thread(&Application::PhysicsThreadFunction, this);
@@ -607,6 +614,8 @@ namespace SquareCore
         {
             networkThread.join();
         }
+        
+        physics.Shutdown();
 
         // Clean up SDL resources
         SDL_DestroyRenderer(renderer.GetRenderer());

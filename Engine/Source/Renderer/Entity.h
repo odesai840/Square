@@ -3,7 +3,9 @@
 
 #include "Math/Math.h"
 #include "UI/Color.h"
+#include "Physics/PhysicsTypes.h"
 #include <SDL3/SDL_render.h>
+#include <box2d/box2d.h>
 #include <vector>
 #include <string>
 
@@ -46,6 +48,13 @@ struct Property
     virtual ~Property();
 };
 
+struct PhysicsHandle
+{
+    b2BodyId bodyId;
+    b2ShapeId shapeId;
+    bool isValid = false;
+};
+
 // Data-only struct that defines variables for entities
 struct Entity {
     uint32_t ID = 0;                   // Internal identifier (default 0 for invalid entity)
@@ -85,9 +94,12 @@ struct Entity {
     bool physApplied = false;          // Whether physics is applied to this entity
     float mass = 1.0f;                 // Mass for physics calculations
     float drag = 0.0f;                 // Air resistance/drag coefficient
+    bool fixedRotation = true;
 
     // Collision
     Collider collider;                 // The collider for this entity
+    PhysicsHandle physicsHandle;
+    ColliderShapeData shapeData;
 
     std::vector<std::string> tags;
     std::vector<Property*> properties;

@@ -10,3 +10,6 @@
 [submodule "Vendor/SDL_ttf"]
 	path = Vendor/SDL_ttf
 	url = https://github.com/libsdl-org/SDL_ttf.git
+[submodule "Vendor/box2d"]
+	path = Vendor/box2d
+	url = https://github.com/erincatto/box2d.git

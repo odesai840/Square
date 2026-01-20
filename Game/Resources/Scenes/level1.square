@@ -1,6 +1,5 @@
 {
     "entities": [
-
         {
             "color": [
                 0,
@@ -10,18 +9,18 @@
             ],
             "isSpriteless": false,
             "position": [
-                0.0,
-                0.0
+                -290.0,
+                -210.0
             ],
             "scale": [
-                0.1,
+                0.15,
                 0.1
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
                 "Bounce"
             ],
-            "zIndex": 1
+            "zIndex": 0
         },
         {
             "color": [
@@ -54,12 +53,12 @@
             ],
             "isSpriteless": false,
             "position": [
-                -500.0,
-                100.0
+                -700.0,
+                -60.0
             ],
             "scale": [
-                0.3,
-                0.05
+                0.6,
+                0.40
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
@@ -77,15 +76,82 @@
             "isSpriteless": false,
             "position": [
                 500.0,
-                0.0
+                250.0
             ],
             "scale": [
                 0.3,
+                0.5
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -700.0,
+                690.0
+            ],
+            "scale": [
+                0.6,
+                0.5
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                290.0,
+                275.0
+            ],
+            "scale": [
+                0.1,
                 0.05
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
                 "Ground"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                0,
+                70,
+                150,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -290.0,
+                475.0
+            ],
+            "rotation": 45.0,
+            "scale": [
+                0.15,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Bounce"
             ],
             "zIndex": 0
         }

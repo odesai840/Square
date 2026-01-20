@@ -590,34 +590,40 @@ namespace SquareCore
 
     void EntityManager::UpdatePhysics(std::function<void(std::vector<Entity>&)> physicsUpdate)
     {
-        // Copy entities to a new vector under a short lock
         std::vector<Entity> entitiesCopy;
         {
             std::lock_guard<std::mutex> lock(entityMutex);
             entitiesCopy = entities;
         }
-
-        // Work on the copy
+        
         physicsUpdate(entitiesCopy);
-
-        // Apply changes back under a short lock
+        
         {
             std::lock_guard<std::mutex> lock(entityMutex);
-            // Copy physics results back (positions, velocities, collisions)
-            for (size_t i = 0; i < entities.size() && i < entitiesCopy.size(); ++i)
+            
+            std::unordered_map<uint32_t, size_t> copyIdToIndex;
+            for (size_t i = 0; i < entitiesCopy.size(); ++i)
+                copyIdToIndex[entitiesCopy[i].ID] = i;
+
+            for (size_t i = 0; i < entities.size(); ++i)
             {
+                auto it = copyIdToIndex.find(entities[i].ID);
+                if (it == copyIdToIndex.end()) continue;
+
+                size_t copyIdx = it->second;
+                
+                entities[i].physicsHandle = entitiesCopy[copyIdx].physicsHandle;
+
                 if (entities[i].physApplied)
                 {
-                    entities[i].position = entitiesCopy[i].position;
-                    entities[i].velocity = entitiesCopy[i].velocity;
+                    entities[i].position = entitiesCopy[copyIdx].position;
+                    entities[i].velocity = entitiesCopy[copyIdx].velocity;
+                    entities[i].rotation = entitiesCopy[copyIdx].rotation;
                 }
-                // Update colliders
+                
                 entities[i].collider.ClearCollisions();
-                for (const auto& collision : entitiesCopy[i].collider.GetCollisions())
-                {
+                for (const auto& collision : entitiesCopy[copyIdx].collider.GetCollisions())
                     entities[i].collider.AddCollision(collision.first, collision.second);
-                }
-                //entities[i].collider = entitiesCopy[i].collider;
             }
         }
     }

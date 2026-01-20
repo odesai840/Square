@@ -35,13 +35,14 @@ target_include_directories(Engine
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-# Link with SDL3, SDL_image, SDL_ttf, and libzmq
+# Link with dependencies
 target_link_libraries(Engine 
     PUBLIC 
         SDL3::SDL3
         SDL3_image::SDL3_image
         SDL3_ttf::SDL3_ttf
         libzmq-static
+        box2d::box2d
 )
 
 # Set compile options

@@ -19,7 +19,7 @@ add_executable(Game
 )
 
 # Set target properties
-target_compile_features(Game PRIVATE cxx_std_17)
+target_compile_features(Game PRIVATE cxx_std_20)
 
 # Include directories
 target_include_directories(Game 

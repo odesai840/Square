@@ -52,3 +52,20 @@ if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/libzmq/CMakeLists.txt")
 else()
     message(FATAL_ERROR "libzmq subdirectory not found. Please add libzmq source to Vendor/libzmq.")
 endif()
+
+# Check if box2d directory exists
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/box2d/CMakeLists.txt")
+    message(STATUS "Building Box2D...")
+
+    # Configure box2d build options
+    set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build Box2D as shared library" FORCE)
+    set(BOX2D_SAMPLES OFF CACHE BOOL "Build Box2D samples" FORCE)
+    set(BOX2D_BENCHMARKS OFF CACHE BOOL "Build Box2D benchmarks" FORCE)
+    set(BOX2D_DOCS OFF CACHE BOOL "Build Box2D documentation" FORCE)
+    set(BOX2D_UNIT_TESTS OFF CACHE BOOL "Build Box2D unit tests" FORCE)
+    set(BOX2D_VALIDATE OFF CACHE BOOL "Enable heavy validation" FORCE)
+
+    add_subdirectory(box2d)
+else()
+    message(FATAL_ERROR "box2d subdirectory not found. Please add Box2D source to Vendor/box2d.")
+endif()

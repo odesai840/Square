@@ -130,6 +130,10 @@ namespace SquareCore
         Vec2 GetMouseDelta();
         Vec2 GetMouseScroll();
 
+        void SetColliderBox(uint32_t entityID, float halfWidth, float halfHeight);
+        void SetColliderCircle(uint32_t entityID, float radius);
+        void SetColliderCapsule(uint32_t entityID, float height, float radius);
+        void SetColliderPolygon(uint32_t entityID, std::vector<Vec2> vertices);
         // Set gravity
         void SetGravity(float gravity);
         // Get Gravity
@@ -142,6 +146,7 @@ namespace SquareCore
         void SetVelocity(uint32_t entityID, float velX, float velY);
         void SetMass(uint32_t entityID, float mass);
         void SetDrag(uint32_t entityID, float drag);
+        void SetFixedRotation(uint32_t entityID, bool fixed);
         // Gets an entity's velocity
         Vec2 GetVelocity(uint32_t entityID);
         // Sets an entity's position

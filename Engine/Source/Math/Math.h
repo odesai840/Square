@@ -5,6 +5,8 @@
 #include <string>
 #include <ostream>
 
+#define MATH_PI 3.14159265358979323846f
+
 namespace SquareCore {
 
 struct Vec2 {
