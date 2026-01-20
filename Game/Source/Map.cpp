@@ -9,7 +9,7 @@ void Map::OnStart()
     music = AddAudioClip("Resources/Audio/Cathedral KF.mp3");
     SetAudioVolume(music, 0.05f);
     SetAudioLooping(music, true);
-    PlayAudioClip(music);
+    //PlayAudioClip(music);
     
     dialogTestTrigger = AddSpritelessEntity(10, 10, SquareCore::RGBA(0,0,0,0), 200, -250);
     SetColliderType(dialogTestTrigger, SquareCore::ColliderType::TRIGGER);

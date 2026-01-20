@@ -19,7 +19,7 @@ void EnemyManager::OnStart()
     for (unsigned int i = 0; i < charge_enemy_count; i++)
     {
         enemies.insert(enemies.end(),
-                       AddEntity("Resources/Sprites/triangle.png", -300.0f, -100.0f, 0.0f, 0.05f, 0.05f,
+                       AddEntity("Resources/Sprites/triangle.png", 300.0f + (i*150), -100.0f, 0.0f, 0.05f, 0.05f,
                                  true)); // 0.05f
         SetEntityColor(enemies[i], SquareCore::RGBA(120, 0, 0, 255));
         FlipSprite(enemies[enemies.size() - 1], true, false);
@@ -30,7 +30,6 @@ void EnemyManager::OnStart()
         AddPropertyToEntity(enemies[enemies.size() - 1], new ChargeEnemy(800.0f, 3.0f, 2000.0f));
         SetColliderPolygon(enemies[i], enemy_collider_vertices);
     }
-
     
     /*jump_boss = AddEntity("Resources/Sprites/triangle.png", -2000.0f, 0.0f, 0.0f, 0.5f, 0.5f, true);
     AddTagToEntity(jump_boss, "Enemy");
@@ -41,7 +40,6 @@ void EnemyManager::OnStart()
     AddPropertyToEntity(jump_boss, new JumpBoss());
     SetColliderPolygon(jump_boss, boss_collider_vertices);
     enemies.insert(enemies.end(), jump_boss);*/
-    
 
     player = GetFirstEntityWithTag("Player");
 }

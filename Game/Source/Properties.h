@@ -32,7 +32,7 @@ struct ChargeEnemy : SquareCore::Property
     float detection_range = 200.0f;
     float charge_cooldown = 3.0f;
     float cooldown_timer = 0.0f;
-    float charge_force = 2000.0f;
+    float charge_force = 1000.0f;
     bool chasing = false;
     bool hit_player_this_attack = false;
     

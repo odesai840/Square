@@ -43,7 +43,6 @@ private:
     
     // upgrades
     bool has_double_dash = true;
-    bool has_up_attack = false;
 
     Direction player_direction = Direction::LEFT;
 
@@ -52,6 +51,8 @@ private:
     float jump_velocity = 1000.0f;
 
     bool is_looking_up = false;
+    bool is_looking_down = false;
+    bool last_vertical_look_was_up = true;
 
     uint32_t dash = 0;
     bool is_dashing = false;
