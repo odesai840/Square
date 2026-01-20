@@ -39,7 +39,13 @@ void Player::OnUpdate(float delta_time)
 
     player_data.x_pos = GetPosition(player).x;
     player_data.y_pos = GetPosition(player).y;
-    player_data.health = 10;
+    for (auto& player_property : GetAllEntityProperties(player))
+    {
+        if (Character* player_character = dynamic_cast<Character*>(player_property))
+        {
+            player_data.health = player_character->health;
+        }
+    }
     player_data.level = level;
 
     // DEBUG KEYS
@@ -321,13 +327,15 @@ void Player::OnCollision(float delta_time)
             SquareCore::Vec2 player_velocity = GetVelocity(player);
     
             float knockback_x = (player_direction == Direction::RIGHT ? -1.0f : 1.0f) * 500.0f;
-            float knockback_y = 200.0f;
+            float knockback_y = collision.second != 0 ? 200.0f : 0.0f;
+            collision.second == 0 ? knockback_x *= 10.0f : knockback_x *= 1.0f;
 
             SetVelocity(player, knockback_x, knockback_y);
 
             bool can_hit = true;
             JumpEnemy* jump_enemy = nullptr;
             ChargeEnemy* charge_enemy = nullptr;
+            JumpBoss* jump_boss = nullptr;
     
             for (auto& enemy_property : GetAllEntityProperties(collision.first))
             {
@@ -341,6 +349,12 @@ void Player::OnCollision(float delta_time)
                 {
                     charge_enemy = ce;
                     if (charge_enemy->hit_player_this_attack)
+                        can_hit = false;
+                }
+                if (JumpBoss* jb = dynamic_cast<JumpBoss*>(enemy_property))
+                {
+                    jump_boss = jb;
+                    if (jump_boss->hit_player_this_attack)
                         can_hit = false;
                 }
             }
@@ -359,14 +373,14 @@ void Player::OnCollision(float delta_time)
                                     jump_enemy->hit_player_this_attack = true;
                                 if (charge_enemy)
                                     charge_enemy->hit_player_this_attack = true;
+                                if (jump_boss)
+                                    jump_boss->hit_player_this_attack = true;
                         
                                 player_character->health -= enemy_character->damage;
                                 SDL_Log(("Player health: " + std::to_string(player_character->health)).c_str());
 
                                 if (player_character->health <= 0)
-                                {
                                     SetTimeScale(0.0f);
-                                }
                             }
                         }
                     }

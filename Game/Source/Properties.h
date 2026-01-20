@@ -44,3 +44,20 @@ struct ChargeEnemy : SquareCore::Property
     }
     
 };
+
+struct JumpBoss : SquareCore::Property
+{
+    float jump_cooldown = 3.0f;
+    float jump_cooldown_timer = 0.0f;
+    SquareCore::Vec2 jump_force = {5.0f, 3500.0f};
+    
+    float charge_force = 6000.0f;
+    float charge_windup_time = 0.5f;
+    float charge_windup_timer = 0.0f;
+    bool is_winding_up = false;
+
+    float close_range = 500.0f;
+    float far_range = 2000.0f;
+    
+    bool hit_player_this_attack = false;
+};

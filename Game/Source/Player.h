@@ -26,7 +26,6 @@ private:
     void OnCollision(float delta_time);
     bool IsGrounded(uint32_t playerId);
     bool EnemyHitByCurrentSlash(uint32_t enemy_id);
-    bool RecentlyHitByEnemy(uint32_t enemy_id);
 
 private:
     PlayerData player_data;
