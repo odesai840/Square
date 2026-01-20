@@ -15,6 +15,12 @@ private:
     std::vector<uint32_t> enemies;
     unsigned int jump_enemy_count = 0;
     unsigned int charge_enemy_count = 1;
+    
+    std::vector<SquareCore::Vec2> enemy_collider_vertices={
+        SquareCore::Vec2(-27.5f, -27.5f),
+        SquareCore::Vec2(0.0f, 27.5f),
+        SquareCore::Vec2(27.5f, -27.5f)
+    };
 
     uint32_t jump_boss = 0;
 };

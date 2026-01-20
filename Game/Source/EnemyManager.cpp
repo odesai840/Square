@@ -14,6 +14,7 @@ void EnemyManager::OnStart()
         SetEntityPersistent(enemies[enemies.size() - 1], true);
         AddPropertyToEntity(enemies[enemies.size() - 1], new Character(5));
         AddPropertyToEntity(enemies[enemies.size() - 1], new JumpEnemy(200.0f, 3.0f, {1000.0f, 1600.0f}));
+        SetColliderPolygon(enemies[i], enemy_collider_vertices);
     }
     for (unsigned int i = 0; i < charge_enemy_count; i++)
     {
@@ -27,6 +28,7 @@ void EnemyManager::OnStart()
         SetEntityPersistent(enemies[enemies.size() - 1], true);
         AddPropertyToEntity(enemies[enemies.size() - 1], new Character(5));
         AddPropertyToEntity(enemies[enemies.size() - 1], new ChargeEnemy(800.0f, 3.0f, 2000.0f));
+        SetColliderPolygon(enemies[i], enemy_collider_vertices);
     }
 
     /*
