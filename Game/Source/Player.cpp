@@ -19,7 +19,7 @@ void Player::OnStart()
 
     float dash_fps = 6.0f / dash_length;
     dash = AddAnimatedEntity("Resources/Sprites/dash-sheet.png", 6, dash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 1.0f, 0.5f, false);
-    SetColliderType(dash, SquareCore::ColliderType::TRIGGER);
+    SetColliderType(dash, SquareCore::ColliderType::NONE);
     AddTagToEntity(dash, "PlayerDash");
     SetEntityVisible(dash, false);
     SetEntityPersistent(dash, true);
@@ -34,8 +34,8 @@ void Player::OnUpdate(float delta_time)
     Jump(delta_time);
     Dash(delta_time);
     Slash(delta_time);
-    
     OnCollision(delta_time);
+    UpdateBounceEntities(delta_time);
 
     player_data.x_pos = GetPosition(player).x;
     player_data.y_pos = GetPosition(player).y;
@@ -316,6 +316,7 @@ void Player::OnCollision(float delta_time)
 {
     bool bouncing = false;
     bool onlyCollidingWithTop = true;
+    uint32_t bounce_entity = 0;
     std::vector<std::pair<uint32_t, int>> collisions = GetEntityCollisions(player);
     for (const auto& collision : collisions)
     {
@@ -392,17 +393,75 @@ void Player::OnCollision(float delta_time)
         if (EntityHasTag(collision.first, "Bounce"))
         {
             bouncing = true;
+            bounce_entity = collision.first;
             if (collision.second != 2)
                 onlyCollidingWithTop = false;
         }
     }
 
-    if (bouncing && onlyCollidingWithTop)
+    if (bouncing && onlyCollidingWithTop && bounce_entity)
+        HandleBounceEntities(delta_time, bounce_entity);
+}
+
+void Player::HandleBounceEntities(float delta_time, uint32_t current_bounce_entity)
+{
+    SquareCore::Vec2 player_velocity = GetVelocity(player);
+    float bounce = 1200.0f;
+    SetVelocity(player, player_velocity.x, bounce);
+    
+    bool already_bouncing = false;
+    for (const auto& bounce : recently_bounced_on)
     {
-        bouncing = false;
-        SquareCore::Vec2 player_velocity = GetVelocity(player);
-        float bounce = 1200.0f;
-        SetVelocity(player, player_velocity.x, bounce);
+        if (bounce.id == current_bounce_entity)
+        {
+            already_bouncing = true;
+            break;
+        }
+    }
+    
+    if (!already_bouncing)
+    {
+        BounceEntity new_bounce;
+        new_bounce.id = current_bounce_entity;
+        new_bounce.original_scale_y = GetScale(current_bounce_entity).y;
+        new_bounce.original_position_y = GetPosition(current_bounce_entity).y;
+        recently_bounced_on.push_back(new_bounce);
+        
+        SquareCore::Vec2 bounce_position = GetPosition(current_bounce_entity);
+        SetScale(current_bounce_entity, SquareCore::Vec2(0.15f, 0.075f));
+        SetPosition(current_bounce_entity, bounce_position.x, bounce_position.y - 20.0f);
+    }
+}
+
+void Player::UpdateBounceEntities(float delta_time)
+{
+    float lerp_speed = 5.0f * delta_time;
+    
+    for (int i = recently_bounced_on.size() - 1; i >= 0; i--)
+    {
+        BounceEntity& squish = recently_bounced_on[i];
+        
+        if (!EntityExists(squish.id))
+        {
+            recently_bounced_on.erase(recently_bounced_on.begin() + i);
+            continue;
+        }
+        
+        SquareCore::Vec2 current_scale = GetScale(squish.id);
+        SquareCore::Vec2 current_position = GetPosition(squish.id);
+        
+        float new_scale_y = SquareCore::Lerp(current_scale.y, squish.original_scale_y, lerp_speed);
+        float new_position_y = SquareCore::Lerp(current_position.y, squish.original_position_y, lerp_speed);
+        
+        SetScale(squish.id, {current_scale.x, new_scale_y});
+        SetPosition(squish.id, current_position.x, new_position_y);
+        
+        if (abs(new_scale_y - squish.original_scale_y) < 0.001f && abs(new_position_y - squish.original_position_y) < 0.5f)
+        {
+            SetScale(squish.id, {current_scale.x, squish.original_scale_y});
+            SetPosition(squish.id, current_position.x, squish.original_position_y);
+            recently_bounced_on.erase(recently_bounced_on.begin() + i);
+        }
     }
 }
 

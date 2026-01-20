@@ -12,6 +12,13 @@ enum class Direction : uint8_t
     LEFT = 3,
 };
 
+struct BounceEntity
+{
+    uint32_t id;
+    float original_scale_y;
+    float original_position_y;
+};
+
 class Player : public SquareCore::Script {
 public:
     void OnStart() override;
@@ -26,6 +33,8 @@ private:
     void OnCollision(float delta_time);
     bool IsGrounded(uint32_t playerId);
     bool EnemyHitByCurrentSlash(uint32_t enemy_id);
+    void HandleBounceEntities(float delta_time, uint32_t current_bounce_entity);
+    void UpdateBounceEntities(float delta_time);
 
 private:
     PlayerData player_data;
@@ -66,8 +75,6 @@ private:
     std::vector<uint32_t> damaged_by_slash_enemies;
 
     std::vector<uint32_t> recently_hit_by_enemies;
-    float invicibility_duration = 0.5f;
-    float invincibility_timer = 0.0f;
-
     std::vector<uint32_t> enemies_to_remove;
+    std::vector<BounceEntity> recently_bounced_on;
 };

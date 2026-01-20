@@ -2,9 +2,9 @@
     "entities": [
         {
             "color": [
-                0,
-                70,
-                150,
+                200,
+                200,
+                255,
                 255
             ],
             "isSpriteless": false,
@@ -16,7 +16,7 @@
                 0.15,
                 0.1
             ],
-            "spritePath": "Resources/Sprites/square.png",
+            "spritePath": "Resources/Sprites/mushroom.png",
             "tags": [
                 "Bounce"
             ],
@@ -134,9 +134,9 @@
         },
         {
             "color": [
-                0,
-                70,
-                150,
+                200,
+                200,
+                255,
                 255
             ],
             "isSpriteless": false,
@@ -149,7 +149,7 @@
                 0.15,
                 0.1
             ],
-            "spritePath": "Resources/Sprites/square.png",
+            "spritePath": "Resources/Sprites/mushroom.png",
             "tags": [
                 "Bounce"
             ],
