@@ -50,7 +50,10 @@ void Player::OnUpdate(float delta_time)
     if (GetKeyPressed(debug_hot_reload))
         LoadScene(level_path);
     if (GetKeyPressed(debug_mouse_cursor))
-        SetMouseVisible(!mouse_visible);
+    {
+        mouse_visible = !mouse_visible;
+        SetMouseVisible(mouse_visible);
+    }
     if (GetKeyPressed(debug_restart_game))
     {
         for (auto& player_property : GetAllEntityProperties(player))
@@ -324,6 +327,7 @@ void Player::OnCollision(float delta_time)
 
             bool can_hit = true;
             JumpEnemy* jump_enemy = nullptr;
+            ChargeEnemy* charge_enemy = nullptr;
     
             for (auto& enemy_property : GetAllEntityProperties(collision.first))
             {
@@ -331,6 +335,12 @@ void Player::OnCollision(float delta_time)
                 {
                     jump_enemy = je;
                     if (jump_enemy->hit_player_this_attack)
+                        can_hit = false;
+                }
+                if (ChargeEnemy* ce = dynamic_cast<ChargeEnemy*>(enemy_property))
+                {
+                    charge_enemy = ce;
+                    if (charge_enemy->hit_player_this_attack)
                         can_hit = false;
                 }
             }
@@ -347,6 +357,8 @@ void Player::OnCollision(float delta_time)
                             {
                                 if (jump_enemy)
                                     jump_enemy->hit_player_this_attack = true;
+                                if (charge_enemy)
+                                    charge_enemy->hit_player_this_attack = true;
                         
                                 player_character->health -= enemy_character->damage;
                                 SDL_Log(("Player health: " + std::to_string(player_character->health)).c_str());
