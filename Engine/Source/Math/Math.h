@@ -3,8 +3,7 @@
 
 #include "MathFunctions.h"
 #include <cmath>
-#include <string>
-#include <ostream>
+#include <cstdio>
 
 #define MATH_PI 3.14159265358979323846f
 #define MATH_TAU (MATH_PI * 2.0)
@@ -138,11 +137,13 @@ struct Vec2 {
     static Vec2 down() { return Vec2(0.0f, -1.0f); }
     static Vec2 left() { return Vec2(-1.0f, 0.0f); }
     static Vec2 right() { return Vec2(1.0f, 0.0f); }
+    
+    char* ToString() const {
+        static char buffer[64];
+        snprintf(buffer, sizeof(buffer), "{%.1f, %.1f}", x, y);
+        return buffer;
+    }
 };
-
-inline std::ostream& operator<<(std::ostream& os, const Vec2& v) {
-    return os << "{" << v.x << "," << v.y << "}";
-}
 
 }
 

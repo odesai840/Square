@@ -1,10 +1,9 @@
 ﻿#pragma once
 
-#include "Math/Math.h"
 #include "UI/Color.h"
 #include <SDL3_ttf/SDL_ttf.h>
 #include <functional>
-#include <cstdint>
+#include <string>
 
 namespace SquareCore
 {
