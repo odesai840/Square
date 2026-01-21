@@ -93,7 +93,7 @@ public:
 
     void SetVisible(uint32_t entityID, bool visible);
     void ResetAnimation(uint32_t entityID);
-    void SetAnimationPaused(uint32_t entityID, bool paused);
+    void SetAnimationFPS(uint32_t entityID, float fps);
     void SetAnimationFrame(uint32_t entityID, int frame);
     bool IsAnimationComplete(uint32_t entityID) const;
     int GetTotalFrames(uint32_t entityID) const;

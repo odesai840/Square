@@ -41,7 +41,7 @@ struct JumpEnemy : SquareCore::Property
     
     SquareCore::Vec2 base_scale = {1.0f, 1.0f};
     
-    float detection_range = 200.0f;
+    float detection_range = 400.0f;
     float jump_cooldown = 2.0f;
     float cooldown_timer = 0.0f;
     

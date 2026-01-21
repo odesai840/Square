@@ -172,9 +172,9 @@ namespace SquareCore
         if (entityManagerRef) entityManagerRef->ResetAnimation(entityID);
     }
 
-    void Script::SetAnimationPaused(uint32_t entityID, bool paused)
+    void Script::SetAnimationFPS(uint32_t entityID, float fps)
     {
-        if (entityManagerRef) entityManagerRef->SetAnimationPaused(entityID, paused);
+        if (entityManagerRef) entityManagerRef->SetAnimationFPS(entityID, fps);
     }
 
     void Script::SetAnimationFrame(uint32_t entityID, int frame)

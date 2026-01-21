@@ -546,17 +546,14 @@ namespace SquareCore
         }
     }
 
-    void EntityManager::SetAnimationPaused(uint32_t entityID, bool paused)
+    void EntityManager::SetAnimationFPS(uint32_t entityID, float fps)
     {
         std::lock_guard<std::mutex> lock(entityMutex);
         auto it = idToIndex.find(entityID);
         if (it != idToIndex.end())
         {
             Entity& entity = entities[it->second];
-            if (paused)
-            {
-                entity.fps = 0.0f;
-            }
+            entity.fps = fps;
         }
     }
 

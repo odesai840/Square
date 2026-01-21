@@ -10,20 +10,39 @@ void Player::OnStart()
     SetEntityPersistent(player, true);
     AddPropertyToEntity(player, new Character(10));
 
-    float slash_fps = 7.0f / slash_length;
+    slash_fps = 7.0f / slash_length;
     slash = AddAnimatedEntity("Resources/Sprites/slash-sheet.png", 7, slash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 0.25f, 0.1f, false);
     SetColliderType(slash, SquareCore::ColliderType::TRIGGER);
     AddTagToEntity(slash, "PlayerSlash");
     SetEntityVisible(slash, false);
     SetEntityPersistent(slash, true);
 
-    float dash_fps = 6.0f / dash_length;
+    dash_fps = 6.0f / dash_length;
     dash = AddAnimatedEntity("Resources/Sprites/dash-sheet.png", 6, dash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 1.0f, 0.5f, false);
     SetColliderType(dash, SquareCore::ColliderType::NONE);
     AddTagToEntity(dash, "PlayerDash");
     SetEntityVisible(dash, false);
     SetEntityPersistent(dash, true);
     SetEntityColor(dash, SquareCore::RGBA(200, 200, 200, 255));
+
+    
+    projectile_fps = 100.0f;
+    for (int i = 0; i < 5; i++)
+    {
+        int slot = projectile_pool.Alloc();
+        ProjectileEntity* projectile = static_cast<ProjectileEntity*>(projectile_pool.GetPointer(slot));
+        projectile->id = AddAnimatedEntity("Resources/Sprites/projectile-sheet.png", 4, projectile_fps, player_data.x_pos, player_data.y_pos, 0.0f, 0.1f, 0.1f, false);
+        projectile->active = false;
+        projectile->timer = 0.0f;
+        projectile->direction = Direction::LEFT;
+
+        SetColliderType(projectile->id, SquareCore::ColliderType::TRIGGER);
+        AddTagToEntity(projectile->id, "PlayerProjectile");
+        SetEntityVisible(projectile->id, false);
+        SetEntityPersistent(projectile->id, true);
+        SetColliderBox(projectile->id, 50.0f, 25.0f);
+        SetZIndex(projectile->id, -1);
+    }
 
     SetGravity(-1500.0f);
 }
@@ -34,6 +53,7 @@ void Player::OnUpdate(float delta_time)
     Jump(delta_time);
     Dash(delta_time);
     Slash(delta_time);
+    Projectile(delta_time);
     OnCollision(delta_time);
     UpdateBounceEntities(delta_time);
 
@@ -375,6 +395,18 @@ void Player::TakeDamage(Character* player_character, int damage)
     {
         SetTimeScale(0.0f);
         SDL_Log("Player died");
+    }
+}
+
+void Player::DealDamage(Character* enemy_character, uint32_t enemy_id, int damage)
+{
+    enemy_character->health -= damage;
+    SDL_Log(("Enemy : " + std::to_string(enemy_id) + " now has " + std::to_string(enemy_character->health) + " health").c_str());
+
+    if (enemy_character->health <= 0)
+    {
+        SDL_Log(("Enemy : " + std::to_string(enemy_id) + " died").c_str());
+        enemies_to_remove.push_back(enemy_id);
     }
 }
 

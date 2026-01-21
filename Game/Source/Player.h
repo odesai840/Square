@@ -11,8 +11,17 @@ struct BounceEntity
     float original_position_y;
 };
 
+struct ProjectileEntity
+{
+    uint32_t id;
+    bool active = false;
+    float timer = 0.0f;
+    Direction direction = Direction::LEFT;
+};
+
 class Player : public SquareCore::Script {
 public:
+    Player() : projectile_pool(sizeof(ProjectileEntity), 5) {}
     void OnStart() override;
     void OnUpdate(float delta_time) override;
 
@@ -29,6 +38,7 @@ private:
     void HandleBounceEntities(float delta_time, uint32_t current_bounce_entity);
     void UpdateBounceEntities(float delta_time);
     void TakeDamage(Character* player_character, int damage);
+    void DealDamage(Character* enemy_character, uint32_t enemy_id, int damage);
 
 private:
     PlayerData player_data;
@@ -44,9 +54,16 @@ private:
 
     Direction player_direction = Direction::LEFT;
 
+    int slash_damage = 1;
+    int projectile_damage = 2;
+
     float move_speed = 350.0f;
     float acceleration = 15.0f;
     float jump_velocity = 1000.0f;
+
+    float slash_fps = 0.0f;
+    float dash_fps = 0.0f;
+    float projectile_fps = 0.0f;
 
     bool can_double_jump = false;
 
@@ -57,14 +74,14 @@ private:
     bool is_looking_up = false;
     bool is_looking_down = false;
     bool last_vertical_look_was_up = true;\
-    
-    uint32_t projectile = 0;
-    bool projectile_active = false;
-    float projectile_speed = 800.0f;
+
+    SquareCore::PoolAllocator projectile_pool;
+    float projectile_max_life = 3.0f;
+    float projectile_speed = 1200.0f;
     float projectile_cooldown = 1.0f;
     float projectile_cooldown_elapsed = 0.0f;
     bool projectile_in_cooldown = false;
-    Direction projectile_direction = Direction::LEFT;
+    float projectile_knockback = 1200.0f;
 
     uint32_t dash = 0;
     bool is_dashing = false;

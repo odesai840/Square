@@ -112,14 +112,7 @@ void Player::Slash(float delta_time)
                 {
                     if (Character* health_property = dynamic_cast<Character*>(property))
                     {
-                        health_property->health -= 1;
-                        SDL_Log(("Enemy : " + std::to_string(collision.first) + " now has " + std::to_string(health_property->health) + " health").c_str());
-
-                        if (health_property->health <= 0)
-                        {
-                            SDL_Log(("Enemy : " + std::to_string(collision.first) + " died").c_str());
-                            enemies_to_remove.push_back(collision.first);
-                        }
+                        DealDamage(health_property, collision.first, slash_damage);
                     }
                 }
             }
@@ -151,33 +144,105 @@ void Player::Projectile(float delta_time)
 
     SquareCore::Vec2 player_position = GetPosition(player);
     
-    if (GetMouseButtonPressed(1) && !projectile_active && !projectile_in_cooldown)
+    if (GetMouseButtonPressed(2) && !projectile_in_cooldown)
     {
-        projectile_active = true;
-        projectile_in_cooldown = true;
-        projectile_cooldown_elapsed = 0.0f;
-        projectile_direction = player_direction;
+        for (int i = 0; i < projectile_pool.GetTotal(); i++)
+        {
+            ProjectileEntity* projectile = static_cast<ProjectileEntity*>(projectile_pool.GetPointer(i));
+            if (!projectile->active)
+            {
+                projectile->active = true;
+                projectile->timer = 0.0f;
+                projectile->direction = player_direction;
+                projectile_in_cooldown = true;
+                projectile_cooldown_elapsed = 0.0f;
+
         
-        SquareCore::Vec2 spawn_offset = {0.0f, 10.0f};
-        if (projectile_direction == Direction::RIGHT)
-            spawn_offset.x = 80.0f;
-        else if (projectile_direction == Direction::LEFT)
-            spawn_offset.x = -80.0f;
+                SquareCore::Vec2 spawn_offset = {0.0f, 10.0f};
+                if (projectile->direction == Direction::RIGHT)
+                    spawn_offset.x = 40.0f;
+                else if (projectile->direction == Direction::LEFT)
+                    spawn_offset.x = -40.0f;
         
-        SetPosition(projectile, player_position.x + spawn_offset.x, player_position.y + spawn_offset.y);
-        ResetAnimation(projectile);
-        SetEntityVisible(projectile, true);
-        
-        float velocity_x = (projectile_direction == Direction::RIGHT) ? projectile_speed : -projectile_speed;
-        SetVelocity(projectile, velocity_x, 0.0f);
+                SetPosition(projectile->id, player_position.x + spawn_offset.x, player_position.y + spawn_offset.y);
+                ResetAnimation(projectile->id);
+                FlipSprite(projectile->id, projectile->direction != Direction::RIGHT, false);
+                SetAnimationFPS(projectile->id, projectile_fps);
+                SetAnimationFrame(projectile->id, 0);
+                SetEntityVisible(projectile->id, true);
+
+                float direction = player_direction == Direction::RIGHT ? -1.0f : 1.0f;
+                SetVelocity(player, (direction * 1200.0f), 0.0f);
+                break;
+            }
+        }
     }
     
-    if (projectile_active)
+    for (int i = 0; i < projectile_pool.GetTotal(); i++)
     {
-        if (IsAnimationComplete(projectile))
+        ProjectileEntity* projectile = static_cast<ProjectileEntity*>(projectile_pool.GetPointer(i));
+        if (!projectile->active) continue;
+        projectile->timer += delta_time;
+
+        SquareCore::Vec2 current_position = GetPosition(projectile->id);
+        float movement = projectile_speed * delta_time;
+        if (projectile->direction == Direction::RIGHT)
+            SetPosition(projectile->id, current_position.x + movement, current_position.y);
+        else
+            SetPosition(projectile->id, current_position.x - movement, current_position.y);
+        
+        if (IsAnimationComplete(projectile->id))
         {
-            int final_frame = GetTotalFrames(projectile) - 1;
-            SetAnimationFrame(projectile, final_frame);
+            int final_frame = GetTotalFrames(projectile->id) - 1;
+            SetAnimationFrame(projectile->id, final_frame);
+            SetAnimationFPS(projectile->id, 0.0f);
+        }
+        
+        std::vector<std::pair<uint32_t, int>> collisions = GetEntityCollisions(projectile->id);
+        for (const auto& collision : collisions)
+        {
+            if (!EntityExists(collision.first)) continue;
+
+            if (EntityHasTag(collision.first, "Ground"))
+            {
+                projectile->active = false;
+                SetEntityVisible(projectile->id, false);
+            }
+            if (EntityHasTag(collision.first, "Enemy"))
+            {
+                for (auto& property : GetAllEntityProperties(collision.first))
+                {
+                    if (ChargeEnemy* charge_enemy = dynamic_cast<ChargeEnemy*>(property))
+                    {
+                        charge_enemy->aware_of_player = true;
+                    }
+                }
+
+                SquareCore::Vec2 enemy_position = GetPosition(collision.first);
+                SquareCore::Vec2 projectile_position = GetPosition(projectile->id);
+
+                float direction_x = enemy_position.x - projectile_position.x;
+                float knockback_x = (projectile->direction == Direction::RIGHT ? 1.0f : -1.0f) * projectile_knockback;
+                float knockback_y = 300.0f;
+                
+                SetVelocity(collision.first, knockback_x, knockback_y);
+
+                for (auto& property : GetAllEntityProperties(collision.first))
+                {
+                    if (Character* health_property = dynamic_cast<Character*>(property))
+                        DealDamage(health_property, collision.first, projectile_damage);
+                }
+            
+                projectile->active = false;
+                SetEntityVisible(projectile->id, false);
+                break;
+            }
+        }
+
+        if (projectile->timer >= projectile_max_life)
+        {
+            projectile->active = false;
+            SetEntityVisible(projectile->id, false);
         }
     }
     
