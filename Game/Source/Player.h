@@ -45,6 +45,10 @@ private:
     float acceleration = 15.0f;
     float jump_velocity = 1000.0f;
 
+    bool can_take_damage = true;
+    float can_take_damage_cooldown = 0.1f;
+    float can_take_damage_timer = 0.0f;
+
     bool is_looking_up = false;
     bool is_looking_down = false;
     bool last_vertical_look_was_up = true;

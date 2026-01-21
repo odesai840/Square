@@ -89,7 +89,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 1
         },

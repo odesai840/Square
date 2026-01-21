@@ -37,6 +37,16 @@ void Player::OnUpdate(float delta_time)
     OnCollision(delta_time);
     UpdateBounceEntities(delta_time);
 
+    if (!can_take_damage)
+    {
+        can_take_damage_timer += delta_time;
+        if (can_take_damage_timer >= can_take_damage_cooldown)
+        {
+            can_take_damage = true;
+            can_take_damage_timer = 0.0f;
+        }
+    }
+
     player_data.x_pos = GetPosition(player).x;
     player_data.y_pos = GetPosition(player).y;
     for (auto& player_property : GetAllEntityProperties(player))
@@ -340,6 +350,9 @@ void Player::OnCollision(float delta_time)
 
 void Player::TakeDamage(Character* player_character, int damage)
 {
+    if (!can_take_damage) return;
+    can_take_damage = false;
+    
     player_character->health -= damage;
     SDL_Log(("Player health: " + std::to_string(player_character->health)).c_str());
 
