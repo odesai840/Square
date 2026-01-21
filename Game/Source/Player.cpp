@@ -158,11 +158,11 @@ void Player::Jump(float delta_time)
         {
             SetVelocity(player, player_velocity.x, jump_velocity);
         }
-        player_velocity = GetVelocity(player);
     }
     
     if (!grounded && player_velocity.y < 0.0f)
     {
+        player_velocity = GetVelocity(player);
         SetVelocity(player, player_velocity.x, player_velocity.y - (1500.0f * delta_time));
     }
 }
@@ -185,6 +185,7 @@ void Player::Dash(float delta_time)
             dash_cooldown_elapsed = 0.0f;
         }
         
+        player_velocity = GetVelocity(player);
         SetVelocity(player, (player_direction == Direction::LEFT ? -dash_velocity : dash_velocity) + player_velocity.x, 0.0f);
 
         SquareCore::Vec2 offset_position = {0.0f, 0.0f};
@@ -271,8 +272,6 @@ void Player::OnCollision(float delta_time)
         // player collides with an enemy
         if (EntityHasTag(collision.first, "Enemy"))
         {
-            SquareCore::Vec2 player_velocity = GetVelocity(player);
-    
             float knockback_x = (player_direction == Direction::RIGHT ? -1.0f : 1.0f) * 500.0f;
             float knockback_y = collision.second != 0 ? 200.0f : 0.0f;
             collision.second == 0 ? knockback_x *= 10.0f : knockback_x *= 1.0f;

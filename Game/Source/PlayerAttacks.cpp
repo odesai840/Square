@@ -68,7 +68,7 @@ void Player::Slash(float delta_time)
             {
                 if (slash_direction == Direction::DOWN)
                 {
-                    SquareCore::Vec2 player_velocity = GetVelocity(player);
+                    player_velocity = GetVelocity(player);
                     float pogo_bounce = 800.0f;
                     SetVelocity(player, player_velocity.x, pogo_bounce);
                 }
@@ -147,4 +147,47 @@ void Player::Slash(float delta_time)
 
 void Player::Projectile(float delta_time)
 {
+    if (!has_projectile) return;
+
+    SquareCore::Vec2 player_position = GetPosition(player);
+    
+    if (GetMouseButtonPressed(1) && !projectile_active && !projectile_in_cooldown)
+    {
+        projectile_active = true;
+        projectile_in_cooldown = true;
+        projectile_cooldown_elapsed = 0.0f;
+        projectile_direction = player_direction;
+        
+        SquareCore::Vec2 spawn_offset = {0.0f, 10.0f};
+        if (projectile_direction == Direction::RIGHT)
+            spawn_offset.x = 80.0f;
+        else if (projectile_direction == Direction::LEFT)
+            spawn_offset.x = -80.0f;
+        
+        SetPosition(projectile, player_position.x + spawn_offset.x, player_position.y + spawn_offset.y);
+        ResetAnimation(projectile);
+        SetEntityVisible(projectile, true);
+        
+        float velocity_x = (projectile_direction == Direction::RIGHT) ? projectile_speed : -projectile_speed;
+        SetVelocity(projectile, velocity_x, 0.0f);
+    }
+    
+    if (projectile_active)
+    {
+        if (IsAnimationComplete(projectile))
+        {
+            int final_frame = GetTotalFrames(projectile) - 1;
+            SetAnimationFrame(projectile, final_frame);
+        }
+    }
+    
+    if (projectile_in_cooldown)
+    {
+        projectile_cooldown_elapsed += delta_time;
+        if (projectile_cooldown_elapsed >= projectile_cooldown)
+        {
+            projectile_in_cooldown = false;
+            projectile_cooldown_elapsed = 0.0f;
+        }
+    }
 }
