@@ -11,7 +11,7 @@ void Player::OnStart()
     AddPropertyToEntity(player, new Character(10));
 
     slash_fps = 7.0f / slash_length;
-    slash = AddAnimatedEntity("Resources/Sprites/slash-sheet.png", 7, slash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 0.25f, 0.1f, false);
+    slash = AddAnimatedEntity("Resources/Sprites/slash-sheet-2.png", 7, slash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 0.25f, 0.1f, false);
     SetColliderType(slash, SquareCore::ColliderType::TRIGGER);
     AddTagToEntity(slash, "PlayerSlash");
     SetEntityVisible(slash, false);
