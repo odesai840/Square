@@ -9,12 +9,14 @@ public:
     void OnStart() override;
     void OnUpdate(float deltaTime) override;
 
+    void LoadEnemies();
+
 private:
     uint32_t player = 0;
     
     std::vector<uint32_t> enemies;
     unsigned int jump_enemy_count = 0;
-    unsigned int charge_enemy_count = 5;
+    unsigned int charge_enemy_count = 1;
     
     std::vector<SquareCore::Vec2> enemy_collider_vertices={
         SquareCore::Vec2(-27.5f, -27.5f),

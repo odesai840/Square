@@ -9,7 +9,7 @@ public:
     void OnUpdate(float deltaTime) override;
 
 private:
-    uint32_t ground;
-    uint32_t music;
+    uint32_t ground = 0;
+    uint32_t music = 0;
     uint32_t dialogTestTrigger = 0;
 };

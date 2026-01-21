@@ -4,14 +4,6 @@
 #include "GameStateManager.h"
 #include "Properties.h"
 
-enum class Direction : uint8_t
-{
-    UP = 0,
-    RIGHT = 1,
-    DOWN = 2,
-    LEFT = 3,
-};
-
 struct BounceEntity
 {
     uint32_t id;
@@ -74,6 +66,9 @@ private:
     float slash_knockback = 600.0f;
     Direction slash_direction = Direction::LEFT;
     std::vector<uint32_t> damaged_by_slash_enemies;
+    float slash_cooldown = 0.3f;
+    float slash_cooldown_elapsed = 0.0f;
+    bool slash_in_cooldown = false;
 
     std::vector<uint32_t> recently_hit_by_enemies;
     std::vector<uint32_t> enemies_to_remove;

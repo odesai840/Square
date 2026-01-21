@@ -7,9 +7,11 @@ void Player::Slash(float delta_time)
     SquareCore::Vec2 player_velocity = GetVelocity(player);
     SquareCore::Vec2 player_position = GetPosition(player);
     
-    if (GetMouseButtonPressed(0) && !is_slashing && !(player_velocity.x > 600.0f || player_velocity.x < -600.0f))
+    if (GetMouseButtonPressed(0) && !is_slashing && !slash_in_cooldown && !(player_velocity.x > 600.0f || player_velocity.x < -600.0f))
     {
         is_slashing = true;
+        slash_in_cooldown = true;
+        slash_cooldown_elapsed = 0.0f;
         
         if (is_looking_up)
         {
@@ -61,10 +63,29 @@ void Player::Slash(float delta_time)
         for (std::pair<uint32_t, int>& collision : collisions)
         {
             if (!EntityExists(collision.first)) continue;
+
+            if (EntityHasTag(collision.first, "Pogo"))
+            {
+                if (slash_direction == Direction::DOWN)
+                {
+                    SquareCore::Vec2 player_velocity = GetVelocity(player);
+                    float pogo_bounce = 800.0f;
+                    SetVelocity(player, player_velocity.x, pogo_bounce);
+                }
+            }
         
             if (EntityHasTag(collision.first, "Enemy") && !EnemyHitByCurrentSlash(collision.first))
             {
                 damaged_by_slash_enemies.push_back(collision.first);
+                
+                for (auto& property : GetAllEntityProperties(collision.first))
+                {
+                    if (ChargeEnemy* charge_enemy = dynamic_cast<ChargeEnemy*>(property))
+                    {
+                        charge_enemy->aware_of_player = true;
+                    }
+                }
+                
                 SquareCore::Vec2 enemy_velocity = GetVelocity(collision.first);
                 SquareCore::Vec2 enemy_position = GetPosition(collision.first);
 
@@ -79,10 +100,6 @@ void Player::Slash(float delta_time)
                 else if (slash_direction == Direction::DOWN)
                 {
                     knockback_y = -slash_knockback;
-                
-                    SquareCore::Vec2 player_velocity = GetVelocity(player);
-                    float pogo_bounce = 800.0f;
-                    SetVelocity(player, player_velocity.x, pogo_bounce);
                 }
                 else
                 {
@@ -114,6 +131,16 @@ void Player::Slash(float delta_time)
             damaged_by_slash_enemies.clear();
             slash_duration = 0.0f;
             is_slashing = false;
+        }
+    }
+
+    if (slash_in_cooldown)
+    {
+        slash_cooldown_elapsed += delta_time;
+        if (slash_cooldown_elapsed >= slash_cooldown)
+        {
+            slash_in_cooldown = false;
+            slash_cooldown_elapsed = 0.0f;
         }
     }
 }

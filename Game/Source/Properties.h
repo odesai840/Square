@@ -2,6 +2,21 @@
 
 #include "Script.h"
 
+enum class Direction : uint8_t
+{
+    UP = 0,
+    RIGHT = 1,
+    DOWN = 2,
+    LEFT = 3,
+};
+
+enum class ChargeState : uint8_t
+{
+    PATROLLING,
+    CHARGING,
+    STUNNED
+};
+
 struct Character : SquareCore::Property
 {
     int health = 10;
@@ -29,20 +44,28 @@ struct JumpEnemy : SquareCore::Property
 
 struct ChargeEnemy : SquareCore::Property
 {
-    float detection_range = 200.0f;
-    float charge_cooldown = 3.0f;
-    float cooldown_timer = 0.0f;
-    float charge_force = 1000.0f;
-    bool chasing = false;
+    ChargeState state = ChargeState::PATROLLING;
+    Direction facing_direction = Direction::RIGHT;
+    bool aware_of_player = false;
+    
+    float patrol_point_a_x;
+    float patrol_point_b_x;
+    float patrol_speed = 100.0f;
+    
+    float charge_duration = 2.0f;
+    float charge_elapsed = 0.0f;
+    float charge_speed = 400.0f;
+    
+    float stun_duration = 3.0f;
+    float stun_elapsed = 0.0f;
+    
     bool hit_player_this_attack = false;
     
-    ChargeEnemy(float detection_range, float charge_cooldown, float charge_force)
+    ChargeEnemy(float spawn_x, float patrol_range = 400.0f)
     {
-        this->detection_range = detection_range;
-        this->charge_cooldown = charge_cooldown;
-        this->charge_force = charge_force;
+        this->patrol_point_a_x = spawn_x;
+        this->patrol_point_b_x = spawn_x + patrol_range;
     }
-    
 };
 
 struct JumpBoss : SquareCore::Property

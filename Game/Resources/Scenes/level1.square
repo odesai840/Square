@@ -2,6 +2,55 @@
     "entities": [
         {
             "color": [
+                120,
+                0,
+                0,
+                255
+            ],
+            "physApplied": true,
+            "isSpriteless": false,
+            "position": [
+                300.0,
+                -100.0
+            ],
+            "scale": [
+                0.05,
+                0.05
+            ],
+            "spritePath": "Resources/Sprites/triangle.png",
+            "tags": [
+                "Enemy",
+                "ChargeEnemy",
+                "Pogo"
+            ],
+            "zIndex": 2
+        },
+        {
+            "color": [
+                120,
+                0,
+                0,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                500.0,
+                -100.0
+            ],
+            "physApplied": true,
+            "scale": [
+                0.05,
+                0.05
+            ],
+            "spritePath": "Resources/Sprites/triangle.png",
+            "tags": [
+                "Enemy",
+                "JumpEnemy",
+                "Pogo"
+            ],
+            "zIndex": 2
+        },{
+            "color": [
                 200,
                 200,
                 255,
@@ -130,7 +179,7 @@
             "tags": [
                 "Ground"
             ],
-            "zIndex": 0
+            "zIndex": 1
         },
         {
             "color": [
