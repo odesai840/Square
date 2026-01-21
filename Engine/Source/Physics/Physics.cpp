@@ -1,5 +1,4 @@
 #include "Physics.h"
-#include "SDL3/SDL_log.h"
 
 namespace SquareCore 
 {

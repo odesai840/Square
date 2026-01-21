@@ -1,11 +1,13 @@
 #ifndef MATH_H
 #define MATH_H
 
+#include "MathFunctions.h"
 #include <cmath>
 #include <string>
 #include <ostream>
 
 #define MATH_PI 3.14159265358979323846f
+#define MATH_TAU (MATH_PI * 2.0)
 
 namespace SquareCore {
 
@@ -94,6 +96,40 @@ struct Vec2 {
     float distanceSquared(const Vec2& other) const {
         return (*this - other).magnitudeSquared();
     }
+    
+    Vec2 perpendicular() const {
+        return Vec2(-y, x);
+    }
+    
+    Vec2 reflect(const Vec2& normal) const {
+        return *this - normal * (2.0f * this->dot(normal));
+    }
+    
+    static Vec2 lookAt(const Vec2& from, const Vec2& to) {
+        return (to - from).normalized();
+    }
+    
+    static Vec2 lerp(const Vec2& a, const Vec2& b, float alpha) {
+        return Vec2(Lerp(a.x, b.x, alpha), Lerp(a.y, b.y, alpha));
+    }
+    
+    static Vec2 slerp(const Vec2& a, const Vec2& b, float alpha) {
+        float magA = a.magnitude();
+        float magB = b.magnitude();
+        
+        Vec2 normA = a.normalized();
+        Vec2 normB = b.normalized();
+        
+        float dotProduct = Clamp(normA.dot(normB), -1.0f, 1.0f);
+        float theta = acos(dotProduct) * alpha;
+        
+        Vec2 relative = normB - normA * dotProduct;
+        relative.normalize();
+        
+        float mag = magA + alpha * (magB - magA);
+        
+        return (normA * cos(theta) + relative * sin(theta)) * mag;
+    }
 
     // Static utility functions
     static Vec2 zero() { return Vec2(0.0f, 0.0f); }
@@ -106,10 +142,6 @@ struct Vec2 {
 
 inline std::ostream& operator<<(std::ostream& os, const Vec2& v) {
     return os << "{" << v.x << "," << v.y << "}";
-}
-
-inline float Lerp(float a, float b, float alpha) {
-    return a + alpha * (b - a);
 }
 
 }

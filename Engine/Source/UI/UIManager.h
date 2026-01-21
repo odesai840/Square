@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include <mutex>
 #include <functional>
-#include "Math/Math.h"
 
 namespace SquareCore
 {
