@@ -46,6 +46,23 @@ namespace SquareCore
         ProcessContactEvents(entities);
         ProcessSensorEvents();
         
+        std::vector<int64_t> keysToRemove;
+        for (const auto& [key, entityID] : shapeToEntityMap) {
+            bool entityExists = false;
+            for (const Entity& entity : entities) {
+                if (entity.ID == entityID) {
+                    entityExists = true;
+                    break;
+                }
+            }
+            if (!entityExists) {
+                keysToRemove.push_back(key);
+            }
+        }
+        for (int64_t key : keysToRemove) {
+            shapeToEntityMap.erase(key);
+        }
+        
         for (Entity& entity : entities) {
             auto it = collisionMap.find(entity.ID);
             if (it != collisionMap.end()) {

@@ -144,7 +144,7 @@
                 -290.0,
                 475.0
             ],
-            "rotation": 45.0,
+            "rotation": 30.0,
             "scale": [
                 0.15,
                 0.1
@@ -154,6 +154,29 @@
                 "Bounce"
             ],
             "zIndex": 0
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -327.5,
+                410.0
+            ],
+            "rotation": 30.0,
+            "scale": [
+                0.15,
+                0.05
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 1
         }
     ],
     "ui": []
