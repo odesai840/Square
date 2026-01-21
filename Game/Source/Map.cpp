@@ -1,5 +1,7 @@
 #include "Map.h"
 
+#include "PlayerKeybinds.h"
+
 void Map::OnStart()
 {
     //ground = AddEntity("Resources/Sprites/square.png", 0.0f, -800.0f, 0.0f, 5.0f, 1.0f, false);
@@ -15,6 +17,8 @@ void Map::OnStart()
     SetColliderType(dialogTestTrigger, SquareCore::ColliderType::TRIGGER);
     AddTagToEntity(dialogTestTrigger, "DialogTrigger");
     SetEntityPersistent(dialogTestTrigger, true);
+    
+    LoadScene(level_path);
 }
 
 void Map::OnUpdate(float deltaTime)
