@@ -13,13 +13,8 @@ void EnemyManager::LoadEnemies()
     std::vector<uint32_t> all_enemies_with_jump_enemy_tag = GetAllEntitiesWithTag("JumpEnemy");
     std::vector<uint32_t> all_enemies_with_charge_enemy_tag = GetAllEntitiesWithTag("ChargeEnemy");
 
-    SDL_Log("Found %d JumpEnemies, %d ChargeEnemies", 
-            (int)all_enemies_with_jump_enemy_tag.size(), 
-            (int)all_enemies_with_charge_enemy_tag.size());
-
     for (uint32_t jump_enemy : all_enemies_with_jump_enemy_tag)
     {
-        SDL_Log("Setting up JumpEnemy %u", jump_enemy);
         FlipSprite(jump_enemy, true, false);
         SetDrag(jump_enemy, 5.0f);
         SetEntityPersistent(jump_enemy, false);
@@ -29,12 +24,10 @@ void EnemyManager::LoadEnemies()
         enemies.push_back(jump_enemy);
         
         auto props = GetAllEntityProperties(jump_enemy);
-        SDL_Log("JumpEnemy %u now has %d properties", jump_enemy, (int)props.size());
     }
     
     for (uint32_t charge_enemy : all_enemies_with_charge_enemy_tag)
     {
-        SDL_Log("Setting up ChargeEnemy %u", charge_enemy);
         Direction random_direction = (rand() % 2 == 0) ? Direction::RIGHT : Direction::LEFT;
         FlipSprite(charge_enemy, random_direction == Direction::RIGHT, false);
         SetDrag(charge_enemy, 5.0f);
@@ -49,7 +42,6 @@ void EnemyManager::LoadEnemies()
         enemies.push_back(charge_enemy);
         
         auto props = GetAllEntityProperties(charge_enemy);
-        SDL_Log("ChargeEnemy %u now has %d properties", charge_enemy, (int)props.size());
     }
     
     /*jump_boss = AddEntity("Resources/Sprites/triangle.png", -2000.0f, 0.0f, 0.0f, 0.5f, 0.5f, true);

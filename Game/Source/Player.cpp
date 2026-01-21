@@ -53,8 +53,6 @@ void Player::OnUpdate(float delta_time)
         GameStateManager::SavePlayerData("Saves/S_001.square", player_data);
     if (GetKeyPressed(debug_collision))
         ToggleDebugCollisions();
-    if (GetKeyPressed(debug_hot_reload))
-        LoadScene(level_path);
     if (GetKeyPressed(debug_mouse_cursor))
     {
         mouse_visible = !mouse_visible;
