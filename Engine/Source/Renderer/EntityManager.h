@@ -93,6 +93,10 @@ public:
 
     void SetVisible(uint32_t entityID, bool visible);
     void ResetAnimation(uint32_t entityID);
+    void SetAnimationPaused(uint32_t entityID, bool paused);
+    void SetAnimationFrame(uint32_t entityID, int frame);
+    bool IsAnimationComplete(uint32_t entityID) const;
+    int GetTotalFrames(uint32_t entityID) const;
 
     void SetZIndex(uint32_t entityID, int zIndex);
     int GetZIndex(uint32_t entityID);

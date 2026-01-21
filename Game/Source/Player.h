@@ -21,6 +21,7 @@ private:
     void Jump(float delta_time);
     void Dash(float delta_time);
     void Slash(float delta_time);
+    void Projectile(float delta_time);
     
     void OnCollision(float delta_time);
     bool IsGrounded(uint32_t playerId);
@@ -37,8 +38,7 @@ private:
     // upgrades
     bool has_double_dash = true;
     bool has_double_jump = true;
-
-    bool can_double_jump = false;
+    bool has_projectile = true;
 
     SquareCore::Vec2 last_grounded_position;
 
@@ -48,13 +48,23 @@ private:
     float acceleration = 15.0f;
     float jump_velocity = 1000.0f;
 
+    bool can_double_jump = false;
+
     bool can_take_damage = true;
     float can_take_damage_cooldown = 0.1f;
     float can_take_damage_timer = 0.0f;
 
     bool is_looking_up = false;
     bool is_looking_down = false;
-    bool last_vertical_look_was_up = true;
+    bool last_vertical_look_was_up = true;\
+    
+    uint32_t projectile = 0;
+    bool projectile_active = false;
+    float projectile_speed = 800.0f;
+    float projectile_cooldown = 1.0f;
+    float projectile_cooldown_elapsed = 0.0f;
+    bool projectile_in_cooldown = false;
+    Direction projectile_direction = Direction::LEFT;
 
     uint32_t dash = 0;
     bool is_dashing = false;

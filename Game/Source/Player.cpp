@@ -150,8 +150,14 @@ void Player::Jump(float delta_time)
     if (GetKeyPressed(jump_bind) && (grounded || (has_double_jump && can_double_jump)))
     {
         if (!grounded)
+        {
             can_double_jump = false;
-        SetVelocity(player, player_velocity.x, jump_velocity);
+            SetVelocity(player, player_velocity.x, jump_velocity / 1.2f);
+        }
+        else
+        {
+            SetVelocity(player, player_velocity.x, jump_velocity);
+        }
         player_velocity = GetVelocity(player);
     }
     

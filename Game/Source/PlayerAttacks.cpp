@@ -144,3 +144,7 @@ void Player::Slash(float delta_time)
         }
     }
 }
+
+void Player::Projectile(float delta_time)
+{
+}

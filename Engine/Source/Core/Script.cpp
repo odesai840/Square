@@ -172,6 +172,28 @@ namespace SquareCore
         if (entityManagerRef) entityManagerRef->ResetAnimation(entityID);
     }
 
+    void Script::SetAnimationPaused(uint32_t entityID, bool paused)
+    {
+        if (entityManagerRef) entityManagerRef->SetAnimationPaused(entityID, paused);
+    }
+
+    void Script::SetAnimationFrame(uint32_t entityID, int frame)
+    {
+        if (entityManagerRef) entityManagerRef->SetAnimationFrame(entityID, frame);
+    }
+
+    bool Script::IsAnimationComplete(uint32_t entityID) const
+    {
+        if (entityManagerRef) return entityManagerRef->IsAnimationComplete(entityID);
+        return false;
+    }
+
+    int Script::GetTotalFrames(uint32_t entityID) const
+    {
+        if (entityManagerRef) return entityManagerRef->GetTotalFrames(entityID);
+        return 0;
+    }
+
     bool Script::EntityHasTag(uint32_t entityID, std::string tag)
     {
         if (entityManagerRef) return entityManagerRef->EntityHasTag(entityID, tag);

@@ -107,6 +107,10 @@ namespace SquareCore
         void SetEntityVisible(uint32_t entityID, bool visible);
         void SetEntityPersistent(uint32_t entityID, bool persistent);
         void ResetAnimation(uint32_t entityID);
+        void SetAnimationPaused(uint32_t entityID, bool paused);
+        void SetAnimationFrame(uint32_t entityID, int frame);
+        bool IsAnimationComplete(uint32_t entityID) const;
+        int GetTotalFrames(uint32_t entityID) const;
 
         bool EntityHasTag(uint32_t entityID, std::string tag);
         void AddTagToEntity(uint32_t entityID, std::string tag);

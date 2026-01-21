@@ -546,6 +546,57 @@ namespace SquareCore
         }
     }
 
+    void EntityManager::SetAnimationPaused(uint32_t entityID, bool paused)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            Entity& entity = entities[it->second];
+            if (paused)
+            {
+                entity.fps = 0.0f;
+            }
+        }
+    }
+
+    void EntityManager::SetAnimationFrame(uint32_t entityID, int frame)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            Entity& entity = entities[it->second];
+            if (frame >= 0 && frame < entity.totalFrames)
+            {
+                entity.currentFrame = frame;
+            }
+        }
+    }
+
+    bool EntityManager::IsAnimationComplete(uint32_t entityID) const
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            const Entity& entity = entities[it->second];
+            return entity.currentFrame >= entity.totalFrames - 1;
+        }
+        return false;
+    }
+
+    int EntityManager::GetTotalFrames(uint32_t entityID) const
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            return entities[it->second].totalFrames;
+        }
+        return 0;
+    }
+
     void EntityManager::SetZIndex(uint32_t entityID, int zIndex)
     {
         std::lock_guard<std::mutex> lock(entityMutex);
