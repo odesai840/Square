@@ -112,9 +112,6 @@ public:
 
     std::vector<Property*> GetAllEntityProperties(uint32_t entityID);
 
-    // Thread-safe function to update the physics of all entities
-    void UpdatePhysics(std::function<void(std::vector<Entity>&)> physicsUpdate);
-
     // Thread-safe function to update the animations of all entities
     void UpdateAnimations(float deltaTime);
 

@@ -49,7 +49,12 @@ namespace SquareCore
         {
             windowWidth = newWidth;
             windowHeight = newHeight;
-            uiManagerRef->OnWindowResize(windowWidth, windowHeight, baseWindowWidth, baseWindowHeight);
+            
+            if (uiManagerRef)
+            {
+                uiManagerRef->OnWindowResize(windowWidth, windowHeight, baseWindowWidth, baseWindowHeight);
+            }
+            
             camera.SetViewportSize(windowWidth, windowHeight);
         }
 

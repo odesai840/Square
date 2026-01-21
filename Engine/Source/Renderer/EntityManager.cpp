@@ -467,6 +467,8 @@ namespace SquareCore
 
     void EntityManager::SetEntityPersistent(uint32_t entityID, bool persistent)
     {
+        std::lock_guard<std::mutex> lock(entityMutex);
+        
         auto it = idToIndex.find(entityID);
         if (it != idToIndex.end()) {
             entities[it->second].persistent = persistent;
@@ -586,46 +588,6 @@ namespace SquareCore
         
         SDL_LogError(SDL_LOG_CATEGORY_ERROR, "RemoveTagFromEntity: Entity ID %u not found", entityID);
         return {};
-    }
-
-    void EntityManager::UpdatePhysics(std::function<void(std::vector<Entity>&)> physicsUpdate)
-    {
-        std::vector<Entity> entitiesCopy;
-        {
-            std::lock_guard<std::mutex> lock(entityMutex);
-            entitiesCopy = entities;
-        }
-        
-        physicsUpdate(entitiesCopy);
-        
-        {
-            std::lock_guard<std::mutex> lock(entityMutex);
-            
-            std::unordered_map<uint32_t, size_t> copyIdToIndex;
-            for (size_t i = 0; i < entitiesCopy.size(); ++i)
-                copyIdToIndex[entitiesCopy[i].ID] = i;
-
-            for (size_t i = 0; i < entities.size(); ++i)
-            {
-                auto it = copyIdToIndex.find(entities[i].ID);
-                if (it == copyIdToIndex.end()) continue;
-
-                size_t copyIdx = it->second;
-                
-                entities[i].physicsHandle = entitiesCopy[copyIdx].physicsHandle;
-
-                if (entities[i].physApplied)
-                {
-                    entities[i].position = entitiesCopy[copyIdx].position;
-                    entities[i].velocity = entitiesCopy[copyIdx].velocity;
-                    entities[i].rotation = entitiesCopy[copyIdx].rotation;
-                }
-                
-                entities[i].collider.ClearCollisions();
-                for (const auto& collision : entitiesCopy[copyIdx].collider.GetCollisions())
-                    entities[i].collider.AddCollision(collision.first, collision.second);
-            }
-        }
     }
 
     void EntityManager::UpdateAnimations(float deltaTime)

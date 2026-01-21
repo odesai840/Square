@@ -34,40 +34,6 @@ namespace SquareCore
         shapeToEntityMap.clear();
     }
 
-    void Physics::UpdatePhysics(std::vector<Entity>& entities, float fixedDeltaTime) {
-        if (!b2World_IsValid(worldId)) {
-            Initialize();
-        }
-
-        for (Entity& entity : entities) {
-            if (entity.collider.type != ColliderType::NONE && entity.collider.enabled && entity.visible) {
-                if (!entity.physicsHandle.isValid) {
-                    CreateBody(entity);
-                }
-            }
-            else if (entity.physicsHandle.isValid && !entity.visible) {
-                DestroyBody(entity);
-            }
-        }
-        
-        for (Entity& entity : entities) {
-            if (entity.physicsHandle.isValid && !entity.physApplied) {
-                SyncBodyToEntity(entity);
-            }
-        }
-        
-        int subStepCount = 4;
-        b2World_Step(worldId, fixedDeltaTime, subStepCount);
-        
-        for (Entity& entity : entities) {
-            if (entity.physicsHandle.isValid && entity.physApplied) {
-                SyncEntityToBody(entity);
-            }
-        }
-        
-        UpdateCollisions(entities);
-    }
-
     void Physics::UpdateCollisions(std::vector<Entity>& entities) {
         collisionMap.clear();
 
@@ -90,209 +56,8 @@ namespace SquareCore
         }
     }
 
-    void Physics::SetGravity(float gravity)
+    void Physics::ProcessContactEvents(std::vector<Entity>& entities)
     {
-        gravityAmount = gravity;
-        if (b2World_IsValid(worldId))
-        {
-            b2World_SetGravity(worldId, b2Vec2{0.0f, ToMeters(gravity)});
-        }
-    }
-
-    float Physics::GetGravity() const
-    {
-        return gravityAmount;
-    }
-
-    Vec2 Physics::GetGravityVector() const
-    {
-        return Vec2{0.0f, gravityAmount};
-    }
-
-    void Physics::CreateBody(Entity& entity)
-    {
-        if (!b2World_IsValid(worldId))
-        {
-            Initialize();
-        }
-        
-        if (entity.physicsHandle.isValid)
-        {
-            DestroyBody(entity);
-        }
-        
-        b2BodyDef bodyDef = b2DefaultBodyDef();
-        bodyDef.type = GetBodyType(entity);
-        bodyDef.position = b2Vec2{ToMeters(entity.position.x), ToMeters(entity.position.y)};
-        bodyDef.rotation = b2MakeRot(-entity.rotation * MATH_PI / 180.0f);
-        bodyDef.linearVelocity = b2Vec2{ToMeters(entity.velocity.x), ToMeters(entity.velocity.y)};
-        bodyDef.linearDamping = entity.drag;
-        bodyDef.motionLocks.angularZ = entity.fixedRotation;
-        bodyDef.userData = reinterpret_cast<void*>(static_cast<uintptr_t>(entity.ID));
-        
-        entity.physicsHandle.bodyId = b2CreateBody(worldId, &bodyDef);
-        entity.physicsHandle.isValid = true;
-        
-        entity.physicsHandle.shapeId = CreateShapeForBody(entity.physicsHandle.bodyId, entity);
-    }
-
-    void Physics::DestroyBody(Entity& entity) {
-        if (!entity.physicsHandle.isValid) return;
-
-        if (b2Shape_IsValid(entity.physicsHandle.shapeId)) {
-            UnregisterShape(entity.physicsHandle.shapeId);
-        }
-
-        if (b2Body_IsValid(entity.physicsHandle.bodyId)) {
-            b2DestroyBody(entity.physicsHandle.bodyId);
-        }
-
-        entity.physicsHandle.bodyId = b2_nullBodyId;
-        entity.physicsHandle.shapeId = b2_nullShapeId;
-        entity.physicsHandle.isValid = false;
-    }
-
-    void Physics::SyncBodyToEntity(Entity& entity)
-    {
-        if (!entity.physicsHandle.isValid || !b2Body_IsValid(entity.physicsHandle.bodyId)) return;
-        
-        b2Vec2 pos = {ToMeters(entity.position.x), ToMeters(entity.position.y)};
-        b2Rot rot = b2MakeRot(-entity.rotation * MATH_PI / 180.0f);
-        b2Body_SetTransform(entity.physicsHandle.bodyId, pos, rot);
-        
-        b2Vec2 vel = {ToMeters(entity.velocity.x), ToMeters(entity.velocity.y)};
-        b2Body_SetLinearVelocity(entity.physicsHandle.bodyId, vel);
-    }
-
-    void Physics::SyncEntityToBody(Entity& entity)
-    {
-        if (!entity.physicsHandle.isValid || !b2Body_IsValid(entity.physicsHandle.bodyId)) return;
-        
-        b2Vec2 pos = b2Body_GetPosition(entity.physicsHandle.bodyId);
-        entity.position.x = ToCentimeters(pos.x);
-        entity.position.y = ToCentimeters(pos.y);
-        
-        b2Rot rot = b2Body_GetRotation(entity.physicsHandle.bodyId);
-        entity.rotation = -b2Rot_GetAngle(rot) * 180.0f / MATH_PI;
-        
-        b2Vec2 vel = b2Body_GetLinearVelocity(entity.physicsHandle.bodyId);
-        entity.velocity.x = ToCentimeters(vel.x);
-        entity.velocity.y = ToCentimeters(vel.y);
-    }
-
-    void Physics::SetColliderShape(Entity& entity, const ColliderShapeData& shapeData)
-    {
-        entity.shapeData = shapeData;
-        
-        if (entity.physicsHandle.isValid)
-        {
-            if (b2Shape_IsValid(entity.physicsHandle.shapeId))
-            {
-                UnregisterShape(entity.physicsHandle.shapeId);
-                b2DestroyShape(entity.physicsHandle.shapeId, true);
-            }
-            entity.physicsHandle.shapeId = CreateShapeForBody(entity.physicsHandle.bodyId, entity);
-        }
-    }
-
-    void Physics::SetColliderBox(Entity& entity, float halfWidth, float halfHeight)
-    {
-        ColliderShapeData data;
-        data.shape = ColliderShape::BOX;
-        data.box.halfExtents = Vec2(halfWidth, halfHeight);
-        SetColliderShape(entity, data);
-    }
-
-    void Physics::SetColliderCircle(Entity& entity, float radius, Vec2 center)
-    {
-        ColliderShapeData data;
-        data.shape = ColliderShape::CIRCLE;
-        data.circle.radius = radius;
-        data.circle.center = center;
-        SetColliderShape(entity, data);
-    }
-
-    void Physics::SetColliderCapsule(Entity& entity, Vec2 center1, Vec2 center2, float radius)
-    {
-        ColliderShapeData data;
-        data.shape = ColliderShape::CAPSULE;
-        data.capsule.center1 = center1;
-        data.capsule.center2 = center2;
-        data.capsule.radius = radius;
-        SetColliderShape(entity, data);
-    }
-
-    void Physics::SetColliderPolygon(Entity& entity, std::vector<Vec2>& vertices)
-    {
-        ColliderShapeData data;
-        data.shape = ColliderShape::POLYGON;
-        data.polygon.vertices = vertices;
-        SetColliderShape(entity, data);
-    }
-
-    void Physics::ApplyForce(Entity& entity, const Vec2& force)
-    {
-        if (!entity.physicsHandle.isValid || !b2Body_IsValid(entity.physicsHandle.bodyId)) return;
-        
-        b2Vec2 f = {ToMeters(force.x), ToMeters(force.y)};
-        b2Body_ApplyForceToCenter(entity.physicsHandle.bodyId, f, true);
-    }
-
-    void Physics::ApplyImpulse(Entity& entity, const Vec2& impulse)
-    {
-        if (!entity.physicsHandle.isValid || !b2Body_IsValid(entity.physicsHandle.bodyId)) return;
-        
-        b2Vec2 imp = {ToMeters(impulse.x), ToMeters(impulse.y)};
-        b2Body_ApplyLinearImpulseToCenter(entity.physicsHandle.bodyId, imp, true);
-    }
-
-    void Physics::SetVelocity(Entity& entity, const Vec2& velocity)
-    {
-        entity.velocity = velocity;
-        if (entity.physicsHandle.isValid && b2Body_IsValid(entity.physicsHandle.bodyId))
-        {
-            b2Vec2 vel = {ToMeters(velocity.x), ToMeters(velocity.y)};
-            b2Body_SetLinearVelocity(entity.physicsHandle.bodyId, vel);
-            b2Body_SetAwake(entity.physicsHandle.bodyId, true);
-        }
-    }
-
-    void Physics::SetMass(Entity& entity, float mass)
-    {
-        entity.mass = mass;
-        
-        if (entity.physicsHandle.isValid && b2Body_IsValid(entity.physicsHandle.bodyId))
-        {
-            b2MassData massData;
-            massData.mass = mass;
-            massData.center = b2Vec2{0.0f, 0.0f};
-            massData.rotationalInertia = mass * 0.1f;
-            b2Body_SetMassData(entity.physicsHandle.bodyId, massData);
-        }
-    }
-
-    void Physics::SetDrag(Entity& entity, float drag)
-    {
-        entity.drag = drag;
-        
-        if (entity.physicsHandle.isValid && b2Body_IsValid(entity.physicsHandle.bodyId))
-        {
-            b2Body_SetLinearDamping(entity.physicsHandle.bodyId, drag);
-        }
-    }
-
-    void Physics::SetFixedRotation(Entity& entity, bool fixed)
-    {
-        entity.fixedRotation = fixed;
-        if (entity.physicsHandle.isValid && b2Body_IsValid(entity.physicsHandle.bodyId))
-        {
-            b2MotionLocks locks = b2Body_GetMotionLocks(entity.physicsHandle.bodyId);
-            locks.angularZ = fixed;
-            b2Body_SetMotionLocks(entity.physicsHandle.bodyId, locks);
-        }
-    }
-
-    void Physics::ProcessContactEvents(std::vector<Entity>& entities) {
         for (Entity& entity : entities) {
             if (!entity.physicsHandle.isValid || !b2Body_IsValid(entity.physicsHandle.bodyId)) {
                 continue;
@@ -306,7 +71,7 @@ namespace SquareCore
 
             for (int i = 0; i < count; ++i) {
                 const b2ContactData& contact = contacts[i];
-                
+
                 uint32_t otherEntityId = 0;
                 b2Vec2 normal = contact.manifold.normal;
 
@@ -318,7 +83,7 @@ namespace SquareCore
                 }
 
                 if (otherEntityId == 0) continue;
-                
+
                 bool alreadyRecorded = false;
                 auto it = collisionMap.find(entity.ID);
                 if (it != collisionMap.end()) {
@@ -347,7 +112,8 @@ namespace SquareCore
         }
     }
 
-    void Physics::ProcessSensorEvents() {
+    void Physics::ProcessSensorEvents()
+    {
         b2SensorEvents events = b2World_GetSensorEvents(worldId);
 
         for (int i = 0; i < events.beginCount; ++i) {
@@ -360,7 +126,7 @@ namespace SquareCore
 
             CollisionInfo info = { visitorEntity, -1, Vec2::zero(), Vec2::zero() };
             collisionMap[sensorEntity].push_back(info);
-            
+
             CollisionInfo reverseInfo = { sensorEntity, -1, Vec2::zero(), Vec2::zero() };
             collisionMap[visitorEntity].push_back(reverseInfo);
         }
@@ -387,19 +153,43 @@ namespace SquareCore
         return 0;
     }
 
-    void Physics::RegisterShape(b2ShapeId& shapeId, uint32_t entityId)
+    void Physics::Update(float fixedDeltaTime)
     {
-        int64_t key = (static_cast<int64_t>(shapeId.index1) << 32) | shapeId.generation;
-        shapeToEntityMap[key] = entityId;
+        if (!entityManagerRef) return;
+        
+        std::lock_guard<std::mutex> lock(entityManagerRef->GetMutex());
+        std::vector<Entity>& entities = entityManagerRef->GetEntitiesUnsafe();
+        
+        for (Entity& entity : entities) {
+            if (entity.collider.type != ColliderType::NONE && entity.collider.enabled && entity.visible) {
+                if (!entity.physicsHandle.isValid) {
+                    CreateBodyInternal(entity);
+                }
+            }
+            else if (entity.physicsHandle.isValid && !entity.visible) {
+                DestroyBodyInternal(entity);
+            }
+        }
+        
+        for (Entity& entity : entities) {
+            if (entity.physicsHandle.isValid && !entity.physApplied) {
+                SyncBodyToEntity(entity);
+            }
+        }
+        
+        int subStepCount = 4;
+        b2World_Step(worldId, fixedDeltaTime, subStepCount);
+        
+        for (Entity& entity : entities) {
+            if (entity.physicsHandle.isValid && entity.physApplied) {
+                SyncEntityToBody(entity);
+            }
+        }
+        
+        UpdateCollisions(entities);
     }
 
-    void Physics::UnregisterShape(b2ShapeId& shapeId)
-    {
-        int64_t key = (static_cast<int64_t>(shapeId.index1) << 32) | shapeId.generation;
-        shapeToEntityMap.erase(key);
-    }
-
-    b2ShapeId Physics::CreateShapeForBody(b2BodyId bodyId, Entity& entity)
+    b2ShapeId Physics::CreateShapeForBody(b2BodyId bodyId, const Entity& entity)
     {
         b2ShapeDef shapeDef = b2DefaultShapeDef();
         
@@ -502,13 +292,333 @@ namespace SquareCore
         return shapeId;
     }
 
-    b2BodyType Physics::GetBodyType(const Entity& entity) const
+    void Physics::RegisterShape(b2ShapeId shapeId, uint32_t entityID)
     {
-        if (!entity.physApplied)
+        int64_t key = (static_cast<int64_t>(shapeId.index1) << 32) | shapeId.generation;
+        shapeToEntityMap[key] = entityID;
+    }
+
+    void Physics::UnregisterShape(b2ShapeId shapeId)
+    {
+        int64_t key = (static_cast<int64_t>(shapeId.index1) << 32) | shapeId.generation;
+        shapeToEntityMap.erase(key);
+    }
+
+    void Physics::SetGravity(float gravity)
+    {
+        gravityAmount = gravity;
+        if (b2World_IsValid(worldId))
         {
-            return b2_staticBody;
+            b2World_SetGravity(worldId, b2Vec2{0.0f, ToMeters(gravity)});
         }
-        return b2_dynamicBody;
+    }
+
+    Vec2 Physics::GetGravityVector() const
+    {
+        return Vec2{0.0f, gravityAmount};
+    }
+
+    void Physics::CreateBody(uint32_t entityID)
+    {
+        if (!entityManagerRef) return;
+        std::lock_guard<std::mutex> lock(entityManagerRef->GetMutex());
+        
+        std::vector<Entity>& entities = entityManagerRef->GetEntitiesUnsafe();
+        Entity* entity = nullptr;
+        for (Entity& e : entities) {
+            if (e.ID == entityID) {
+                entity = &e;
+                break;
+            }
+        }
+
+        if (entity) CreateBodyInternal(*entity);
+    }
+    
+    void Physics::CreateBodyInternal(Entity& entity)
+    {
+        if (entity.physicsHandle.isValid) {
+            DestroyBodyInternal(entity);
+        }
+
+        b2BodyDef bodyDef = b2DefaultBodyDef();
+        bodyDef.type = entity.physApplied ? b2_dynamicBody : b2_staticBody;
+        bodyDef.position = {ToMeters(entity.position.x), ToMeters(entity.position.y)};
+        bodyDef.rotation = b2MakeRot(ToRadians(entity.rotation));
+        bodyDef.linearVelocity = {ToMeters(entity.velocity.x), ToMeters(entity.velocity.y)};
+        bodyDef.linearDamping = entity.drag;
+        bodyDef.motionLocks.angularZ = entity.fixedRotation;
+
+        entity.physicsHandle.bodyId = b2CreateBody(worldId, &bodyDef);
+        entity.physicsHandle.isValid = true;
+        entity.physicsHandle.shapeId = CreateShapeForBody(entity.physicsHandle.bodyId, entity);
+    }
+    
+    void Physics::DestroyBody(uint32_t entityID)
+    {
+        if (!entityManagerRef) return;
+        std::lock_guard<std::mutex> lock(entityManagerRef->GetMutex());
+
+        std::vector<Entity>& entities = entityManagerRef->GetEntitiesUnsafe();
+        Entity* entity = nullptr;
+        for (Entity& e : entities) {
+            if (e.ID == entityID) {
+                entity = &e;
+                break;
+            }
+        }
+
+        if (entity) DestroyBodyInternal(*entity);
+    }
+    
+    void Physics::DestroyBodyInternal(Entity& entity)
+    {
+        if (!entity.physicsHandle.isValid) return;
+
+        if (b2Shape_IsValid(entity.physicsHandle.shapeId)) {
+            UnregisterShape(entity.physicsHandle.shapeId);
+        }
+        if (b2Body_IsValid(entity.physicsHandle.bodyId)) {
+            b2DestroyBody(entity.physicsHandle.bodyId);
+        }
+
+        entity.physicsHandle.bodyId = b2_nullBodyId;
+        entity.physicsHandle.shapeId = b2_nullShapeId;
+        entity.physicsHandle.isValid = false;
+    }
+
+    void Physics::SyncBodyToEntity(Entity& entity)
+    {
+        if (!entity.physicsHandle.isValid || !b2Body_IsValid(entity.physicsHandle.bodyId)) return;
+        
+        b2Vec2 pos = {ToMeters(entity.position.x), ToMeters(entity.position.y)};
+        b2Rot rot = b2MakeRot(-entity.rotation * MATH_PI / 180.0f);
+        b2Body_SetTransform(entity.physicsHandle.bodyId, pos, rot);
+        
+        b2Vec2 vel = {ToMeters(entity.velocity.x), ToMeters(entity.velocity.y)};
+        b2Body_SetLinearVelocity(entity.physicsHandle.bodyId, vel);
+    }
+
+    void Physics::SyncEntityToBody(Entity& entity)
+    {
+        if (!entity.physicsHandle.isValid || !b2Body_IsValid(entity.physicsHandle.bodyId)) return;
+        
+        b2Vec2 pos = b2Body_GetPosition(entity.physicsHandle.bodyId);
+        entity.position.x = ToCentimeters(pos.x);
+        entity.position.y = ToCentimeters(pos.y);
+        
+        b2Rot rot = b2Body_GetRotation(entity.physicsHandle.bodyId);
+        entity.rotation = -b2Rot_GetAngle(rot) * 180.0f / MATH_PI;
+        
+        b2Vec2 vel = b2Body_GetLinearVelocity(entity.physicsHandle.bodyId);
+        entity.velocity.x = ToCentimeters(vel.x);
+        entity.velocity.y = ToCentimeters(vel.y);
+    }
+
+    void Physics::SetColliderShape(uint32_t entityID, const ColliderShapeData& shapeData)
+    {
+        if (!entityManagerRef) return;
+        std::lock_guard<std::mutex> lock(entityManagerRef->GetMutex());
+
+        std::vector<Entity>& entities = entityManagerRef->GetEntitiesUnsafe();
+        Entity* entity = nullptr;
+        for (Entity& e : entities) {
+            if (e.ID == entityID) {
+                entity = &e;
+                break;
+            }
+        }
+        
+        if (!entity) return;
+
+        entity->shapeData = shapeData;
+
+        if (entity->physicsHandle.isValid)
+        {
+            if (b2Shape_IsValid(entity->physicsHandle.shapeId))
+            {
+                UnregisterShape(entity->physicsHandle.shapeId);
+                b2DestroyShape(entity->physicsHandle.shapeId, true);
+            }
+            entity->physicsHandle.shapeId = CreateShapeForBody(entity->physicsHandle.bodyId, *entity);
+        }
+    }
+
+    void Physics::SetColliderBox(uint32_t entityID, float halfWidth, float halfHeight)
+    {
+        ColliderShapeData data;
+        data.shape = ColliderShape::BOX;
+        data.box.halfExtents = Vec2(halfWidth, halfHeight);
+        SetColliderShape(entityID, data);
+    }
+
+    void Physics::SetColliderCircle(uint32_t entityID, float radius, Vec2 center)
+    {
+        ColliderShapeData data;
+        data.shape = ColliderShape::CIRCLE;
+        data.circle.radius = radius;
+        data.circle.center = center;
+        SetColliderShape(entityID, data);
+    }
+
+    void Physics::SetColliderCapsule(uint32_t entityID, Vec2 center1, Vec2 center2, float radius)
+    {
+        ColliderShapeData data;
+        data.shape = ColliderShape::CAPSULE;
+        data.capsule.center1 = center1;
+        data.capsule.center2 = center2;
+        data.capsule.radius = radius;
+        SetColliderShape(entityID, data);
+    }
+
+    void Physics::SetColliderPolygon(uint32_t entityID, std::vector<Vec2>& vertices)
+    {
+        ColliderShapeData data;
+        data.shape = ColliderShape::POLYGON;
+        data.polygon.vertices = vertices;
+        SetColliderShape(entityID, data);
+    }
+
+    void Physics::ApplyForce(uint32_t entityID, const Vec2& force)
+    {
+        if (!entityManagerRef) return;
+        std::lock_guard<std::mutex> lock(entityManagerRef->GetMutex());
+
+        std::vector<Entity>& entities = entityManagerRef->GetEntitiesUnsafe();
+        Entity* entity = nullptr;
+        for (Entity& e : entities) {
+            if (e.ID == entityID) {
+                entity = &e;
+                break;
+            }
+        }
+
+        if (!entity || !entity->physicsHandle.isValid) return;
+        
+        b2Vec2 f = {ToMeters(force.x), ToMeters(force.y)};
+        b2Body_ApplyForceToCenter(entity->physicsHandle.bodyId, f, true);
+    }
+
+    void Physics::ApplyImpulse(uint32_t entityID, const Vec2& impulse)
+    {
+        if (!entityManagerRef) return;
+        std::lock_guard<std::mutex> lock(entityManagerRef->GetMutex());
+
+        std::vector<Entity>& entities = entityManagerRef->GetEntitiesUnsafe();
+        Entity* entity = nullptr;
+        for (Entity& e : entities) {
+            if (e.ID == entityID) {
+                entity = &e;
+                break;
+            }
+        }
+
+        if (!entity || !entity->physicsHandle.isValid) return;
+        
+        b2Vec2 imp = {ToMeters(impulse.x), ToMeters(impulse.y)};
+        b2Body_ApplyLinearImpulseToCenter(entity->physicsHandle.bodyId, imp, true);
+    }
+
+    void Physics::SetVelocity(uint32_t entityID, const Vec2& velocity)
+    {
+        if (!entityManagerRef) return;
+        std::lock_guard<std::mutex> lock(entityManagerRef->GetMutex());
+
+        std::vector<Entity>& entities = entityManagerRef->GetEntitiesUnsafe();
+        Entity* entity = nullptr;
+        for (Entity& e : entities) {
+            if (e.ID == entityID) {
+                entity = &e;
+                break;
+            }
+        }
+
+        if (!entity) return;
+
+        entity->velocity = velocity;
+        if (entity->physicsHandle.isValid && b2Body_IsValid(entity->physicsHandle.bodyId))
+        {
+            b2Vec2 vel = {ToMeters(velocity.x), ToMeters(velocity.y)};
+            b2Body_SetLinearVelocity(entity->physicsHandle.bodyId, vel);
+            b2Body_SetAwake(entity->physicsHandle.bodyId, true);
+        }
+    }
+
+    void Physics::SetMass(uint32_t entityID, float mass)
+    {
+        if (!entityManagerRef) return;
+        std::lock_guard<std::mutex> lock(entityManagerRef->GetMutex());
+
+        std::vector<Entity>& entities = entityManagerRef->GetEntitiesUnsafe();
+        Entity* entity = nullptr;
+        for (Entity& e : entities) {
+            if (e.ID == entityID) {
+                entity = &e;
+                break;
+            }
+        }
+        
+        if (!entity) return;
+
+        entity->mass = mass;
+
+        if (entity->physicsHandle.isValid && b2Body_IsValid(entity->physicsHandle.bodyId))
+        {
+            b2MassData massData;
+            massData.mass = mass;
+            massData.center = b2Vec2{0.0f, 0.0f};
+            massData.rotationalInertia = mass * 0.1f;
+            b2Body_SetMassData(entity->physicsHandle.bodyId, massData);
+        }
+    }
+
+    void Physics::SetDrag(uint32_t entityID, float drag)
+    {
+        if (!entityManagerRef) return;
+        std::lock_guard<std::mutex> lock(entityManagerRef->GetMutex());
+
+        std::vector<Entity>& entities = entityManagerRef->GetEntitiesUnsafe();
+        Entity* entity = nullptr;
+        for (Entity& e : entities) {
+            if (e.ID == entityID) {
+                entity = &e;
+                break;
+            }
+        }
+        
+        if (!entity) return;
+
+        entity->drag = drag;
+
+        if (entity->physicsHandle.isValid && b2Body_IsValid(entity->physicsHandle.bodyId))
+        {
+            b2Body_SetLinearDamping(entity->physicsHandle.bodyId, drag);
+        }
+    }
+
+    void Physics::SetFixedRotation(uint32_t entityID, bool fixed)
+    {
+        if (!entityManagerRef) return;
+        std::lock_guard<std::mutex> lock(entityManagerRef->GetMutex());
+
+        std::vector<Entity>& entities = entityManagerRef->GetEntitiesUnsafe();
+        Entity* entity = nullptr;
+        for (Entity& e : entities) {
+            if (e.ID == entityID) {
+                entity = &e;
+                break;
+            }
+        }
+
+        if (!entity) return;
+        
+        entity->fixedRotation = fixed;
+        if (entity->physicsHandle.isValid && b2Body_IsValid(entity->physicsHandle.bodyId))
+        {
+            b2MotionLocks locks = b2Body_GetMotionLocks(entity->physicsHandle.bodyId);
+            locks.angularZ = fixed;
+            b2Body_SetMotionLocks(entity->physicsHandle.bodyId, locks);
+        }
     }
 
     Vec2 Physics::ToMeters(const Vec2& val)
@@ -521,13 +631,23 @@ namespace SquareCore
         return Vec2(val.x*100.0f, val.y*100.0f);
     }
     
-    float Physics::ToMeters(float val)
+    float Physics::ToMeters(float centimeters)
     {
-        return val/100.0f;
+        return centimeters/100.0f;
     }
 
-    float Physics::ToCentimeters(float val)
+    float Physics::ToCentimeters(float meters)
     {
-        return val*100.0f;
+        return meters*100.0f;
+    }
+
+    float Physics::ToRadians(float degrees) const
+    {
+        return degrees * MATH_PI / 180.0f;
+    }
+
+    float Physics::ToDegrees(float radians) const
+    {
+        return radians * 180.0f / MATH_PI;
     }
 }

@@ -72,11 +72,8 @@ namespace SquareCore
         while (running)
         {
             // Update physics system
-            entityManager.UpdatePhysics([this](std::vector<Entity>& entities)
-            {
-                float effectiveTimestep = timeline.CalculateEffectiveTime(FIXED_TIMESTEP);
-                physics.UpdatePhysics(entities, effectiveTimestep);
-            });
+            float effectiveTimestep = timeline.CalculateEffectiveTime(FIXED_TIMESTEP);
+            physics.Update(effectiveTimestep);
 
             // Sleep to maintain 60 Hz update rate
             std::this_thread::sleep_for(std::chrono::milliseconds(16));
@@ -256,6 +253,7 @@ namespace SquareCore
             script->SetSceneManager(&sceneManager);
         }
         
+        physics.SetEntityManager(&entityManager);
         physics.Initialize();
 
         // Start worker threads
@@ -530,6 +528,7 @@ namespace SquareCore
             script->SetUIManager(&uiManager);
         }
         
+        physics.SetEntityManager(&entityManager);
         physics.Initialize();
 
         // Start worker threads

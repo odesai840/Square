@@ -347,9 +347,7 @@ void Server::SimulationLoop() {
             serverTimeline.Update(FIXED_TIMESTEP);
 
             // Update physics
-            serverEntityManager.UpdatePhysics([this, effectiveTimestep](std::vector<Entity>& entities) {
-                serverPhysics.UpdatePhysics(entities, effectiveTimestep);
-            });
+            serverPhysics.Update(effectiveTimestep);
 
             // Update animations
             serverEntityManager.UpdateAnimations(effectiveTimestep);

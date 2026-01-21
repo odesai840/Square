@@ -59,17 +59,9 @@ namespace SquareCore
 
     void Script::RemoveEntity(uint32_t entityID)
     {
-        if (entityManagerRef)
+        if (entityManagerRef && physicsRef)
         {
-            if (physicsRef)
-            {
-                Entity* entity = entityManagerRef->GetEntityByID(entityID);
-                if (entity && entity->physicsHandle.isValid)
-                {
-                    physicsRef->DestroyBody(*entity);
-                }
-            }
-            
+            physicsRef->DestroyBody(entityID);
             entityManagerRef->RemoveEntity(entityID);
         }
     }
@@ -307,43 +299,36 @@ namespace SquareCore
     
     void Script::SetColliderBox(uint32_t entityID, float halfWidth, float halfHeight)
     {
-        if (entityManagerRef && physicsRef)
+        if (physicsRef)
         {
-            Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) physicsRef->SetColliderBox(*entity, halfWidth, halfHeight);
+            physicsRef->SetColliderBox(entityID, halfWidth, halfHeight);
         }
     }
 
     void Script::SetColliderCircle(uint32_t entityID, float radius)
     {
-        if (entityManagerRef && physicsRef)
+        if (physicsRef)
         {
-            Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) physicsRef->SetColliderCircle(*entity, radius);
+            physicsRef->SetColliderCircle(entityID, radius);
         }
     }
 
     void Script::SetColliderCapsule(uint32_t entityID, float height, float radius)
     {
-        if (entityManagerRef && physicsRef)
+        if (physicsRef)
         {
-            Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity)
-            {
-                float halfHeight = height / 2.0f - radius;
-                Vec2 c1(0.0f, -halfHeight);
-                Vec2 c2(0.0f, halfHeight);
-                physicsRef->SetColliderCapsule(*entity, c1, c2, radius);
-            }
+            float halfHeight = height / 2.0f - radius;
+            Vec2 c1(0.0f, -halfHeight);
+            Vec2 c2(0.0f, halfHeight);
+            physicsRef->SetColliderCapsule(entityID, c1, c2, radius);
         }
     }
     
     void Script::SetColliderPolygon(uint32_t entityID, std::vector<Vec2> vertices)
     {
-        if (entityManagerRef && physicsRef)
+        if (physicsRef)
         {
-            Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) physicsRef->SetColliderPolygon(*entity, vertices);
+            physicsRef->SetColliderPolygon(entityID, vertices);
         }
     }
 
@@ -360,58 +345,49 @@ namespace SquareCore
 
     void Script::ApplyForce(uint32_t entityID, float forceX, float forceY)
     {
-        if (entityManagerRef && physicsRef)
+        if (physicsRef)
         {
-            Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity)
-            {
-                physicsRef->ApplyForce(*entity, Vec2(forceX, forceY));
-            }
+            physicsRef->ApplyForce(entityID, Vec2(forceX, forceY));
         }
     }
 
     void Script::ApplyImpulse(uint32_t entityID, float impulseX, float impulseY)
     {
-        if (entityManagerRef && physicsRef)
+        if (physicsRef)
         {
-            Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) physicsRef->ApplyImpulse(*entity, Vec2(impulseX, impulseY));
+            physicsRef->ApplyImpulse(entityID, Vec2(impulseX, impulseY));
         }
     }
 
     void Script::SetVelocity(uint32_t entityID, float velX, float velY)
     {
-        if (entityManagerRef && physicsRef)
+        if (physicsRef)
         {
-            Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) physicsRef->SetVelocity(*entity, Vec2(velX, velY));
+            physicsRef->SetVelocity(entityID, Vec2(velX, velY));
         }
     }
 
     void Script::SetMass(uint32_t entityID, float mass)
     {
-        if (entityManagerRef && physicsRef)
+        if (physicsRef)
         {
-            Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) physicsRef->SetMass(*entity, mass);
+            physicsRef->SetMass(entityID, mass);
         }
     }
 
     void Script::SetDrag(uint32_t entityID, float drag)
     {
-        if (entityManagerRef && physicsRef)
+        if (physicsRef)
         {
-            Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) physicsRef->SetDrag(*entity, drag);
+            physicsRef->SetDrag(entityID, drag);
         }
     }
 
     void Script::SetFixedRotation(uint32_t entityID, bool fixed)
     {
-        if (entityManagerRef && physicsRef)
+        if (physicsRef)
         {
-            Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) physicsRef->SetFixedRotation(*entity, fixed);
+            physicsRef->SetFixedRotation(entityID, fixed);
         }
     }
 
