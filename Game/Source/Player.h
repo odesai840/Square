@@ -27,6 +27,7 @@ private:
     bool EnemyHitByCurrentSlash(uint32_t enemy_id);
     void HandleBounceEntities(float delta_time, uint32_t current_bounce_entity);
     void UpdateBounceEntities(float delta_time);
+    void TakeDamage(Character* player_character, int damage);
 
 private:
     PlayerData player_data;
@@ -35,6 +36,8 @@ private:
     
     // upgrades
     bool has_double_dash = true;
+
+    SquareCore::Vec2 last_grounded_position;
 
     Direction player_direction = Direction::LEFT;
 

@@ -72,7 +72,7 @@ void EnemyManager::OnUpdate(float deltaTime)
             if (JumpEnemy* jump_property = dynamic_cast<JumpEnemy*>(property))
             {
                 SquareCore::Vec2 enemy_position = GetPosition(enemy);
-                SquareCore::Vec2 enemy_velocity = GetVelocity(enemy);
+                enemy_velocity = GetVelocity(enemy);
                 float distance = std::abs(player_position.x - enemy_position.x);
 
                 bool is_grounded = std::abs(enemy_velocity.y) < 50.0f;
@@ -102,7 +102,7 @@ void EnemyManager::OnUpdate(float deltaTime)
                         jump_property->windup_timer += deltaTime;
 
                         float pulse = (std::sin(jump_property->windup_timer * 20.0f) + 1.0f) * 0.5f;
-                        float scale_multiplier = 0.9f + (pulse * 0.15f);
+                        float scale_multiplier = 0.9f + (pulse * 0.5f);
                         SetScale(enemy, SquareCore::Vec2(jump_property->base_scale.x,
                                                          jump_property->base_scale.y * scale_multiplier));
 
@@ -165,7 +165,7 @@ void EnemyManager::OnUpdate(float deltaTime)
             if (ChargeEnemy* charge_property = dynamic_cast<ChargeEnemy*>(property))
             {
                 SquareCore::Vec2 enemy_position = GetPosition(enemy);
-                SquareCore::Vec2 enemy_velocity = GetVelocity(enemy);
+                enemy_velocity = GetVelocity(enemy);
                 float distance = std::abs(player_position.x - enemy_position.x);
 
                 switch (charge_property->state)
@@ -252,7 +252,7 @@ void EnemyManager::OnUpdate(float deltaTime)
                         charge_property->prepare_timer += deltaTime;
 
                         float pulse = (std::sin(charge_property->prepare_timer * 18.0f) + 1.0f) * 0.5f;
-                        float squash = 0.85f + (pulse * 0.15f);
+                        float squash = 0.85f + (pulse * 0.5f);
                         SetScale(enemy, SquareCore::Vec2(charge_property->base_scale.x * squash,
                                                          charge_property->base_scale.y));
 
@@ -338,8 +338,6 @@ void EnemyManager::OnUpdate(float deltaTime)
                     {
                         jump_property->is_winding_up = true;
                         jump_property->charge_windup_timer = 0.0f;
-
-                        float indicator_offset = direction > 0 ? 0.0f : -0.0f;
                     }
                     else if (distance < jump_property->close_range)
                     {
@@ -353,8 +351,6 @@ void EnemyManager::OnUpdate(float deltaTime)
                         {
                             jump_property->is_winding_up = true;
                             jump_property->charge_windup_timer = 0.0f;
-
-                            float indicator_offset = direction > 0 ? 0.0f : -0.0f;
                         }
                         else
                         {

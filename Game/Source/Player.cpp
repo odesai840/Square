@@ -297,16 +297,17 @@ void Player::OnCollision(float delta_time)
                                 if (jump_boss)
                                     jump_boss->hit_player_this_attack = true;
                         
-                                player_character->health -= enemy_character->damage;
-                                SDL_Log(("Player health: " + std::to_string(player_character->health)).c_str());
-
-                                if (player_character->health <= 0)
-                                    SetTimeScale(0.0f);
+                                TakeDamage(player_character, enemy_character->damage);
                             }
                         }
                     }
                 }
             }
+        }
+        
+        if (collision.second == 2 && EntityHasTag(collision.first, "ValidGround"))
+        {
+            last_grounded_position = GetPosition(player);
         }
 
         // player collides with a bouncy object
@@ -317,10 +318,36 @@ void Player::OnCollision(float delta_time)
             if (collision.second != 2)
                 onlyCollidingWithTop = false;
         }
+
+        if (EntityHasTag(collision.first, "Spike"))
+        {
+            for (auto& player_property : GetAllEntityProperties(player))
+            {
+                if (Character* player_character = dynamic_cast<Character*>(player_property))
+                {
+                    TakeDamage(player_character, 1);
+                }
+            }
+            SetVelocity(player, 0.0f, 0.0f);
+            SetPosition(player, last_grounded_position.x, last_grounded_position.y);
+            break;
+        }
     }
 
     if (bouncing && onlyCollidingWithTop && bounce_entity)
         HandleBounceEntities(delta_time, bounce_entity);
+}
+
+void Player::TakeDamage(Character* player_character, int damage)
+{
+    player_character->health -= damage;
+    SDL_Log(("Player health: " + std::to_string(player_character->health)).c_str());
+
+    if (player_character->health <= 0)
+    {
+        SetTimeScale(0.0f);
+        SDL_Log("Player died");
+    }
 }
 
 void Player::HandleBounceEntities(float delta_time, uint32_t current_bounce_entity)
@@ -407,6 +434,7 @@ bool Player::IsGrounded(uint32_t playerId)
             {
                 SetVelocity(playerId, vel.x, vel.y);
             }
+            
             return true;
         }
     }

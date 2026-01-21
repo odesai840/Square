@@ -89,11 +89,11 @@ struct ChargeEnemy : SquareCore::Property
     float prepare_duration = 0.5f;
     float prepare_timer = 0.0f;
     
-    float charge_duration = 2.0f;
+    float charge_duration = 1.0f;
     float charge_elapsed = 0.0f;
     float base_charge_speed = 300.0f;
     float min_charge_speed = 300.0f;
-    float max_charge_speed = 500.0f;
+    float max_charge_speed = 600.0f;
     
     float stun_duration = 3.0f;
     float stun_elapsed = 0.0f;
