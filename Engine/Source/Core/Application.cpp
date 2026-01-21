@@ -89,8 +89,10 @@ namespace SquareCore
         renderer.SetUIManager(&uiManager);
         // Initialize entity manager
         entityManager.SetRenderer(renderer.GetRenderer());
+        entityManager.SetPhysics(&physics);
         sceneManager.SetEntityManager(&entityManager);
         sceneManager.SetUIManager(&uiManager);
+        sceneManager.SetPhysics(&physics);
 
         for (auto* script : scripts)
             script->OnStart();

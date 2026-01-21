@@ -154,8 +154,18 @@ namespace SquareCore
             return false;
         }
         
-        entityManagerRef->ClearEntities();
-        uiManagerRef->ClearElements();
+        if (physicsRef)
+        {
+            physicsRef->ClearBodies();
+        }
+        if (entityManagerRef)
+        {
+            entityManagerRef->ClearEntities();
+        }
+        if (uiManagerRef)
+        {
+            uiManagerRef->ClearElements();
+        }
         
         if (sceneJson.contains("entities")) {
             for (const auto& entityJson : sceneJson["entities"]) {

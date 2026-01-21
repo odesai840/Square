@@ -226,6 +226,28 @@
                 "Ground"
             ],
             "zIndex": 1
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -1600.0,
+                50.0
+            ],
+            "scale": [
+                0.3,
+                0.6
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 0
         }
     ],
     "ui": []

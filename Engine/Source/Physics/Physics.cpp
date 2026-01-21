@@ -402,6 +402,33 @@ namespace SquareCore
         entity.physicsHandle.shapeId = b2_nullShapeId;
         entity.physicsHandle.isValid = false;
     }
+    
+    void Physics::ClearBodies()
+    {
+        if (!entityManagerRef) return;
+        std::lock_guard<std::mutex> lock(entityManagerRef->GetMutex());
+        
+        std::vector<Entity>& entities = entityManagerRef->GetEntitiesUnsafe();
+        
+        for (Entity& entity : entities)
+        {
+            if (!entity.persistent && entity.physicsHandle.isValid)
+            {
+                if (b2Shape_IsValid(entity.physicsHandle.shapeId))
+                {
+                    UnregisterShape(entity.physicsHandle.shapeId);
+                }
+                if (b2Body_IsValid(entity.physicsHandle.bodyId))
+                {
+                    b2DestroyBody(entity.physicsHandle.bodyId);
+                }
+                
+                entity.physicsHandle.bodyId = b2_nullBodyId;
+                entity.physicsHandle.shapeId = b2_nullShapeId;
+                entity.physicsHandle.isValid = false;
+            }
+        }
+    }
 
     void Physics::SyncBodyToEntity(Entity& entity)
     {
@@ -493,6 +520,83 @@ namespace SquareCore
         data.shape = ColliderShape::POLYGON;
         data.polygon.vertices = vertices;
         SetColliderShape(entityID, data);
+    }
+
+    void Physics::SetColliderPosition(uint32_t entityID, Vec2 position)
+    {
+        if (!entityManagerRef) return;
+        std::lock_guard<std::mutex> lock(entityManagerRef->GetMutex());
+
+        std::vector<Entity>& entities = entityManagerRef->GetEntitiesUnsafe();
+        Entity* entity = nullptr;
+        for (Entity& e : entities) {
+            if (e.ID == entityID) {
+                entity = &e;
+                break;
+            }
+        }
+
+        if (!entity) return;
+        
+        entity->position = position;
+        if (entity->physicsHandle.isValid && b2Body_IsValid(entity->physicsHandle.bodyId))
+        {
+            b2Vec2 pos = {ToMeters(position.x), ToMeters(position.y)};
+            b2Rot rot = b2Body_GetRotation(entity->physicsHandle.bodyId);
+            b2Body_SetTransform(entity->physicsHandle.bodyId, pos, rot);
+            b2Body_SetAwake(entity->physicsHandle.bodyId, true);
+        }
+    }
+
+    void Physics::SetColliderRotation(uint32_t entityID, float rotation)
+    {
+        if (!entityManagerRef) return;
+        std::lock_guard<std::mutex> lock(entityManagerRef->GetMutex());
+
+        std::vector<Entity>& entities = entityManagerRef->GetEntitiesUnsafe();
+        Entity* entity = nullptr;
+        for (Entity& e : entities) {
+            if (e.ID == entityID) {
+                entity = &e;
+                break;
+            }
+        }
+
+        if (!entity) return;
+
+        entity->rotation = rotation;
+        if (entity->physicsHandle.isValid && b2Body_IsValid(entity->physicsHandle.bodyId))
+        {
+            b2Vec2 pos = b2Body_GetPosition(entity->physicsHandle.bodyId);
+            b2Rot rot = b2MakeRot(ToRadians(rotation));
+            b2Body_SetTransform(entity->physicsHandle.bodyId, pos, rot);
+            b2Body_SetAwake(entity->physicsHandle.bodyId, true);
+        }
+    }
+
+    void Physics::SetColliderScale(uint32_t entityID, Vec2 scale)
+    {
+        if (!entityManagerRef) return;
+        std::lock_guard<std::mutex> lock(entityManagerRef->GetMutex());
+
+        std::vector<Entity>& entities = entityManagerRef->GetEntitiesUnsafe();
+        Entity* entity = nullptr;
+        for (Entity& e : entities) {
+            if (e.ID == entityID) {
+                entity = &e;
+                break;
+            }
+        }
+
+        if (!entity) return;
+
+        entity->scale = scale;
+        
+        if (entity->physicsHandle.isValid)
+        {
+            DestroyBodyInternal(*entity);
+            CreateBodyInternal(*entity);
+        }
     }
 
     void Physics::ApplyForce(uint32_t entityID, const Vec2& force)

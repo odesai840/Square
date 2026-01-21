@@ -164,6 +164,19 @@ namespace SquareCore
         }
 
         size_t index = it->second;
+        
+        if (entities[index].physicsHandle.isValid && physicsRef) {
+            uint32_t idToDestroy = entityID;
+            entityMutex.unlock();
+            physicsRef->DestroyBody(idToDestroy);
+            entityMutex.lock();
+            
+            it = idToIndex.find(entityID);
+            if (it == idToIndex.end()) {
+                return;
+            }
+            index = it->second;
+        }
 
         // Clean up texture if it exists
         if (entities[index].spriteSheet != nullptr)
@@ -321,6 +334,13 @@ namespace SquareCore
         if (it != idToIndex.end())
         {
             entities[it->second].position = position;
+            
+            if (physicsRef && entities[it->second].physicsHandle.isValid)
+            {
+                entityMutex.unlock();
+                physicsRef->SetColliderPosition(entityID, position);
+                entityMutex.lock();
+            }
         }
         else
         {
@@ -336,10 +356,17 @@ namespace SquareCore
         if (it != idToIndex.end())
         {
             entities[it->second].scale = scale;
+            
+            if (physicsRef && entities[it->second].physicsHandle.isValid)
+            {
+                entityMutex.unlock();
+                physicsRef->SetColliderScale(entityID, scale);
+                entityMutex.lock();
+            }
         }
         else
         {
-            SDL_LogError(SDL_LOG_CATEGORY_ERROR, "SetPosition: Entity ID %u not found", entityID);
+            SDL_LogError(SDL_LOG_CATEGORY_ERROR, "SetScale: Entity ID %u not found", entityID);
         }
     }
 
@@ -351,6 +378,13 @@ namespace SquareCore
         if (it != idToIndex.end())
         {
             entities[it->second].rotation = rotation;
+            
+            if (physicsRef && entities[it->second].physicsHandle.isValid)
+            {
+                entityMutex.unlock();
+                physicsRef->SetColliderRotation(entityID, rotation);
+                entityMutex.lock();
+            }
         }
         else
         {

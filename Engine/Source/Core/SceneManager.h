@@ -2,6 +2,7 @@
 
 #include "Renderer/EntityManager.h"
 #include "UI/UIManager.h"
+#include "Physics/Physics.h"
 #include <string>
 
 namespace SquareCore {
@@ -13,10 +14,12 @@ public:
     
     void SetEntityManager(EntityManager* entityManager) {entityManagerRef = entityManager; }
     void SetUIManager(UIManager* uiManager) { uiManagerRef = uiManager; }
+    void SetPhysics(Physics* physics) { physicsRef = physics; }
     
 private:
     EntityManager* entityManagerRef = nullptr;
     UIManager* uiManagerRef = nullptr;
+    Physics* physicsRef = nullptr;
     
 };
 

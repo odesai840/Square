@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Math/Math.h"
 #include "UI/Color.h"
+#include "Physics/Physics.h"
 #include <vector>
 #include <unordered_map>
 #include <mutex>
@@ -11,6 +12,8 @@
 #include <SDL3/SDL.h>
 
 namespace SquareCore {
+
+class Physics;
 
 // Struct to hold texture and its dimensions
 struct TextureInfo {
@@ -24,6 +27,7 @@ public:
     EntityManager();
     ~EntityManager();
 
+    void SetPhysics(Physics* physics) { physicsRef = physics; }
     // Set renderer for texture loading
     void SetRenderer(SDL_Renderer* renderer) { rendererRef = renderer; }
     // Set headless mode (for server-side entity management without graphics)
@@ -123,12 +127,15 @@ public:
 private:
     // Mutex for thread-safe operations
     mutable std::mutex entityMutex;
+    
     // Vector of entities
     std::vector<Entity> entities;
     // Map of entity IDs to indices in the vector
     std::unordered_map<uint32_t, size_t> idToIndex;
     // Next available entity ID
     uint32_t nextEntityID = 1;
+    
+    Physics* physicsRef = nullptr;
     // Reference to the SDL renderer
     SDL_Renderer* rendererRef = nullptr;
     // Headless mode flag (no texture loading for server)

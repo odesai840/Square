@@ -11,6 +11,8 @@
 
 namespace SquareCore{
 
+class EntityManager;
+
 class Physics {
 public:
     Physics();
@@ -29,11 +31,16 @@ public:
     
     void CreateBody(uint32_t entityID);
     void DestroyBody(uint32_t entityID);
+    void ClearBodies();
     
     void SetColliderBox(uint32_t entityID, float halfWidth, float halfHeight);
     void SetColliderCircle(uint32_t entityID, float radius, Vec2 center = Vec2::zero());
     void SetColliderCapsule(uint32_t entityID, Vec2 center1, Vec2 center2, float radius);
     void SetColliderPolygon(uint32_t entityID, std::vector<Vec2>& vertices);
+    
+    void SetColliderPosition(uint32_t entityID, Vec2 position);
+    void SetColliderRotation(uint32_t entityID, float rotation);
+    void SetColliderScale(uint32_t entityID, Vec2 scale);
     
     void ApplyForce(uint32_t entityID, const Vec2& force);
     void ApplyImpulse(uint32_t entityID, const Vec2& impulse);
