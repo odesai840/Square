@@ -36,6 +36,9 @@ private:
     
     // upgrades
     bool has_double_dash = true;
+    bool has_double_jump = true;
+
+    bool can_double_jump = false;
 
     SquareCore::Vec2 last_grounded_position;
 

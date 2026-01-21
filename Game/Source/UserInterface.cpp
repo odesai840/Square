@@ -1,5 +1,6 @@
 #include "UserInterface.h"
 #include "PlayerKeybinds.h"
+#include "Properties.h"
 
 void UserInterface::OnStart()
 {
@@ -40,10 +41,54 @@ void UserInterface::OnStart()
 
     SetButtonSprites(pauseMenuResumeButton, "Resources/Sprites/albinauric_fatty.png", "Resources/Sprites/fish.png","Resources/Sprites/albinauric_fatty.png");
     SetButtonSprites(pauseMenuQuitButton, "Resources/Sprites/fish.png", "Resources/Sprites/albinauric_fatty.png","Resources/Sprites/albinauric_fatty.png");
+
+    player = GetFirstEntityWithTag("Player");
+    
+    for (auto& property : GetAllEntityProperties(player))
+    {
+        if (Character* character = dynamic_cast<Character*>(property))
+        {
+            maxHealth = character->health;
+            break;
+        }
+    }
+    
+    for (int i = 0; i < maxHealth; i++)
+    {
+        uint32_t healthSquare = AddUIRect(10.0f + i * 40.0f, 10.0f, 30.0f, 30.0f,
+                                          SquareCore::RGBA(100, 0, 0, 255), "",
+                                          {SquareCore::RGBA(0, 0, 0, 0)});
+        SetUIElementPersistent(healthSquare, true);
+        SetUIElementVisible(healthSquare, true);
+        healthSquares.push_back(healthSquare);
+    }
+}
+
+void UserInterface::UpdateHealthBar()
+{
+    int currentHealth = 0;
+    for (auto& property : GetAllEntityProperties(player))
+    {
+        if (Character* character = dynamic_cast<Character*>(property))
+        {
+            currentHealth = character->health;
+            break;
+        }
+    }
+    
+    for (int i = 0; i < healthSquares.size(); i++)
+    {
+        if (i < currentHealth)
+            SetUIElementColor(healthSquares[i], SquareCore::RGBA(100, 0, 0, 255));
+        else
+            SetUIElementColor(healthSquares[i], SquareCore::RGBA(100, 100, 100, 255));
+    }
 }
 
 void UserInterface::OnUpdate(float deltaTime)
 {
+    UpdateHealthBar();
+    
     if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(0))
     {
         auto collisions = GetEntityCollisions(dialogTestTrigger);

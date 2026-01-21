@@ -12,6 +12,7 @@ public:
 private:
     void DialogUpdate();
     void Pause();
+    void UpdateHealthBar();
     
 private:
     DialogManager dialogManager;
@@ -25,4 +26,8 @@ private:
     uint32_t pauseMenuResumeButton = 0;
     uint32_t pauseMenuQuitButton = 0;
     bool paused = false;
+
+    uint32_t player = 0;
+    std::vector<uint32_t> healthSquares;
+    int maxHealth = 0;
 };

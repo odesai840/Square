@@ -141,11 +141,21 @@ void Player::Move(float delta_time)
 void Player::Jump(float delta_time)
 {
     SquareCore::Vec2 player_velocity = GetVelocity(player);
+
+    bool grounded = IsGrounded(player);
+
+    if (grounded)
+        can_double_jump = true;
     
-    if (GetKeyPressed(jump_bind) && IsGrounded(player))
+    if (GetKeyPressed(jump_bind) && (grounded || (has_double_jump && can_double_jump)))
+    {
+        if (!grounded)
+            can_double_jump = false;
         SetVelocity(player, player_velocity.x, jump_velocity);
+        player_velocity = GetVelocity(player);
+    }
     
-    if (!IsGrounded(player) && player_velocity.y < 0.0f)
+    if (!grounded && player_velocity.y < 0.0f)
     {
         SetVelocity(player, player_velocity.x, player_velocity.y - (1500.0f * delta_time));
     }
