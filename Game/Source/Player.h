@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DialogManager.h"
 #include "Script.h"
 #include "GameStateManager.h"
 #include "Properties.h"
@@ -25,6 +26,8 @@ public:
     void OnStart() override;
     void OnUpdate(float delta_time) override;
 
+    void SetDialogManager(DialogManager* dialog_manager) {this->dialog_manager = dialog_manager;}
+
 private:
     void Move(float delta_time);
     void Jump(float delta_time);
@@ -44,6 +47,8 @@ private:
     PlayerData player_data;
     uint32_t player = 0;
     int level = 0;
+
+    DialogManager* dialog_manager;
     
     // upgrades
     bool has_double_dash = true;

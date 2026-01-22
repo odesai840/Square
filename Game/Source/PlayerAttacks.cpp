@@ -6,7 +6,7 @@ void Player::Slash(float delta_time)
     SquareCore::Vec2 player_velocity = GetVelocity(player);
     SquareCore::Vec2 player_position = GetPosition(player);
     
-    if (GetMouseButtonPressed(0) && !is_slashing && !slash_in_cooldown && !(player_velocity.x > 600.0f || player_velocity.x < -600.0f))
+    if (GetMouseButtonPressed(0) && !dialog_manager->IsActive() && !is_slashing && !slash_in_cooldown && !(player_velocity.x > 600.0f || player_velocity.x < -600.0f))
     {
         is_slashing = true;
         slash_in_cooldown = true;
@@ -143,7 +143,7 @@ void Player::Projectile(float delta_time)
 
     SquareCore::Vec2 player_position = GetPosition(player);
     
-    if (GetMouseButtonPressed(2) && !projectile_in_cooldown)
+    if (GetMouseButtonPressed(2) && !dialog_manager->IsActive() && !projectile_in_cooldown)
     {
         for (int i = 0; i < projectile_pool.GetTotal(); i++)
         {

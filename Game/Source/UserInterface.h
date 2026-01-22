@@ -9,6 +9,8 @@ public:
     void OnStart() override;
     void OnUpdate(float deltaTime) override;
 
+    DialogManager* GetDialogManager() { return &dialogManager; }
+
 private:
     void DialogUpdate();
     void Pause();

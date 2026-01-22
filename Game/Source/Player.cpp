@@ -154,7 +154,8 @@ void Player::Move(float delta_time)
         is_looking_down = false;
     }
 
-    SetVelocity(player, target_x, player_velocity.y);
+    if (!dialog_manager->IsActive())
+        SetVelocity(player, target_x, player_velocity.y);
 }
 
 void Player::Jump(float delta_time)
@@ -166,7 +167,7 @@ void Player::Jump(float delta_time)
     if (grounded)
         can_double_jump = true;
     
-    if (GetKeyPressed(jump_bind) && (grounded || (has_double_jump && can_double_jump)))
+    if (GetKeyPressed(jump_bind) && (grounded || (has_double_jump && can_double_jump)) && !dialog_manager->IsActive())
     {
         if (!grounded)
         {
@@ -191,7 +192,7 @@ void Player::Dash(float delta_time)
     SquareCore::Vec2 player_velocity = GetVelocity(player);
     SquareCore::Vec2 player_position = GetPosition(player);
 
-    if (GetKeyPressed(dash_bind) && !is_dashing && player_velocity.x != 0.0f && !in_cooldown)
+    if (GetKeyPressed(dash_bind) && !is_dashing && player_velocity.x != 0.0f && !in_cooldown && !dialog_manager->IsActive())
     {
         is_dashing = true;
         dashes_used++;
