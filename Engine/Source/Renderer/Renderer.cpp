@@ -198,8 +198,9 @@ namespace SquareCore
         if (entity.isSpriteless)
         {
             // Calculate scaled dimensions
-            float scaledWidth = entity.spritelessWidth * entity.scale.x * globalScaleX;
-            float scaledHeight = entity.spritelessHeight * entity.scale.y * globalScaleY;
+            float zoom = camera.GetZoom();
+            float scaledWidth = entity.spritelessWidth * entity.scale.x * globalScaleX * zoom;
+            float scaledHeight = entity.spritelessHeight * entity.scale.y * globalScaleY * zoom;
 
             // Apply camera transform to get camera-relative position
             Vec2 cameraRelativePos = camera.ApplyCameraTransform(entity.position);
@@ -263,8 +264,9 @@ namespace SquareCore
         };
 
         // Apply scaling mode calculations
-        float finalSpriteWidth = spriteWidth * entity.scale.x * globalScaleX;
-        float finalSpriteHeight = entity.spriteHeight * entity.scale.y * globalScaleY;
+        float zoom = camera.GetZoom();
+        float finalSpriteWidth = spriteWidth * entity.scale.x * globalScaleX * zoom;
+        float finalSpriteHeight = entity.spriteHeight * entity.scale.y * globalScaleY * zoom;
 
         // Apply camera transform to get camera-relative position (includes camera offset and zoom)
         Vec2 cameraRelativePos = camera.ApplyCameraTransform(entity.position);

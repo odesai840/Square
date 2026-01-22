@@ -55,7 +55,7 @@ void UserInterface::OnStart()
     
     for (int i = 0; i < maxHealth; i++)
     {
-        uint32_t healthSquare = AddUIRect(10.0f + i * 40.0f, 10.0f, 30.0f, 30.0f,
+        uint32_t healthSquare = AddUIRect(50.0f + i * 40.0f, 50.0f, 30.0f, 30.0f,
                                           SquareCore::RGBA(100, 0, 0, 255), "",
                                           {SquareCore::RGBA(0, 0, 0, 0)});
         SetUIElementPersistent(healthSquare, true);
