@@ -15,6 +15,11 @@ void Map::OnStart()
     SetEntityPersistent(dialogTestTrigger, true);
     
     LoadMap();
+    
+    SetCameraZoom(0.85f);
+    SetCameraBounds(-10000.0f, -400.0f, 6000.0f, 10000.0f);
+    EnableCameraBounds(true);
+    SetGravity(-1500.0f);
 }
 
 void Map::OnUpdate(float deltaTime)

@@ -5,8 +5,9 @@
 void Player::OnStart()
 {
     player_data = GameStateManager::LoadPlayerData("Saves/S_001.square");
-    player = AddEntity("Resources/Sprites/square.png", player_data.x_pos, player_data.y_pos, 0.0f, 0.05f, 0.05f, true);
+    player = AddEntity("Resources/Sprites/elvis-square.png", player_data.x_pos, player_data.y_pos, 0.0f, 0.05f, 0.05f, true);
     AddTagToEntity(player, "Player");
+    FlipSprite(player, true, false);
     SetEntityPersistent(player, true);
     AddPropertyToEntity(player, new Character(10));
 
@@ -43,11 +44,6 @@ void Player::OnStart()
         SetColliderBox(projectile->id, 50.0f, 25.0f);
         SetZIndex(projectile->id, -1);
     }
-
-    SetCameraZoom(0.85f);
-    SetCameraBounds(-10000.0f, -400.0f, 6000.0f, 10000.0f);
-    EnableCameraBounds(true);
-    SetGravity(-1500.0f);
 }
 
 void Player::OnUpdate(float delta_time)
@@ -122,13 +118,13 @@ void Player::Move(float delta_time)
     if (GetKeyHeld(move_left_bind))
     {
         player_direction = Direction::LEFT;
-        FlipSprite(player, false, false);
+        FlipSprite(player, true, false);
         target_x = SquareCore::Lerp(player_velocity.x, -move_speed, acceleration * delta_time);
     }
     else if (GetKeyHeld(move_right_bind))
     {
         player_direction = Direction::RIGHT;
-        FlipSprite(player, true, false);
+        FlipSprite(player, false, false);
         target_x = SquareCore::Lerp(player_velocity.x, move_speed, acceleration * delta_time);
     }
 

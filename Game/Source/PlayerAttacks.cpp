@@ -1,6 +1,5 @@
 #include "Player.h"
 #include "GameStateManager.h"
-#include "PlayerKeybinds.h"
 
 void Player::Slash(float delta_time)
 {
@@ -50,7 +49,7 @@ void Player::Slash(float delta_time)
             SetPosition(slash, player_position.x + offset_position.x + (player_velocity.x / 10.0f), player_position.y + offset_position.y);
             SetRotation(slash, 0.0f);
             SetScale(slash, SquareCore::Vec2(0.25f, 0.1f));
-            FlipSprite(slash, GetFlipX(player), false);
+            FlipSprite(slash, !GetFlipX(player), false);
             SetEntityVisible(slash, true);
         }
     }
@@ -91,7 +90,7 @@ void Player::Slash(float delta_time)
 
                 float direction_x = enemy_position.x - player_position.x;
                 float knockback_x = (direction_x > 0 ? 1.0f : -1.0f) * slash_knockback;
-                float knockback_y = 0.0f;
+                float knockback_y;
             
                 if (slash_direction == Direction::UP)
                 {
@@ -217,11 +216,7 @@ void Player::Projectile(float delta_time)
                         charge_enemy->aware_of_player = true;
                     }
                 }
-
-                SquareCore::Vec2 enemy_position = GetPosition(collision.first);
-                SquareCore::Vec2 projectile_position = GetPosition(projectile->id);
-
-                float direction_x = enemy_position.x - projectile_position.x;
+                
                 float knockback_x = (projectile->direction == Direction::RIGHT ? 1.0f : -1.0f) * projectile_knockback;
                 float knockback_y = 300.0f;
                 
