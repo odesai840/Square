@@ -15,10 +15,11 @@ void EnemyManager::LoadEnemies()
 
     for (uint32_t jump_enemy : all_enemies_with_jump_enemy_tag)
     {
+        SetEntityColor(jump_enemy, SquareCore::RGBA(245, 73, 39, 255));
         FlipSprite(jump_enemy, true, false);
         SetDrag(jump_enemy, 5.0f);
         SetEntityPersistent(jump_enemy, false);
-        AddPropertyToEntity(jump_enemy, new Character(5));
+        AddPropertyToEntity(jump_enemy, new Character(5, 5, 1));
 
         JumpEnemy* jump_prop = new JumpEnemy(200.0f, 3.0f, {1000.0f, 1600.0f});
         jump_prop->base_scale = GetScale(jump_enemy);
@@ -33,10 +34,11 @@ void EnemyManager::LoadEnemies()
     for (uint32_t charge_enemy : all_enemies_with_charge_enemy_tag)
     {
         Direction random_direction = (rand() % 2 == 0) ? Direction::RIGHT : Direction::LEFT;
+        SetEntityColor(charge_enemy, SquareCore::RGBA(82, 9, 9, 255));
         FlipSprite(charge_enemy, random_direction == Direction::RIGHT, false);
         SetDrag(charge_enemy, 5.0f);
         SetEntityPersistent(charge_enemy, false);
-        AddPropertyToEntity(charge_enemy, new Character(5));
+        AddPropertyToEntity(charge_enemy, new Character(5, 5, 1));
 
         ChargeEnemy* charge_prop = new ChargeEnemy(GetPosition(charge_enemy).x, 400.0f);
         charge_prop->facing_direction = random_direction;
@@ -48,6 +50,19 @@ void EnemyManager::LoadEnemies()
 
         auto props = GetAllEntityProperties(charge_enemy);
     }
+
+    if (jump_boss)
+        RemoveEntity(jump_boss);
+    jump_boss = AddEntity("Resources/Sprites/triangle-enemy.png", -2000.0f, 0.0f, 0.0f, 0.5f, 0.5f, true);
+    SetEntityColor(jump_boss, SquareCore::RGBA(70, 0, 0, 255));
+    AddTagToEntity(jump_boss, "Enemy");
+    AddTagToEntity(jump_boss, "Pogo");
+    AddTagToEntity(jump_boss, "JumpBoss");
+    SetDrag(jump_boss, 5.0f);
+    SetEntityPersistent(jump_boss, true);
+    AddPropertyToEntity(jump_boss, new Character(50, 50, 2));
+    AddPropertyToEntity(jump_boss, new JumpBoss());
+    SetColliderPolygon(jump_boss, boss_collider_vertices);
 }
 
 
@@ -312,9 +327,6 @@ void EnemyManager::OnUpdate(float deltaTime)
                 if (jump_property->is_winding_up)
                 {
                     jump_property->charge_windup_timer += deltaTime;
-
-                    float pulse = (std::sin(jump_property->charge_windup_timer * 15.0f) + 1.0f) * 0.5f;
-                    float scale = 0.2f + (pulse * 0.2f);
 
                     if (jump_property->charge_windup_timer >= jump_property->charge_windup_time)
                     {

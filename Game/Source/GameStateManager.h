@@ -8,7 +8,7 @@ struct PlayerData
     float y_pos = 0;
     int max_health = 10;
     int health = 0;
-    int level = 0;
+    int level = 1;
     int damage = 1;
 
     bool has_double_dash = false;

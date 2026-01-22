@@ -4,14 +4,14 @@
 
 void Map::OnStart()
 {
-    main_menu_music = AddAudioClip("Resources/Audio/03.mp3");
+    main_menu_music = AddAudioClip("Resources/Audio/29th.wav");
     level_1_music = AddAudioClip("Resources/Audio/03.mp3");
     level_2_music = AddAudioClip("Resources/Audio/03.mp3");
     level_3_music = AddAudioClip("Resources/Audio/03.mp3");
-    SetAudioVolume(main_menu_music, 1.0f);
-    SetAudioVolume(level_1_music, 0.05f);
-    SetAudioVolume(level_2_music, 0.05f);
-    SetAudioVolume(level_3_music, 0.05f);
+    SetAudioVolume(main_menu_music, 0.1f);
+    SetAudioVolume(level_1_music, 0.1f);
+    SetAudioVolume(level_2_music, 0.1f);
+    SetAudioVolume(level_3_music, 0.1f);
     SetAudioLooping(main_menu_music, true);
     SetAudioLooping(level_1_music, true);
     SetAudioLooping(level_2_music, true);

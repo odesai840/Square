@@ -5,7 +5,7 @@
 void Player::OnStart()
 {
     player_data = GameStateManager::LoadPlayerData("Saves/S_001.square");
-    player = AddEntity("Resources/Sprites/elvis-square.png", player_data.x_pos, player_data.y_pos, 0.0f, 0.05f, 0.05f, true);
+    player = AddEntity("Resources/Sprites/player.png", player_data.x_pos, player_data.y_pos, 0.0f, 0.05f, 0.05f, true);
     AddTagToEntity(player, "Player");
     FlipSprite(player, true, false);
     SetEntityPersistent(player, true);
