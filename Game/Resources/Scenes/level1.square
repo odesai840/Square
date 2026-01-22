@@ -2,6 +2,56 @@
     "entities": [
         {
             "color": [
+                120,
+                0,
+                0,
+                255
+            ],
+            "physApplied": true,
+            "isSpriteless": false,
+            "position": [
+                30.0,
+                0.0
+            ],
+            "scale": [
+                0.05,
+                0.05
+            ],
+            "spritePath": "Resources/Sprites/triangle-enemy.png",
+            "tags": [
+                "Enemy",
+                "ChargeEnemy",
+                "Pogo"
+            ],
+            "zIndex": 2
+        },
+        {
+            "color": [
+                120,
+                0,
+                0,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                50.0,
+                0.0
+            ],
+            "physApplied": true,
+            "scale": [
+                0.05,
+                0.05
+            ],
+            "spritePath": "Resources/Sprites/triangle-enemy.png",
+            "tags": [
+                "Enemy",
+                "JumpEnemy",
+                "Pogo"
+            ],
+            "zIndex": 2
+        },
+        {
+            "color": [
                 200,
                 200,
                 255,
@@ -109,7 +159,30 @@
             "tags": [
                 "Ground"
             ],
-            "zIndex": 0
+            "zIndex": 1
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -450,
+                1000
+            ],
+            "rotation": -10,
+            "scale": [
+                0.3,
+                0.3
+            ],
+            "spritePath": "Resources/Sprites/sign.png",
+            "collider": {
+                "type": 0
+            },
+            "zIndex": -1
         },
         {
             "color": [
@@ -233,11 +306,11 @@
             "isSpriteless": false,
             "position": [
                 -2500.0,
-                50.0
+                212.0
             ],
             "scale": [
                 0.3,
-                0.6
+                0.3
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
@@ -254,12 +327,232 @@
             ],
             "isSpriteless": false,
             "position": [
-                -3400.0,
-                50.0
+                -2500.0,
+                -200.0
             ],
             "scale": [
                 0.3,
-                0.6
+                0.15
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                200,
+                200,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -2950.0,
+                -210.0
+            ],
+            "scale": [
+                0.15,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/mushroom.png",
+            "tags": [
+                "Bounce"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -3400.0,
+                0.0
+            ],
+            "scale": [
+                0.3,
+                0.5
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -4000.0,
+                216.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                200,
+                200,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -4000.0,
+                315.0
+            ],
+            "scale": [
+                0.15,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/mushroom.png",
+            "tags": [
+                "Bounce"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -3400.0,
+                600.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                200,
+                200,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -3400.0,
+                700.0
+            ],
+            "scale": [
+                0.15,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/mushroom.png",
+            "tags": [
+                "Bounce"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -2700.0,
+                1000.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                200,
+                200,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -2700.0,
+                1100.0
+            ],
+            "scale": [
+                0.15,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/mushroom.png",
+            "tags": [
+                "Bounce"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -1800.0,
+                1300.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -4600.0,
+                114.0
+            ],
+            "scale": [
+                0.3,
+                1.0
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
@@ -370,6 +663,51 @@
             "scale": [
                 0.5,
                 2.0
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                3500.0,
+                1000.0
+            ],
+            "scale": [
+                5.0,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                300.0,
+                1000.0
+            ],
+            "scale": [
+                0.3,
+                0.1
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [

@@ -204,7 +204,7 @@ namespace SquareCore
                         entityJson["spritelessColor"][3]
                     );
                     id = entityManagerRef->AddSpritelessEntity(width, height, color, posX, posY, rotation, scaleX, scaleY,
-                                                           physEnabled);
+                                                               physEnabled);
                 } else {
                     std::string spritePath = entityJson.value("spritePath", "");
                     int totalFrames = entityJson.value("totalFrames", 1);
@@ -212,10 +212,10 @@ namespace SquareCore
 
                     if (totalFrames > 1 || fps > 0) {
                         id = entityManagerRef->AddAnimatedEntity(spritePath.c_str(), totalFrames, fps, posX, posY, rotation, scaleX,
-                                                             scaleY, physEnabled, tags);
+                                                                 scaleY, physEnabled, tags);
                     } else {
                         id = entityManagerRef->AddEntity(spritePath.c_str(), posX, posY, rotation, scaleX, scaleY, physEnabled,
-                                                     tags);
+                                                         tags);
                     }
                 }
 
@@ -239,14 +239,19 @@ namespace SquareCore
                     }
 
                     if (entityJson.contains("collider")) {
-                        entity->collider.type = static_cast<ColliderType>(entityJson["collider"].value("type", 1));
-                        entity->collider.enabled = entityJson["collider"].value("enabled", true);
+                        if (entityJson["collider"].contains("type")) {
+                            entity->collider.type = static_cast<ColliderType>(entityJson["collider"]["type"].get<int>());
+                        }
+                        if (entityJson["collider"].contains("enabled")) {
+                            entity->collider.enabled = entityJson["collider"]["enabled"].get<bool>();
+                        }
                         if (entityJson["collider"].contains("offset")) {
                             entity->collider.offset = Vec2(entityJson["collider"]["offset"][0],
-                                                        entityJson["collider"]["offset"][1]);
+                                                           entityJson["collider"]["offset"][1]);
                         }
                         if (entityJson["collider"].contains("size")) {
-                            entity->collider.size = Vec2(entityJson["collider"]["size"][0], entityJson["collider"]["size"][1]);
+                            entity->collider.size = Vec2(entityJson["collider"]["size"][0], 
+                                                         entityJson["collider"]["size"][1]);
                         }
                     }
                 }
