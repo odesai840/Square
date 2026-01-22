@@ -29,10 +29,11 @@ enum class ChargeEnemyState : uint8_t
 
 struct Character : SquareCore::Property
 {
+    int max_health = 10;
     int health = 10;
     int damage = 1;
 
-    Character(int health = 10, int damage = 1) { this->health = health; this->damage = damage; }
+    Character(int max_health = 10, int health = 10, int damage = 1) { this->max_health = max_health; this->health = health; this->damage = damage; }
 };
 
 struct JumpEnemy : SquareCore::Property

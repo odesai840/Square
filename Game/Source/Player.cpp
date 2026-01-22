@@ -9,7 +9,7 @@ void Player::OnStart()
     AddTagToEntity(player, "Player");
     FlipSprite(player, true, false);
     SetEntityPersistent(player, true);
-    AddPropertyToEntity(player, new Character(10));
+    AddPropertyToEntity(player, new Character(player_data.max_health, player_data.health, player_data.damage));
     
     slash_fps = 7.0f / slash_length;
     slash = AddAnimatedEntity("Resources/Sprites/slash-sheet-2.png", 7, slash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 0.25f, 0.1f, false);
@@ -50,6 +50,17 @@ void Player::TeleportPlayer(const SquareCore::Vec2& position)
     SetPosition(player, position.x, position.y);
 }
 
+void Player::OnExit()
+{
+    for (auto property : GetAllEntityProperties(player))
+    {
+        if (Character* cprop = dynamic_cast<Character*>(property))
+        {
+            player_data.health = cprop->health;
+        }
+    }
+    GameStateManager::SavePlayerData("Saves/S_001.square", player_data);
+}
 
 void Player::OnUpdate(float delta_time)
 {
@@ -73,7 +84,15 @@ void Player::OnUpdate(float delta_time)
 
     // DEBUG KEYS
     if (GetKeyPressed(debug_save))
-        GameStateManager::SavePlayerData("Saves/S_001.square", player_data);
+    {
+        for (auto property : GetAllEntityProperties(player))
+        {
+            if (Character* cprop = dynamic_cast<Character*>(property))
+            {
+                cprop->health -= 1;
+            }
+        }
+    }
     if (GetKeyPressed(debug_collision))
         ToggleDebugCollisions();
     if (GetKeyPressed(debug_mouse_cursor))

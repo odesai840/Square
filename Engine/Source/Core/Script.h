@@ -31,6 +31,8 @@ namespace SquareCore
         // Runs for every frame
         virtual void OnUpdate(float deltaTime) {}
 
+        virtual void OnExit() {}
+
         // Optional callbacks for server mode
         virtual void OnClientConnected(uint32_t clientID) {}
 

@@ -148,6 +148,9 @@ namespace SquareCore
             renderer.RenderUI();
             renderer.EndFrame();
         }
+
+        for (auto* script : scripts)
+            script->OnExit();
     }
 
     void Application::RenderThreadFunction_ListenServer(Server* server)

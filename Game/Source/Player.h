@@ -25,7 +25,7 @@ public:
     Player() : projectile_pool(sizeof(ProjectileEntity), 5) {}
     void OnStart() override;
     void OnUpdate(float delta_time) override;
-
+    void OnExit() override;
     void SetDialogManager(DialogManager* dialog_manager) {this->dialog_manager = dialog_manager;}
     void TeleportPlayer(const SquareCore::Vec2& position);
     PlayerData& GetPlayerData() { return player_data; }

@@ -5,7 +5,8 @@
 void UserInterface::OnStart()
 {
     main_menu_background = AddUIRect(0.0f, 0.0f, 1920, 1080,
-                             SquareCore::RGBA(20, 20, 20, 255), "", {SquareCore::RGBA(0, 0, 0, 0)});
+                             SquareCore::RGBA(70, 70, 70, 255), "", {SquareCore::RGBA(0, 0, 0, 0)});
+    //SetElementSprite(main_menu_background, "Resources/Sprites/main-menu.png");
     
     main_menu_title = AddUIText(1920.0f / 2.0f, 150.0f, 64, SquareCore::RGBA(255, 255, 255, 255), "Resources/Fonts/Helvetica.ttf", "SQUARE SOULS");
     SquareCore::Vec2 text_size = GetTextSize(main_menu_title);
@@ -102,7 +103,7 @@ void UserInterface::OnStart()
     {
         if (Character* character = dynamic_cast<Character*>(property))
         {
-            maxHealth = character->health;
+            maxHealth = character->max_health;
             break;
         }
     }
@@ -116,6 +117,8 @@ void UserInterface::OnStart()
         SetUIElementVisible(healthSquare, false);
         healthSquares.push_back(healthSquare);
     }
+
+    UpdateHealthBar();
 }
 
 void UserInterface::ShowCredits(bool show)
