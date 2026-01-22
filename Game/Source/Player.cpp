@@ -10,7 +10,7 @@ void Player::OnStart()
     FlipSprite(player, true, false);
     SetEntityPersistent(player, true);
     AddPropertyToEntity(player, new Character(10));
-
+    
     slash_fps = 7.0f / slash_length;
     slash = AddAnimatedEntity("Resources/Sprites/slash-sheet-2.png", 7, slash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 0.25f, 0.1f, false);
     SetColliderType(slash, SquareCore::ColliderType::TRIGGER);
@@ -25,7 +25,6 @@ void Player::OnStart()
     SetEntityVisible(dash, false);
     SetEntityPersistent(dash, true);
     SetEntityColor(dash, SquareCore::RGBA(200, 200, 200, 255));
-
     
     projectile_fps = 100.0f;
     for (int i = 0; i < 5; i++)
@@ -46,6 +45,12 @@ void Player::OnStart()
     }
 }
 
+void Player::TeleportPlayer(const SquareCore::Vec2& position)
+{
+    SetPosition(player, position.x, position.y);
+}
+
+
 void Player::OnUpdate(float delta_time)
 {
     Move(delta_time);
@@ -65,17 +70,6 @@ void Player::OnUpdate(float delta_time)
             can_take_damage_timer = 0.0f;
         }
     }
-
-    player_data.x_pos = GetPosition(player).x;
-    player_data.y_pos = GetPosition(player).y;
-    for (auto& player_property : GetAllEntityProperties(player))
-    {
-        if (Character* player_character = dynamic_cast<Character*>(player_property))
-        {
-            player_data.health = player_character->health;
-        }
-    }
-    player_data.level = level;
 
     // DEBUG KEYS
     if (GetKeyPressed(debug_save))

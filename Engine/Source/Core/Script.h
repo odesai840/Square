@@ -302,6 +302,7 @@ namespace SquareCore
         std::vector<uint32_t> GetAllUIElementsWithTag(std::string tag);
         uint32_t GetFirstUIElementWithTag(std::string tag);
         bool UIElementHasTag(uint32_t elementID, std::string tag);
+        Vec2 GetTextSize(uint32_t elementID);
         
         bool SaveScene(const std::string& filepath);
         bool LoadScene(const std::string& filepath);

@@ -369,6 +369,14 @@ namespace SquareCore
         }
     }
 
+    Vec2 UIManager::GetTextSize(uint32_t elementID)
+    {
+        int width = 0.0f;
+        int height = 0.0f;
+        TTF_GetTextSize(GetElementByID(elementID)->text.textObject, &width, &height);
+        return Vec2((float)width, (float)height);
+    }
+
     void UIManager::AddTagToUIElement(uint32_t elementID, const std::string& tag)
     {
         std::lock_guard<std::mutex> lock(uiMutex);

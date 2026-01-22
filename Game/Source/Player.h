@@ -27,6 +27,8 @@ public:
     void OnUpdate(float delta_time) override;
 
     void SetDialogManager(DialogManager* dialog_manager) {this->dialog_manager = dialog_manager;}
+    void TeleportPlayer(const SquareCore::Vec2& position);
+    PlayerData& GetPlayerData() { return player_data; }
 
 private:
     void Move(float delta_time);
@@ -44,6 +46,8 @@ private:
     void DealDamage(Character* enemy_character, uint32_t enemy_id, int damage);
 
 private:
+    bool loaded = false;
+    
     PlayerData player_data;
     uint32_t player = 0;
     int level = 0;

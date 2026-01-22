@@ -1075,7 +1075,13 @@ namespace SquareCore
         if (!uiManagerRef) return false;
         return uiManagerRef->UIElementHasTag(elementID, tag);
     }
-    
+
+    Vec2 Script::GetTextSize(uint32_t elementID)
+    {
+        if (uiManagerRef) return uiManagerRef->GetTextSize(elementID);
+        return Vec2::zero();
+    }
+
     bool Script::SaveScene(const std::string& filepath) {
         if (!sceneManagerRef) return false;
         return sceneManagerRef->SaveScene(filepath);

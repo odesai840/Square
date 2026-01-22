@@ -33,6 +33,8 @@ namespace SquareCore
         void SetUIText(uint32_t elementID, const std::string& newText);
         void SetElementSprite(uint32_t elementID, std::string spritePath);
         void SetButtonSprites(uint32_t elementID, std::string spritePath, std::string hoveredSpritePath, std::string pressedSpritePath);
+
+        Vec2 GetTextSize(uint32_t elementID);
         
         void AddTagToUIElement(uint32_t elementID, const std::string& tag);
         void RemoveTagFromUIElement(uint32_t elementID, const std::string& tag);
