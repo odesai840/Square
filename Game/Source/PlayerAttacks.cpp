@@ -204,6 +204,8 @@ void Player::Projectile(float delta_time)
 
             if (EntityHasTag(collision.first, "Breakable"))
             {
+                uint32_t ball = GetFirstEntityWithTag("Ball");
+                SetPhysicsEnabled(ball, true);
                 RemoveEntity(collision.first);
             }
 

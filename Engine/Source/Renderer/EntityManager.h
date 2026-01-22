@@ -91,6 +91,7 @@ public:
 
     bool EntityHasTag(uint32_t entityID, std::string tag);
 
+    void SetPhysicsEnabled(uint32_t entityID, bool enabled);
     void SetVisible(uint32_t entityID, bool visible);
     void ResetAnimation(uint32_t entityID);
     void SetAnimationFPS(uint32_t entityID, float fps);

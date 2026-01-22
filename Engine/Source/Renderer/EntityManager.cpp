@@ -523,6 +523,17 @@ namespace SquareCore
         return false;
     }
 
+    void EntityManager::SetPhysicsEnabled(uint32_t entityID, bool enabled)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+        
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            entities[it->second].physApplied = enabled;
+        }
+    }
+
     void EntityManager::SetVisible(uint32_t entityID, bool visible)
     {
         std::lock_guard<std::mutex> lock(entityMutex);

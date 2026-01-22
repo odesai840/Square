@@ -313,6 +313,11 @@ namespace SquareCore
         return {};
     }
 
+    void Script::SetPhysicsEnabled(uint32_t entityID, bool enabled)
+    {
+        if (entityManagerRef) entityManagerRef->SetPhysicsEnabled(entityID, enabled);
+    }
+
     void Script::SetMouseVisible(bool visible)
     {
         if (visible) SDL_ShowCursor();
