@@ -53,7 +53,7 @@ void EnemyManager::LoadEnemies()
 
     if (jump_boss)
         RemoveEntity(jump_boss);
-    jump_boss = AddEntity("Resources/Sprites/triangle-enemy.png", -2000.0f, 0.0f, 0.0f, 0.5f, 0.5f, true);
+    jump_boss = AddEntity("Resources/Sprites/triangle-enemy.png", -6000.0f, 0.0f, 0.0f, 0.5f, 0.5f, true);
     SetEntityColor(jump_boss, SquareCore::RGBA(70, 0, 0, 255));
     AddTagToEntity(jump_boss, "Enemy");
     AddTagToEntity(jump_boss, "Pogo");
@@ -63,6 +63,7 @@ void EnemyManager::LoadEnemies()
     AddPropertyToEntity(jump_boss, new Character(50, 50, 2));
     AddPropertyToEntity(jump_boss, new JumpBoss());
     SetColliderPolygon(jump_boss, boss_collider_vertices);
+    enemies.push_back(jump_boss);
 }
 
 
@@ -107,7 +108,7 @@ void EnemyManager::OnUpdate(float deltaTime)
                             jump_property->hit_player_this_attack = false;
 
                             float direction = (player_position.x > enemy_position.x) ? 1.0f : -1.0f;
-                            FlipSprite(enemy, direction <= 0, false);
+                            FlipSprite(enemy, !(direction <= 0), false);
                         }
                         break;
                     }
@@ -335,7 +336,7 @@ void EnemyManager::OnUpdate(float deltaTime)
                         jump_property->jump_cooldown_timer = 0.0f;
 
                         float direction = (player_position.x > enemy_position.x) ? 1.0f : -1.0f;
-                        FlipSprite(enemy, direction <= 0, false);
+                        FlipSprite(enemy, !(direction <= 0), false);
                         SetVelocity(enemy, direction * jump_property->charge_force, GetVelocity(enemy).y);
                     }
                 }
@@ -344,7 +345,7 @@ void EnemyManager::OnUpdate(float deltaTime)
                     jump_property->hit_player_this_attack = false;
 
                     float direction = (player_position.x > enemy_position.x) ? 1.0f : -1.0f;
-                    FlipSprite(enemy, direction <= 0, false);
+                    FlipSprite(enemy, !(direction <= 0), false);
 
                     if (distance > jump_property->far_range)
                     {

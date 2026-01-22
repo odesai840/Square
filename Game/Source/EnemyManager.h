@@ -28,4 +28,5 @@ private:
     };
 
     uint32_t jump_boss = 0;
+    bool jump_boss_active = false;
 };

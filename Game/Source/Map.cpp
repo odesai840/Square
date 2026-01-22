@@ -32,8 +32,22 @@ void Map::OnStart()
 
 void Map::OnUpdate(float deltaTime)
 {
+    wormhole_rotation += deltaTime * wormhole_speed;
+    for (int i = 0 ; i < wormholes.size(); i++)
+    {
+        SetRotation(wormholes[i], wormhole_rotation * (1.0f + (i*0.4f)));
+    }
+    for (int i = 0 ; i < wormholes_negative.size(); i++)
+    {
+        SetRotation(wormholes_negative[i], -wormhole_rotation * (1.0f + (i*0.1f)));
+    }
+
     if (GetKeyPressed(debug_hot_reload))
-        LoadMap(current_map, {-100.0f, 200.0f});
+    {
+        uint32_t player_id = GetFirstEntityWithTag("Player");
+        SquareCore::Vec2 player_pos = GetPosition(player_id);
+        LoadMap(current_map, {player_pos.x, player_pos.y});
+    }
 }
 
 void Map::LoadMap(int level, SquareCore::Vec2 player_position)
@@ -41,6 +55,17 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
     LoadScene(level_path);
     if (enemy_manager) enemy_manager->LoadEnemies();
     if (player) player->TeleportPlayer({player_position.x, player_position.y});
+
+    wormholes = GetAllEntitiesWithTag("Wormhole");
+    wormholes_negative = GetAllEntitiesWithTag("WormholeNegative");
+    for (uint32_t wormhole : wormholes)
+    {
+        SetColliderType(wormhole, SquareCore::ColliderType::NONE);
+    }
+    for (uint32_t wormhole : wormholes_negative)
+    {
+        SetColliderType(wormhole, SquareCore::ColliderType::NONE);
+    }
     
     switch (level)
     {

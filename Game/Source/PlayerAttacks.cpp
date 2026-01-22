@@ -202,6 +202,11 @@ void Player::Projectile(float delta_time)
         {
             if (!EntityExists(collision.first)) continue;
 
+            if (EntityHasTag(collision.first, "Breakable"))
+            {
+                RemoveEntity(collision.first);
+            }
+
             if (EntityHasTag(collision.first, "Ground"))
             {
                 projectile->active = false;

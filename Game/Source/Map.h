@@ -23,4 +23,8 @@ private:
     Player* player = nullptr;
 
     int current_map = 0;
+    std::vector<uint32_t> wormholes;
+    std::vector<uint32_t> wormholes_negative;
+    float wormhole_rotation = 0.0f;
+    float wormhole_speed = 55.0f;
 };
