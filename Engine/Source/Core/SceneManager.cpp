@@ -221,37 +221,38 @@ namespace SquareCore
 
                 Entity* entity = entityManagerRef->GetEntityByID(id);
                 if (entity) {
-                    entity->flipX = entityJson.value("flipX", false);
-                    entity->flipY = entityJson.value("flipY", false);
-                    entity->visible = entityJson.value("visible", true);
-                    entity->mass = entityJson.value("mass", 1.0f);
-                    entity->drag = entityJson.value("drag", 0.0f);
+                    bool flipX = entityJson.value("flipX", false);
+                    bool flipY = entityJson.value("flipY", false);
+                    entityManagerRef->FlipSprite(id, flipX, flipY);
+                    entityManagerRef->SetVisible(id, entityJson.value("visible", true));
+                    physicsRef->SetMass(id, entityJson.value("mass", 1.0f));
+                    physicsRef->SetDrag(id, entityJson.value("drag", 0.0f));
                     entity->tags = tags;
-                    entity->zIndex = zIndex;
+                    entityManagerRef->SetZIndex(id, zIndex);
 
                     if (entityJson.contains("color")) {
-                        entity->color = RGBA(
+                        entityManagerRef->SetColor(id, RGBA(
                             entityJson["color"][0],
                             entityJson["color"][1],
                             entityJson["color"][2],
                             entityJson["color"][3]
-                        );
+                        ));
                     }
 
                     if (entityJson.contains("collider")) {
                         if (entityJson["collider"].contains("type")) {
-                            entity->collider.type = static_cast<ColliderType>(entityJson["collider"]["type"].get<int>());
+                            entityManagerRef->SetColliderType(id, static_cast<ColliderType>(entityJson["collider"]["type"].get<int>()));
                         }
                         if (entityJson["collider"].contains("enabled")) {
-                            entity->collider.enabled = entityJson["collider"]["enabled"].get<bool>();
+                            entityManagerRef->SetColliderEnabled(id, entityJson["collider"]["enabled"].get<bool>());
                         }
                         if (entityJson["collider"].contains("offset")) {
-                            entity->collider.offset = Vec2(entityJson["collider"]["offset"][0],
-                                                           entityJson["collider"]["offset"][1]);
+                            entityManagerRef->SetColliderOffset(id, Vec2(entityJson["collider"]["offset"][0],
+                                                                         entityJson["collider"]["offset"][1]));
                         }
                         if (entityJson["collider"].contains("size")) {
-                            entity->collider.size = Vec2(entityJson["collider"]["size"][0], 
-                                                         entityJson["collider"]["size"][1]);
+                            entityManagerRef->SetColliderSize(id, Vec2(entityJson["collider"]["size"][0],
+                                                                       entityJson["collider"]["size"][1]));
                         }
                     }
                 }

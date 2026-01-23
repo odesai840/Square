@@ -31,7 +31,7 @@
             ],
             "isSpriteless": false,
             "position": [
-                0.0,
+                -2000.0,
                 -390.0
             ],
             "scale": [
@@ -54,8 +54,8 @@
             ],
             "isSpriteless": false,
             "position": [
-                0.0,
-                2000.0
+                -2000.0,
+                2200.0
             ],
             "scale": [
                 20.0,
@@ -63,8 +63,7 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground",
-                "ValidGround"
+                "Ground"
             ],
             "zIndex": 1
         },
@@ -367,7 +366,7 @@
             "isSpriteless": false,
             "position": [
                 -4000.0,
-                216.0
+                300.0
             ],
             "scale": [
                 0.3,
@@ -389,7 +388,7 @@
             "isSpriteless": false,
             "position": [
                 -4000.0,
-                315.0
+                400.0
             ],
             "scale": [
                 0.15,
@@ -411,7 +410,7 @@
             "isSpriteless": false,
             "position": [
                 -3400.0,
-                600.0
+                700.0
             ],
             "scale": [
                 0.3,
@@ -433,7 +432,7 @@
             "isSpriteless": false,
             "position": [
                 -3400.0,
-                700.0
+                800.0
             ],
             "scale": [
                 0.15,
@@ -785,10 +784,54 @@
             "isSpriteless": false,
             "position": [
                 6035.0,
-                800.0
+                900.0
             ],
             "scale": [
                 0.5,
+                2.5
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -12500.0,
+                900.0
+            ],
+            "scale": [
+                0.5,
+                2.5
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -8000.0,
+                1000.0
+            ],
+            "scale": [
+                0.2,
                 2.0
             ],
             "spritePath": "Resources/Sprites/square.png",
@@ -806,11 +849,11 @@
             ],
             "isSpriteless": false,
             "position": [
-                3500.0,
+                3000.0,
                 1000.0
             ],
             "scale": [
-                5.0,
+                5.3,
                 0.1
             ],
             "spritePath": "Resources/Sprites/square.png",
@@ -829,16 +872,82 @@
             ],
             "isSpriteless": false,
             "position": [
-                300.0,
-                1000.0
+                4500.0,
+                1570.0
             ],
             "scale": [
-                0.3,
-                0.1
+                2.5,
+                1.05
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
                 "Ground"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                2300.0,
+                1870.0
+            ],
+            "scale": [
+                0.1,
+                1.05
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "TrapWall"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                600.0,
+                1870.0
+            ],
+            "scale": [
+                0.1,
+                1.05
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "TrapWall"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                600.0,
+                1870.0
+            ],
+            "scale": [
+                0.1,
+                1.05
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "TrapWall"
             ],
             "zIndex": 0
         },
