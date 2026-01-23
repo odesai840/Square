@@ -148,7 +148,7 @@ namespace SquareCore
         
         nlohmann::json sceneJson;
         try {
-            file >> sceneJson;
+            sceneJson = nlohmann::json::parse(file, nullptr, true, true);
         } catch (const nlohmann::json::exception& e) {
             SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to parse scene JSON: %s", e.what());
             return false;

@@ -54,6 +54,29 @@
             ],
             "isSpriteless": false,
             "position": [
+                0.0,
+                2000.0
+            ],
+            "scale": [
+                20.0,
+                0.25
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
                 -700.0,
                 -60.0
             ],

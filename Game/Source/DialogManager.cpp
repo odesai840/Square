@@ -15,7 +15,7 @@ bool DialogManager::Load(const std::string& path)
     nlohmann::json json;
     try
     {
-        file >> json;
+        json = nlohmann::json::parse(file, nullptr, true, true);
     }
     catch (const nlohmann::json::exception& e)
     {
