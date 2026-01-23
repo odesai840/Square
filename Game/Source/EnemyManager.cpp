@@ -50,8 +50,51 @@ void EnemyManager::LoadEnemies()
 
         auto props = GetAllEntityProperties(charge_enemy);
     }
+}
 
-    /*if (jump_boss)
+uint32_t EnemyManager::SpawnChargeEnemy(const SquareCore::Vec2& position)
+{
+    uint32_t charge_enemy = AddEntity("Resources/Sprites/triangle-enemy.png", position.x, position.y, 0.0f, 0.05f, 0.05f, true, {"Enemy", "ChargeEnemy", "Pogo"});
+    Direction random_direction = (rand() % 2 == 0) ? Direction::RIGHT : Direction::LEFT;
+    SetEntityColor(charge_enemy, SquareCore::RGBA(82, 9, 9, 255));
+    FlipSprite(charge_enemy, random_direction == Direction::RIGHT, false);
+    SetDrag(charge_enemy, 5.0f);
+    SetEntityPersistent(charge_enemy, false);
+    AddPropertyToEntity(charge_enemy, new Character(5, 5, 1));
+
+    ChargeEnemy* charge_prop = new ChargeEnemy(GetPosition(charge_enemy).x, 400.0f);
+    charge_prop->facing_direction = random_direction;
+    charge_prop->base_scale = GetScale(charge_enemy);
+    AddPropertyToEntity(charge_enemy, charge_prop);
+
+    SetColliderPolygon(charge_enemy, enemy_collider_vertices);
+    enemies.push_back(charge_enemy);
+
+    return charge_enemy;
+}
+
+uint32_t EnemyManager::SpawnJumpEnemy(const SquareCore::Vec2& position)
+{
+    uint32_t jump_enemy = AddEntity("Resources/Sprites/triangle-enemy.png", position.x, position.y, 0.0f, 0.05f, 0.05f, true, {"Enemy", "JumpEnemy", "Pogo"});
+    SetEntityColor(jump_enemy, SquareCore::RGBA(245, 73, 39, 255));
+    FlipSprite(jump_enemy, true, false);
+    SetDrag(jump_enemy, 5.0f);
+    SetEntityPersistent(jump_enemy, false);
+    AddPropertyToEntity(jump_enemy, new Character(5, 5, 1));
+
+    JumpEnemy* jump_prop = new JumpEnemy(200.0f, 3.0f, {1000.0f, 1600.0f});
+    jump_prop->base_scale = GetScale(jump_enemy);
+    AddPropertyToEntity(jump_enemy, jump_prop);
+
+    SetColliderPolygon(jump_enemy, enemy_collider_vertices);
+    enemies.push_back(jump_enemy);
+
+    return jump_enemy;
+}
+
+uint32_t EnemyManager::SpawnJumpBoss(const SquareCore::Vec2& position)
+{
+    if (jump_boss)
         RemoveEntity(jump_boss);
     jump_boss = AddEntity("Resources/Sprites/triangle-enemy.png", -6000.0f, 0.0f, 0.0f, 0.5f, 0.5f, true);
     SetEntityColor(jump_boss, SquareCore::RGBA(70, 0, 0, 255));
@@ -63,7 +106,7 @@ void EnemyManager::LoadEnemies()
     AddPropertyToEntity(jump_boss, new Character(50, 50, 2));
     AddPropertyToEntity(jump_boss, new JumpBoss());
     SetColliderPolygon(jump_boss, boss_collider_vertices);
-    enemies.push_back(jump_boss);*/
+    enemies.push_back(jump_boss);
 }
 
 

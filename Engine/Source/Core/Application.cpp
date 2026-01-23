@@ -93,6 +93,7 @@ namespace SquareCore
         sceneManager.SetEntityManager(&entityManager);
         sceneManager.SetUIManager(&uiManager);
         sceneManager.SetPhysics(&physics);
+        sceneManager.SetRenderer(&renderer);
 
         for (auto* script : scripts)
             script->OnStart();
@@ -163,6 +164,7 @@ namespace SquareCore
         entityManager.SetRenderer(renderer.GetRenderer());
         sceneManager.SetEntityManager(&entityManager);
         sceneManager.SetUIManager(&uiManager);
+        sceneManager.SetRenderer(&renderer);
         server->GetEntityManager().SetRenderer(renderer.GetRenderer());
 
         for (auto* script : scripts)

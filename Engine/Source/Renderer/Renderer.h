@@ -50,7 +50,12 @@ public:
     
     void SetUIManager(UIManager* uiManager);
 
+    void SetBackgroundColor(RGBA color) { background_color = color; }
+    RGBA GetBackgroundColor() { return background_color; }
+
 private:
+    RGBA background_color = RGBA(0, 0, 31, 255);
+    
     // Internal pointer to the underlying SDL renderer
     SDL_Renderer* rendererRef = nullptr;
     TTF_TextEngine* textEngineRef = nullptr;

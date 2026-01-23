@@ -9,6 +9,12 @@ namespace SquareCore
 {
     bool SceneManager::SaveScene(const std::string& filepath) {
         nlohmann::json sceneJson;
+
+        if (rendererRef)
+        {
+            RGBA bgc = rendererRef->GetBackgroundColor();
+            sceneJson["background-color"] = {bgc.r, bgc.g, bgc.b, bgc.a};
+        }
         
         sceneJson["entities"] = nlohmann::json::array();
         auto entities = entityManagerRef->GetEntitiesCopy();
@@ -166,7 +172,14 @@ namespace SquareCore
         {
             uiManagerRef->ClearElements();
         }
-        
+        if (sceneJson.contains("background-color"))
+        {
+            if (rendererRef)
+            {
+                std::vector<uint8_t> background_color = sceneJson["background-color"].get<std::vector<uint8_t>>();
+                rendererRef->SetBackgroundColor(RGBA(background_color[0], background_color[1], background_color[2], background_color[3]));
+            }
+        }
         if (sceneJson.contains("entities")) {
             for (const auto& entityJson : sceneJson["entities"]) {
                 uint32_t id;

@@ -318,6 +318,11 @@ namespace SquareCore
         if (entityManagerRef) entityManagerRef->SetPhysicsEnabled(entityID, enabled);
     }
 
+    void Script::SetBackgroundColor(RGBA color)
+    {
+        if (rendererRef) rendererRef->SetBackgroundColor(color);
+    }
+
     void Script::SetMouseVisible(bool visible)
     {
         if (visible) SDL_ShowCursor();

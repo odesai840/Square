@@ -136,6 +136,8 @@ namespace SquareCore
         Vec2 GetMouseDelta();
         Vec2 GetMouseScroll();
 
+        void SetBackgroundColor(RGBA color);
+
         void SetPhysicsEnabled(uint32_t entityID, bool enabled);
         void SetColliderBox(uint32_t entityID, float halfWidth, float halfHeight);
         void SetColliderCircle(uint32_t entityID, float radius);

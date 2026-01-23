@@ -74,6 +74,20 @@ void Player::Slash(float delta_time)
                 }
             }
 
+            if (EntityHasTag(collision.first, "Lever2Boss"))
+            {
+                bool flip_x = !GetFlipX(collision.first);
+                FlipSprite(collision.first, flip_x, false);
+                std::vector<uint32_t> lever_2_boss_blocks = GetAllEntitiesWithTag("Boss2Gate");
+                for (uint32_t block : lever_2_boss_blocks)
+                {
+                    if (EntityExists(block))
+                    {
+                        RemoveEntity(block);
+                    }
+                }
+            }
+
             if (EntityHasTag(collision.first, "Pogo"))
             {
                 if (slash_direction == Direction::DOWN)

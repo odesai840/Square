@@ -10,6 +10,9 @@ public:
     void OnUpdate(float deltaTime) override;
 
     void LoadEnemies();
+    uint32_t SpawnChargeEnemy(const SquareCore::Vec2& position);
+    uint32_t SpawnJumpEnemy(const SquareCore::Vec2& position);
+    uint32_t SpawnJumpBoss(const SquareCore::Vec2& position);
 
 private:
     uint32_t player = 0;

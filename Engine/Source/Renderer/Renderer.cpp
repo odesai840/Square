@@ -59,7 +59,7 @@ namespace SquareCore
         }
 
         // Clear the render target with a dark blue color
-        SDL_SetRenderDrawColor(rendererRef, 0x00, 0x00, 0x1F, 0xFF);
+        SDL_SetRenderDrawColor(rendererRef, background_color.r, background_color.g, background_color.b, background_color.a);
         SDL_RenderClear(rendererRef);
 
         // Calculate scaling factors based on the current scaling mode
