@@ -4,6 +4,403 @@
 
         {
             "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "physEnabled": false,
+            "isSpriteless": false,
+            "position": [
+                -2000.0,
+                -2500.0
+            ],
+            "scale": [
+                4.0,
+                4.0
+            ],
+            "collider": {
+                "type": 2
+            },
+            "flipX": true,
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Level2BoundsTrigger3"
+            ],
+            "zIndex": 25
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "physEnabled": false,
+            "isSpriteless": false,
+            "position": [
+                -5200.0,
+                -2000.0
+            ],
+            "scale": [
+                2.0,
+                5.0
+            ],
+            "collider": {
+                "type": 2
+            },
+            "flipX": true,
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Level2BoundsTrigger3"
+            ],
+            "zIndex": 25
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "physEnabled": false,
+            "isSpriteless": false,
+            "position": [
+                -6225.0,
+                2450.0
+            ],
+            "scale": [
+                6.0,
+                3.0
+            ],
+            "collider": {
+                "type": 2
+            },
+            "flipX": true,
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Level2BoundsTrigger2"
+            ],
+            "zIndex": 25
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "physEnabled": false,
+            "isSpriteless": false,
+            "position": [
+                300.0,
+                1400.0
+            ],
+            "scale": [
+                6.0,
+                3.0
+            ],
+            "collider": {
+                "type": 2
+            },
+            "flipX": true,
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Level2BoundsTrigger1"
+            ],
+            "zIndex": 25
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physEnabled": true,
+            "isSpriteless": false,
+            "position": [
+                -5800.0,
+                1850.0
+            ],
+            "scale": [
+                0.05,
+                0.05
+            ],
+            "collider": {
+                "type": 1
+            },
+            "flipX": true,
+            "spritePath": "Resources/Sprites/triangle-enemy.png",
+            "tags": [
+                "Enemy",
+                "ChargeEnemy",
+                "Pogo"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physEnabled": true,
+            "isSpriteless": false,
+            "position": [
+                -6300.0,
+                1850.0
+            ],
+            "scale": [
+                0.05,
+                0.05
+            ],
+            "collider": {
+                "type": 1
+            },
+            "flipX": true,
+            "spritePath": "Resources/Sprites/triangle-enemy.png",
+            "tags": [
+                "Enemy",
+                "JumpEnemy",
+                "Pogo"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physEnabled": true,
+            "isSpriteless": false,
+            "position": [
+                -6100.0,
+                1850.0
+            ],
+            "scale": [
+                0.05,
+                0.05
+            ],
+            "collider": {
+                "type": 1
+            },
+            "flipX": true,
+            "spritePath": "Resources/Sprites/triangle-enemy.png",
+            "tags": [
+                "Enemy",
+                "JumpEnemy",
+                "Pogo"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physEnabled": true,
+            "isSpriteless": false,
+            "position": [
+                -6500.0,
+                1850.0
+            ],
+            "scale": [
+                0.05,
+                0.05
+            ],
+            "collider": {
+                "type": 1
+            },
+            "flipX": true,
+            "spritePath": "Resources/Sprites/triangle-enemy.png",
+            "tags": [
+                "Enemy",
+                "JumpEnemy",
+                "Pogo"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physEnabled": true,
+            "isSpriteless": false,
+            "position": [
+                -6700.0,
+                1850.0
+            ],
+            "scale": [
+                0.05,
+                0.05
+            ],
+            "collider": {
+                "type": 1
+            },
+            "flipX": true,
+            "spritePath": "Resources/Sprites/triangle-enemy.png",
+            "tags": [
+                "Enemy",
+                "JumpEnemy",
+                "Pogo"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physEnabled": true,
+            "isSpriteless": false,
+            "position": [
+                -4000.0,
+                1250.0
+            ],
+            "scale": [
+                0.05,
+                0.05
+            ],
+            "collider": {
+                "type": 1
+            },
+            "flipX": true,
+            "spritePath": "Resources/Sprites/triangle-enemy.png",
+            "tags": [
+                "Enemy",
+                "ChargeEnemy",
+                "Pogo"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physEnabled": true,
+            "isSpriteless": false,
+            "position": [
+                -4500.0,
+                1850.0
+            ],
+            "scale": [
+                0.05,
+                0.05
+            ],
+            "collider": {
+                "type": 1
+            },
+            "flipX": true,
+            "spritePath": "Resources/Sprites/triangle-enemy.png",
+            "tags": [
+                "Enemy",
+                "JumpEnemy",
+                "Pogo"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physEnabled": true,
+            "isSpriteless": false,
+            "position": [
+                -4100.0,
+                1850.0
+            ],
+            "scale": [
+                0.05,
+                0.05
+            ],
+            "collider": {
+                "type": 1
+            },
+            "flipX": true,
+            "spritePath": "Resources/Sprites/triangle-enemy.png",
+            "tags": [
+                "Enemy",
+                "JumpEnemy",
+                "Pogo"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physEnabled": true,
+            "isSpriteless": false,
+            "position": [
+                -4100.0,
+                850.0
+            ],
+            "scale": [
+                0.05,
+                0.05
+            ],
+            "collider": {
+                "type": 1
+            },
+            "flipX": true,
+            "spritePath": "Resources/Sprites/triangle-enemy.png",
+            "tags": [
+                "Enemy",
+                "ChargeEnemy",
+                "Pogo"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "physEnabled": false,
+            "isSpriteless": false,
+            "position": [
+                -4395.0,
+                830.0
+            ],
+            "scale": [
+                0.25,
+                0.25
+            ],
+            "rotation": -45.0,
+            "collider": {
+                "type": 0
+            },
+            "flipX": true,
+            "spritePath": "Resources/Sprites/sign.png",
+            "tags": [
+                "Pogo"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
                 70,
                 70,
                 70,
@@ -908,6 +1305,32 @@
                 "Bounce"
             ],
             "zIndex": 0
+        },
+        {
+            "color": [
+                180,
+                180,
+                180,
+                0
+            ],
+            "physEnabled": false,
+            "isSpriteless": false,
+            "position": [
+                -1300.0,
+                -200.0
+            ],
+            "scale": [
+                0.1,
+                0.1
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "DialogTrigger"
+            ],
+            "zIndex": 12
         },
         {
             "color": [

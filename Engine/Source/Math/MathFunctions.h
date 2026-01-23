@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 
 namespace SquareCore
 {
@@ -22,5 +23,10 @@ namespace SquareCore
 
     inline float Max(float a, float b) {
         return a > b ? a : b;
+    }
+
+    inline bool CompareFloats(float a, float b, float epsilon = 0.0001f)
+    {
+        return std::abs(a-b) < epsilon;
     }
 }

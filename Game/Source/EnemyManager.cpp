@@ -16,6 +16,7 @@ void EnemyManager::LoadEnemies()
     for (uint32_t jump_enemy : all_enemies_with_jump_enemy_tag)
     {
         SetEntityColor(jump_enemy, SquareCore::RGBA(245, 73, 39, 255));
+        SetPhysicsEnabled(jump_enemy, true);
         FlipSprite(jump_enemy, true, false);
         SetDrag(jump_enemy, 5.0f);
         SetEntityPersistent(jump_enemy, false);
@@ -35,6 +36,7 @@ void EnemyManager::LoadEnemies()
     {
         Direction random_direction = (rand() % 2 == 0) ? Direction::RIGHT : Direction::LEFT;
         SetEntityColor(charge_enemy, SquareCore::RGBA(82, 9, 9, 255));
+        SetPhysicsEnabled(charge_enemy, true);
         FlipSprite(charge_enemy, random_direction == Direction::RIGHT, false);
         SetDrag(charge_enemy, 5.0f);
         SetEntityPersistent(charge_enemy, false);
@@ -57,6 +59,7 @@ uint32_t EnemyManager::SpawnChargeEnemy(const SquareCore::Vec2& position)
     uint32_t charge_enemy = AddEntity("Resources/Sprites/triangle-enemy.png", position.x, position.y, 0.0f, 0.05f, 0.05f, true, {"Enemy", "ChargeEnemy", "Pogo"});
     Direction random_direction = (rand() % 2 == 0) ? Direction::RIGHT : Direction::LEFT;
     SetEntityColor(charge_enemy, SquareCore::RGBA(82, 9, 9, 255));
+    SetPhysicsEnabled(charge_enemy, true);
     FlipSprite(charge_enemy, random_direction == Direction::RIGHT, false);
     SetDrag(charge_enemy, 5.0f);
     SetEntityPersistent(charge_enemy, false);
@@ -78,6 +81,7 @@ uint32_t EnemyManager::SpawnJumpEnemy(const SquareCore::Vec2& position)
     uint32_t jump_enemy = AddEntity("Resources/Sprites/triangle-enemy.png", position.x, position.y, 0.0f, 0.05f, 0.05f, true, {"Enemy", "JumpEnemy", "Pogo"});
     SetEntityColor(jump_enemy, SquareCore::RGBA(245, 73, 39, 255));
     FlipSprite(jump_enemy, true, false);
+    SetPhysicsEnabled(jump_enemy, true);
     SetDrag(jump_enemy, 5.0f);
     SetEntityPersistent(jump_enemy, false);
     AddPropertyToEntity(jump_enemy, new Character(5, 5, 1));
@@ -98,6 +102,7 @@ uint32_t EnemyManager::SpawnJumpBoss(const SquareCore::Vec2& position)
         RemoveEntity(jump_boss);
     jump_boss = AddEntity("Resources/Sprites/triangle-enemy.png", -6000.0f, 0.0f, 0.0f, 0.5f, 0.5f, true);
     SetEntityColor(jump_boss, SquareCore::RGBA(70, 0, 0, 255));
+    SetPhysicsEnabled(jump_boss, true);
     AddTagToEntity(jump_boss, "Enemy");
     AddTagToEntity(jump_boss, "Pogo");
     AddTagToEntity(jump_boss, "JumpBoss");
@@ -133,9 +138,11 @@ void EnemyManager::OnUpdate(float deltaTime)
             {
                 SquareCore::Vec2 enemy_position = GetPosition(enemy);
                 enemy_velocity = GetVelocity(enemy);
-                float distance = std::abs(player_position.x - enemy_position.x);
+                float horizontal_distance = std::abs(player_position.x - enemy_position.x);
+                float vertical_distance = std::abs(player_position.y - enemy_position.y);
 
                 bool is_grounded = std::abs(enemy_velocity.y) < 50.0f;
+                bool can_see_player = horizontal_distance <= jump_property->detection_range && vertical_distance < 100.0f;
 
                 switch (jump_property->state)
                 {
@@ -143,7 +150,7 @@ void EnemyManager::OnUpdate(float deltaTime)
                     {
                         jump_property->cooldown_timer += deltaTime;
 
-                        if ((distance <= jump_property->detection_range || jump_property->chasing) &&
+                        if ((can_see_player || jump_property->chasing) &&
                             jump_property->cooldown_timer >= jump_property->jump_cooldown && is_grounded)
                         {
                             jump_property->state = JumpEnemyState::WINDING_UP;
@@ -174,7 +181,7 @@ void EnemyManager::OnUpdate(float deltaTime)
                             jump_property->windup_timer = 0.0f;
 
                             float clamped_distance = std::max(jump_property->min_distance_for_scaling,
-                                                              std::min(distance,
+                                                              std::min(horizontal_distance,
                                                                        jump_property->max_distance_for_scaling));
                             float distance_ratio = (clamped_distance - jump_property->min_distance_for_scaling) /
                                 (jump_property->max_distance_for_scaling - jump_property->min_distance_for_scaling);
@@ -226,7 +233,8 @@ void EnemyManager::OnUpdate(float deltaTime)
             {
                 SquareCore::Vec2 enemy_position = GetPosition(enemy);
                 enemy_velocity = GetVelocity(enemy);
-                float distance = std::abs(player_position.x - enemy_position.x);
+                float horizontal_distance = std::abs(player_position.x - enemy_position.x);
+                float vertical_distance = std::abs(player_position.y - enemy_position.y);
 
                 switch (charge_property->state)
                 {
@@ -234,17 +242,19 @@ void EnemyManager::OnUpdate(float deltaTime)
                     {
                         if (!charge_property->aware_of_player)
                         {
-                            bool player_in_view = false;
+                            bool player_in_front = false;
                             if (charge_property->facing_direction == Direction::RIGHT)
                             {
-                                player_in_view = player_position.x > enemy_position.x;
+                                player_in_front = player_position.x > enemy_position.x;
                             }
                             else if (charge_property->facing_direction == Direction::LEFT)
                             {
-                                player_in_view = player_position.x < enemy_position.x;
+                                player_in_front = player_position.x < enemy_position.x;
                             }
 
-                            if (player_in_view)
+                            bool can_see_player = player_in_front && horizontal_distance < 600.0f && vertical_distance < 100.0f;
+
+                            if (can_see_player)
                             {
                                 charge_property->aware_of_player = true;
                                 charge_property->state = ChargeEnemyState::NOTICING;
@@ -331,7 +341,7 @@ void EnemyManager::OnUpdate(float deltaTime)
                     {
                         charge_property->charge_elapsed += deltaTime;
 
-                        float distance_ratio = std::min(1.0f, distance / 1000.0f);
+                        float distance_ratio = std::min(1.0f, horizontal_distance / 1000.0f);
                         float charge_speed = charge_property->min_charge_speed +
                             (charge_property->max_charge_speed - charge_property->min_charge_speed) * (1.0f -
                                 distance_ratio);
@@ -362,8 +372,9 @@ void EnemyManager::OnUpdate(float deltaTime)
                     }
                 }
             }
-
-            if (JumpBoss* jump_property = dynamic_cast<JumpBoss*>(property))
+            
+            JumpBoss* jump_property = dynamic_cast<JumpBoss*>(property);
+            if (jump_boss_active && jump_property)
             {
                 jump_property->jump_cooldown_timer += deltaTime;
                 SquareCore::Vec2 enemy_position = GetPosition(enemy);

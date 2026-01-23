@@ -19,13 +19,8 @@ void Map::OnStart()
     SetAudioMasterVolume(0.0f);
     PlayAudioClip(main_menu_music);
     
-    /*dialogTestTrigger = AddSpritelessEntity(10, 10, SquareCore::RGBA(0,0,0,0), 200, -250);
-    SetColliderType(dialogTestTrigger, SquareCore::ColliderType::TRIGGER);
-    AddTagToEntity(dialogTestTrigger, "DialogTrigger");
-    SetEntityPersistent(dialogTestTrigger, true);*/
-    
-    //SetCameraZoom(0.85f);
-    SetCameraZoom(0.1f);
+    SetCameraZoom(0.85f);
+    //SetCameraZoom(0.1f);
     //SetCameraBounds(-14000.0f, -400.0f, 6000.0f, 10000.0f); // Level 1 bounds
     SetCameraBounds(-10000.0f, -6000.0f, 6000.0f, 10000.0f);
     EnableCameraBounds(true);

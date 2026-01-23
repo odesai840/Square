@@ -18,7 +18,6 @@ private:
     uint32_t level_1_music = 0;
     uint32_t level_2_music = 0;
     uint32_t level_3_music = 0;
-    uint32_t dialogTestTrigger = 0;
     EnemyManager* enemy_manager = nullptr;
     Player* player = nullptr;
 

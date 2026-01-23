@@ -122,6 +122,13 @@ void Player::OnUpdate(float delta_time)
         }
         enemies_to_remove.clear();
     }
+
+    if (!SquareCore::CompareFloats(bounds[1], target_bounds_y_min))
+    {
+        float new_y_min = SquareCore::Lerp(bounds[1], target_bounds_y_min, bounds_lerp_speed * delta_time);
+        SetCameraBounds(bounds[0], new_y_min, bounds[2], bounds[3]);
+        bounds[1] = new_y_min;
+    }
     
     FollowCameraTarget(GetPosition(player), 10.0f, delta_time);
 }
@@ -305,19 +312,19 @@ void Player::OnCollision(float delta_time)
     {
         if (!EntityExists(collision.first)) continue;
         
-        if (EntityHasTag(collision.first, "TrapWallTrigger"))
+        if (EntityHasTag(collision.first, "Level2BoundsTrigger1") && !SquareCore::CompareFloats(target_bounds_y_min, -400.0f))
         {
-            std::vector<uint32_t> trap_walls = GetAllEntitiesWithTag("TrapWall");
-            
-            for (auto& trap_wall : trap_walls)
-            {
-                SetPosition(trap_wall, GetPosition(trap_wall).x, 1570.0f);
-            }
-            
-            enemy_manager->SpawnChargeEnemy({800, 1950.0f});
-            enemy_manager->SpawnJumpEnemy({2100, 1950.0f});
-            
-            RemoveEntity(collision.first);
+            target_bounds_y_min = -400.0f;
+            continue;
+        }
+        if (EntityHasTag(collision.first, "Level2BoundsTrigger2") && !SquareCore::CompareFloats(target_bounds_y_min, 500.0f))
+        {
+            target_bounds_y_min = 500.0f;
+            continue;
+        }
+        if (EntityHasTag(collision.first, "Level2BoundsTrigger3") && !SquareCore::CompareFloats(target_bounds_y_min, -4800.0f))
+        {
+            target_bounds_y_min = -4800.0f;
             continue;
         }
         
@@ -380,6 +387,22 @@ void Player::OnCollision(float delta_time)
                     }
                 }
             }
+        }
+        
+        if (EntityHasTag(collision.first, "TrapWallTrigger"))
+        {
+            std::vector<uint32_t> trap_walls = GetAllEntitiesWithTag("TrapWall");
+            
+            for (auto& trap_wall : trap_walls)
+            {
+                SetPosition(trap_wall, GetPosition(trap_wall).x, 1570.0f);
+            }
+            
+            enemy_manager->SpawnChargeEnemy({800, 1950.0f});
+            enemy_manager->SpawnJumpEnemy({2100, 1950.0f});
+            
+            RemoveEntity(collision.first);
+            continue;
         }
         
         if (collision.second == 2 && EntityHasTag(collision.first, "ValidGround"))
