@@ -398,8 +398,12 @@ void Player::OnCollision(float delta_time)
                 SetPosition(trap_wall, GetPosition(trap_wall).x, 1570.0f);
             }
             
-            enemy_manager->SpawnChargeEnemy({800, 1950.0f});
-            enemy_manager->SpawnJumpEnemy({2100, 1950.0f});
+            for (int i = 0; i < 3; i++)
+            {
+                enemy_manager->SpawnChargeEnemy({800 + i * 100.0f, 1950.0f});
+                uint32_t jump_enemy = enemy_manager->SpawnJumpEnemy({2100 - i * 100.0f, 1950.0f});
+                FlipSprite(jump_enemy, false, false);
+            }
             
             RemoveEntity(collision.first);
             continue;
