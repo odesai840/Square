@@ -107,6 +107,7 @@ uint32_t EnemyManager::SpawnJumpBoss(const SquareCore::Vec2& position)
     AddPropertyToEntity(jump_boss, new JumpBoss());
     SetColliderPolygon(jump_boss, boss_collider_vertices);
     enemies.push_back(jump_boss);
+    return jump_boss;
 }
 
 

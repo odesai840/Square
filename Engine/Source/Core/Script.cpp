@@ -443,7 +443,7 @@ namespace SquareCore
         if (entityManagerRef)
         {
             Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) return entity->position;
+            return entityManagerRef->GetPosition(entityID);
         }
         return Vec2::zero();
     }
@@ -458,7 +458,7 @@ namespace SquareCore
         if (entityManagerRef)
         {
             Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) return entity->scale;
+            return entityManagerRef->GetScale(entityID);
         }
         return Vec2::zero();
     }
@@ -473,7 +473,7 @@ namespace SquareCore
         if (entityManagerRef)
         {
             Entity* entity = entityManagerRef->GetEntityByID(entityID);
-            if (entity) return entity->rotation;
+            return entityManagerRef->GetRotation(entityID);
         }
         return 0.0f;
     }

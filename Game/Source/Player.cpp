@@ -305,6 +305,22 @@ void Player::OnCollision(float delta_time)
     {
         if (!EntityExists(collision.first)) continue;
         
+        if (EntityHasTag(collision.first, "TrapWallTrigger"))
+        {
+            std::vector<uint32_t> trap_walls = GetAllEntitiesWithTag("TrapWall");
+            
+            for (auto& trap_wall : trap_walls)
+            {
+                SetPosition(trap_wall, GetPosition(trap_wall).x, 1570.0f);
+            }
+            
+            enemy_manager->SpawnChargeEnemy({800, 1950.0f});
+            enemy_manager->SpawnJumpEnemy({2100, 1950.0f});
+            
+            RemoveEntity(collision.first);
+            continue;
+        }
+        
         // player collides with an enemy
         if (EntityHasTag(collision.first, "Enemy"))
         {

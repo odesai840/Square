@@ -18,6 +18,7 @@ int main(int argc, char* argv[]) {
     map->SetEnemyManager(enemy_manager);
     map->SetPlayer(player);
     player->SetDialogManager(userInterface->GetDialogManager());
+    player->SetEnemyManager(enemy_manager);
     userInterface->SetPlayerScript(player);
     userInterface->SetMap(map);
     app.PushScript(map);

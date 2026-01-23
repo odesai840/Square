@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DialogManager.h"
+#include "EnemyManager.h"
 #include "Script.h"
 #include "GameStateManager.h"
 #include "Properties.h"
@@ -27,6 +28,7 @@ public:
     void OnUpdate(float delta_time) override;
     void OnExit() override;
     void SetDialogManager(DialogManager* dialog_manager) {this->dialog_manager = dialog_manager;}
+    void SetEnemyManager(EnemyManager* enemy_manager) { this->enemy_manager = enemy_manager; }
     void TeleportPlayer(const SquareCore::Vec2& position);
     PlayerData& GetPlayerData() { return player_data; }
 
@@ -53,6 +55,7 @@ private:
     int level = 0;
 
     DialogManager* dialog_manager;
+    EnemyManager* enemy_manager;
     
     // upgrades
     bool has_double_dash = true;

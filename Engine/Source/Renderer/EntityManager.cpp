@@ -347,7 +347,23 @@ namespace SquareCore
             SDL_LogError(SDL_LOG_CATEGORY_ERROR, "SetPosition: Entity ID %u not found", entityID);
         }
     }
-    
+
+    Vec2 EntityManager::GetPosition(uint32_t entityID)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            return entities[it->second].position;
+        }
+        else
+        {
+            SDL_LogError(SDL_LOG_CATEGORY_ERROR, "GetPosition: Entity ID %u not found", entityID);
+            return Vec2::zero();
+        }
+    }
+
     void EntityManager::SetScale(uint32_t entityID, const Vec2& scale)
     {
         std::lock_guard<std::mutex> lock(entityMutex);
@@ -367,6 +383,22 @@ namespace SquareCore
         else
         {
             SDL_LogError(SDL_LOG_CATEGORY_ERROR, "SetScale: Entity ID %u not found", entityID);
+        }
+    }
+    
+    Vec2 EntityManager::GetScale(uint32_t entityID)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            return entities[it->second].scale;
+        }
+        else
+        {
+            SDL_LogError(SDL_LOG_CATEGORY_ERROR, "GetScale: Entity ID %u not found", entityID);
+            return Vec2::zero();
         }
     }
 
@@ -389,6 +421,22 @@ namespace SquareCore
         else
         {
             SDL_LogError(SDL_LOG_CATEGORY_ERROR, "SetRotation: Entity ID %u not found", entityID);
+        }
+    }
+    
+    float EntityManager::GetRotation(uint32_t entityID)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+
+        auto it = idToIndex.find(entityID);
+        if (it != idToIndex.end())
+        {
+            return entities[it->second].rotation;
+        }
+        else
+        {
+            SDL_LogError(SDL_LOG_CATEGORY_ERROR, "GetRotation: Entity ID %u not found", entityID);
+            return 0.0f;
         }
     }
 

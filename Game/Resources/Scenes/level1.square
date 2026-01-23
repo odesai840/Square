@@ -31,7 +31,7 @@
             ],
             "isSpriteless": false,
             "position": [
-                -2000.0,
+                -3500.0,
                 -390.0
             ],
             "scale": [
@@ -54,7 +54,7 @@
             ],
             "isSpriteless": false,
             "position": [
-                -2000.0,
+                -3500.0,
                 2200.0
             ],
             "scale": [
@@ -805,7 +805,7 @@
             ],
             "isSpriteless": false,
             "position": [
-                -12500.0,
+                -14000.0,
                 900.0
             ],
             "scale": [
@@ -828,11 +828,33 @@
             "isSpriteless": false,
             "position": [
                 -8000.0,
-                1000.0
+                1300.0
             ],
             "scale": [
                 0.2,
-                2.0
+                1.7
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                60,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -8000.0,
+                75.0
+            ],
+            "scale": [
+                0.1,
+                0.7
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
@@ -887,23 +909,26 @@
         },
         {
             "color": [
-                40,
-                40,
-                40,
-                255
+                0,
+                0,
+                0,
+                0
             ],
             "isSpriteless": false,
             "position": [
-                2300.0,
-                1870.0
+                1450.0,
+                1570.0
             ],
             "scale": [
-                0.1,
+                0.05,
                 1.05
             ],
             "spritePath": "Resources/Sprites/square.png",
+            "collider": {
+                "type": 2
+            },
             "tags": [
-                "TrapWall"
+                "TrapWallTrigger"
             ],
             "zIndex": 0
         },
@@ -916,7 +941,7 @@
             ],
             "isSpriteless": false,
             "position": [
-                600.0,
+                2300.0,
                 1870.0
             ],
             "scale": [
