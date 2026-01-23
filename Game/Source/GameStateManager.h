@@ -14,6 +14,7 @@ struct PlayerData
     bool has_double_dash = false;
     bool has_double_jump = false;
     bool has_projectile = false;
+    bool has_faster_slash = false;
 
     bool first_boss_dead = false;
     bool second_boss_dead = false;

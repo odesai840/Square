@@ -15,62 +15,21 @@ void EnemyManager::LoadEnemies()
 
     for (uint32_t jump_enemy : all_enemies_with_jump_enemy_tag)
     {
-        SetEntityColor(jump_enemy, SquareCore::RGBA(245, 73, 39, 255));
-        SetPhysicsEnabled(jump_enemy, true);
-        FlipSprite(jump_enemy, true, false);
-        SetDrag(jump_enemy, 5.0f);
-        SetEntityPersistent(jump_enemy, false);
-        AddPropertyToEntity(jump_enemy, new Character(5, 5, 1));
-
-        JumpEnemy* jump_prop = new JumpEnemy(200.0f, 3.0f, {1000.0f, 1600.0f});
-        jump_prop->base_scale = GetScale(jump_enemy);
-        AddPropertyToEntity(jump_enemy, jump_prop);
-
-        SetColliderPolygon(jump_enemy, enemy_collider_vertices);
+        AlterJumpEnemy(jump_enemy);
         enemies.push_back(jump_enemy);
-
-        auto props = GetAllEntityProperties(jump_enemy);
     }
 
     for (uint32_t charge_enemy : all_enemies_with_charge_enemy_tag)
     {
-        Direction random_direction = (rand() % 2 == 0) ? Direction::RIGHT : Direction::LEFT;
-        SetEntityColor(charge_enemy, SquareCore::RGBA(82, 9, 9, 255));
-        SetPhysicsEnabled(charge_enemy, true);
-        FlipSprite(charge_enemy, random_direction == Direction::RIGHT, false);
-        SetDrag(charge_enemy, 5.0f);
-        SetEntityPersistent(charge_enemy, false);
-        AddPropertyToEntity(charge_enemy, new Character(5, 5, 1));
-
-        ChargeEnemy* charge_prop = new ChargeEnemy(GetPosition(charge_enemy).x, 400.0f);
-        charge_prop->facing_direction = random_direction;
-        charge_prop->base_scale = GetScale(charge_enemy);
-        AddPropertyToEntity(charge_enemy, charge_prop);
-
-        SetColliderPolygon(charge_enemy, enemy_collider_vertices);
+        AlterChargeEnemy(charge_enemy);
         enemies.push_back(charge_enemy);
-
-        auto props = GetAllEntityProperties(charge_enemy);
     }
 }
 
 uint32_t EnemyManager::SpawnChargeEnemy(const SquareCore::Vec2& position)
 {
-    uint32_t charge_enemy = AddEntity("Resources/Sprites/triangle-enemy.png", position.x, position.y, 0.0f, 0.05f, 0.05f, true, {"Enemy", "ChargeEnemy", "Pogo"});
-    Direction random_direction = (rand() % 2 == 0) ? Direction::RIGHT : Direction::LEFT;
-    SetEntityColor(charge_enemy, SquareCore::RGBA(82, 9, 9, 255));
-    SetPhysicsEnabled(charge_enemy, true);
-    FlipSprite(charge_enemy, random_direction == Direction::RIGHT, false);
-    SetDrag(charge_enemy, 5.0f);
-    SetEntityPersistent(charge_enemy, false);
-    AddPropertyToEntity(charge_enemy, new Character(5, 5, 1));
-
-    ChargeEnemy* charge_prop = new ChargeEnemy(GetPosition(charge_enemy).x, 400.0f);
-    charge_prop->facing_direction = random_direction;
-    charge_prop->base_scale = GetScale(charge_enemy);
-    AddPropertyToEntity(charge_enemy, charge_prop);
-
-    SetColliderPolygon(charge_enemy, enemy_collider_vertices);
+    uint32_t charge_enemy = AddEntity("Resources/Sprites/triangle-enemy.png", position.x, position.y, 0.0f, 0.075f, 0.075f, true, {"Enemy", "ChargeEnemy", "Pogo"});
+    AlterChargeEnemy(charge_enemy);
     enemies.push_back(charge_enemy);
 
     return charge_enemy;
@@ -78,19 +37,8 @@ uint32_t EnemyManager::SpawnChargeEnemy(const SquareCore::Vec2& position)
 
 uint32_t EnemyManager::SpawnJumpEnemy(const SquareCore::Vec2& position)
 {
-    uint32_t jump_enemy = AddEntity("Resources/Sprites/triangle-enemy.png", position.x, position.y, 0.0f, 0.05f, 0.05f, true, {"Enemy", "JumpEnemy", "Pogo"});
-    SetEntityColor(jump_enemy, SquareCore::RGBA(245, 73, 39, 255));
-    FlipSprite(jump_enemy, true, false);
-    SetPhysicsEnabled(jump_enemy, true);
-    SetDrag(jump_enemy, 5.0f);
-    SetEntityPersistent(jump_enemy, false);
-    AddPropertyToEntity(jump_enemy, new Character(5, 5, 1));
-
-    JumpEnemy* jump_prop = new JumpEnemy(200.0f, 3.0f, {1000.0f, 1600.0f});
-    jump_prop->base_scale = GetScale(jump_enemy);
-    AddPropertyToEntity(jump_enemy, jump_prop);
-
-    SetColliderPolygon(jump_enemy, enemy_collider_vertices);
+    uint32_t jump_enemy = AddEntity("Resources/Sprites/triangle-enemy.png", position.x, position.y, 0.0f, 0.075f, 0.075f, true, {"Enemy", "JumpEnemy", "Pogo"});
+    AlterJumpEnemy(jump_enemy);
     enemies.push_back(jump_enemy);
 
     return jump_enemy;
@@ -100,7 +48,7 @@ uint32_t EnemyManager::SpawnJumpBoss(const SquareCore::Vec2& position)
 {
     if (jump_boss)
         RemoveEntity(jump_boss);
-    jump_boss = AddEntity("Resources/Sprites/triangle-enemy.png", -6000.0f, 0.0f, 0.0f, 0.5f, 0.5f, true);
+    jump_boss = AddEntity("Resources/Sprites/triangle-enemy.png", position.x, position.y, 0.0f, 0.5f, 0.5f, true);
     SetEntityColor(jump_boss, SquareCore::RGBA(70, 0, 0, 255));
     SetPhysicsEnabled(jump_boss, true);
     AddTagToEntity(jump_boss, "Enemy");
@@ -113,6 +61,44 @@ uint32_t EnemyManager::SpawnJumpBoss(const SquareCore::Vec2& position)
     SetColliderPolygon(jump_boss, boss_collider_vertices);
     enemies.push_back(jump_boss);
     return jump_boss;
+}
+
+void EnemyManager::AlterChargeEnemy(uint32_t enemy_id)
+{
+    Direction random_direction = (rand() % 2 == 0) ? Direction::RIGHT : Direction::LEFT;
+    SetEntityColor(enemy_id, SquareCore::RGBA(82, 9, 9, 255));
+    SetScale(enemy_id, SquareCore::Vec2(0.075f, 0.075f));
+    SetPhysicsEnabled(enemy_id, true);
+    FlipSprite(enemy_id, random_direction == Direction::RIGHT, false);
+    SetDrag(enemy_id, 5.0f);
+    SetMass(enemy_id, 25.0f);
+    SetEntityPersistent(enemy_id, false);
+    AddPropertyToEntity(enemy_id, new Character(5, 5, 1));
+
+    ChargeEnemy* charge_prop = new ChargeEnemy(GetPosition(enemy_id).x, 400.0f);
+    charge_prop->facing_direction = random_direction;
+    charge_prop->base_scale = GetScale(enemy_id);
+    AddPropertyToEntity(enemy_id, charge_prop);
+
+    SetColliderPolygon(enemy_id, enemy_collider_vertices);
+}
+
+void EnemyManager::AlterJumpEnemy(uint32_t enemy_id)
+{
+    SetEntityColor(enemy_id, SquareCore::RGBA(245, 73, 39, 255));
+    SetScale(enemy_id, SquareCore::Vec2(0.075f, 0.075f));
+    SetPhysicsEnabled(enemy_id, true);
+    FlipSprite(enemy_id, true, false);
+    SetDrag(enemy_id, 5.0f);
+    SetMass(enemy_id, 25.0f);
+    SetEntityPersistent(enemy_id, false);
+    AddPropertyToEntity(enemy_id, new Character(5, 5, 1));
+
+    JumpEnemy* jump_prop = new JumpEnemy(800.0f, 3.0f, {1000.0f, 1600.0f});
+    jump_prop->base_scale = GetScale(enemy_id);
+    AddPropertyToEntity(enemy_id, jump_prop);
+
+    SetColliderPolygon(enemy_id, enemy_collider_vertices);
 }
 
 
@@ -143,6 +129,11 @@ void EnemyManager::OnUpdate(float deltaTime)
 
                 bool is_grounded = std::abs(enemy_velocity.y) < 50.0f;
                 bool can_see_player = horizontal_distance <= jump_property->detection_range && vertical_distance < 100.0f;
+
+                if (jump_property->aggro_on_player)
+                {
+                    jump_property->chasing = true;
+                }
 
                 switch (jump_property->state)
                 {

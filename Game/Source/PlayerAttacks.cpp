@@ -110,6 +110,10 @@ void Player::Slash(float delta_time)
                     {
                         charge_enemy->aware_of_player = true;
                     }
+                    if (JumpEnemy* jump_enemy = dynamic_cast<JumpEnemy*>(property))
+                    {
+                        jump_enemy->aggro_on_player = true;
+                    }
                 }
                 
                 SquareCore::Vec2 enemy_velocity = GetVelocity(collision.first);
@@ -249,6 +253,10 @@ void Player::Projectile(float delta_time)
                     if (ChargeEnemy* charge_enemy = dynamic_cast<ChargeEnemy*>(property))
                     {
                         charge_enemy->aware_of_player = true;
+                    }
+                    if (JumpEnemy* jump_enemy = dynamic_cast<JumpEnemy*>(property))
+                    {
+                        jump_enemy->aggro_on_player = true;
                     }
                 }
                 

@@ -5,9 +5,9 @@
 void Map::OnStart()
 {
     main_menu_music = AddAudioClip("Resources/Audio/29th.wav");
-    level_1_music = AddAudioClip("Resources/Audio/03.mp3");
+    level_1_music = AddAudioClip("Resources/Audio/12.mp3");
     level_2_music = AddAudioClip("Resources/Audio/03.mp3");
-    level_3_music = AddAudioClip("Resources/Audio/03.mp3");
+    level_3_music = AddAudioClip("Resources/Audio/11.mp3");
     SetAudioVolume(main_menu_music, 0.1f);
     SetAudioVolume(level_1_music, 0.1f);
     SetAudioVolume(level_2_music, 0.1f);
@@ -62,6 +62,14 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
     for (uint32_t wormhole : wormholes_negative)
     {
         SetColliderType(wormhole, SquareCore::ColliderType::NONE);
+    }
+
+    if (uint32_t level_2_exit = GetFirstEntityWithTag("Level2Exit"))
+    {
+        if (player->GetPlayerData().second_boss_dead)
+        {
+            RemoveEntity(level_2_exit);
+        }
     }
     
     switch (level)

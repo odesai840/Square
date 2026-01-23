@@ -327,6 +327,27 @@ void Player::OnCollision(float delta_time)
             target_bounds_y_min = -4800.0f;
             continue;
         }
+
+        if (EntityHasTag(collision.first, "GainDoubleDash"))
+        {
+            player_data.has_double_dash = true;
+            continue;
+        }
+        if (EntityHasTag(collision.first, "GainDoubleJump"))
+        {
+            player_data.has_double_jump = true;
+            continue;
+        }
+        if (EntityHasTag(collision.first, "GainProjectile"))
+        {
+            player_data.has_projectile = true;
+            continue;
+        }
+        if (EntityHasTag(collision.first, "GainFasterSlash"))
+        {
+            player_data.has_faster_slash = true;
+            continue;
+        }
         
         // player collides with an enemy
         if (EntityHasTag(collision.first, "Enemy"))
@@ -459,11 +480,22 @@ void Player::TakeDamage(Character* player_character, int damage)
 
 void Player::DealDamage(Character* enemy_character, uint32_t enemy_id, int damage)
 {
+    if (!EntityExists(enemy_id)) return;
+    
     enemy_character->health -= damage;
     SDL_Log(("Enemy : " + std::to_string(enemy_id) + " now has " + std::to_string(enemy_character->health) + " health").c_str());
 
     if (enemy_character->health <= 0)
     {
+        if (EntityHasTag(enemy_id, "Level2Boss"))
+        {
+            if (uint32_t level_2_exit = GetFirstEntityWithTag("Level2Exit"))
+            {
+                RemoveEntity(level_2_exit);
+                player_data.second_boss_dead = true;
+            }
+        }
+        
         SDL_Log(("Enemy : " + std::to_string(enemy_id) + " died").c_str());
         enemies_to_remove.push_back(enemy_id);
     }
