@@ -51,19 +51,19 @@ void EnemyManager::LoadEnemies()
         auto props = GetAllEntityProperties(charge_enemy);
     }
 
-    if (jump_boss)
-        RemoveEntity(jump_boss);
-    jump_boss = AddEntity("Resources/Sprites/triangle-enemy.png", -6000.0f, 0.0f, 0.0f, 0.5f, 0.5f, true);
-    SetEntityColor(jump_boss, SquareCore::RGBA(70, 0, 0, 255));
-    AddTagToEntity(jump_boss, "Enemy");
-    AddTagToEntity(jump_boss, "Pogo");
-    AddTagToEntity(jump_boss, "JumpBoss");
-    SetDrag(jump_boss, 5.0f);
-    SetEntityPersistent(jump_boss, true);
-    AddPropertyToEntity(jump_boss, new Character(50, 50, 2));
-    AddPropertyToEntity(jump_boss, new JumpBoss());
-    SetColliderPolygon(jump_boss, boss_collider_vertices);
-    enemies.push_back(jump_boss);
+    //if (jump_boss)
+    //    RemoveEntity(jump_boss);
+    //jump_boss = AddEntity("Resources/Sprites/triangle-enemy.png", -6000.0f, 0.0f, 0.0f, 0.5f, 0.5f, true);
+    //SetEntityColor(jump_boss, SquareCore::RGBA(70, 0, 0, 255));
+    //AddTagToEntity(jump_boss, "Enemy");
+    //AddTagToEntity(jump_boss, "Pogo");
+    //AddTagToEntity(jump_boss, "JumpBoss");
+    //SetDrag(jump_boss, 5.0f);
+    //SetEntityPersistent(jump_boss, true);
+    //AddPropertyToEntity(jump_boss, new Character(50, 50, 2));
+    //AddPropertyToEntity(jump_boss, new JumpBoss());
+    //SetColliderPolygon(jump_boss, boss_collider_vertices);
+    //enemies.push_back(jump_boss);
 }
 
 

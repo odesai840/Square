@@ -85,9 +85,6 @@ public:
 
     // Thread-safe function to set the collider type for an entity
     void SetColliderType(uint32_t entityID, ColliderType type);
-    void SetColliderEnabled(uint32_t entityID, bool enabled);
-    void SetColliderOffset(uint32_t entityID, const Vec2& offset);
-    void SetColliderSize(uint32_t entityID, const Vec2& size);
     
     void SetColor(uint32_t entityID, RGBA color);
     
