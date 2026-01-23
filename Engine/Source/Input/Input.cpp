@@ -97,17 +97,17 @@ void Input::EndFrame() {
 }
 
 bool Input::GetKeyPressed(SDL_Scancode key) {
-    if (key < 0 || key >= SDL_SCANCODE_COUNT) return false;
+    if (key >= SDL_SCANCODE_COUNT) return false;
     return keyStates[key] == KeyState::PRESSED;
 }
 
 bool Input::GetKeyHeld(SDL_Scancode key) {
-    if (key < 0 || key >= SDL_SCANCODE_COUNT) return false;
+    if (key >= SDL_SCANCODE_COUNT) return false;
     return keyStates[key] == KeyState::PRESSED || keyStates[key] == KeyState::HELD;
 }
 
 bool Input::GetKeyReleased(SDL_Scancode key) {
-    if (key < 0 || key >= SDL_SCANCODE_COUNT) return false;
+    if (key >= SDL_SCANCODE_COUNT) return false;
     return keyStates[key] == KeyState::RELEASED;
 }
 
