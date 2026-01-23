@@ -2,56 +2,6 @@
     "entities": [
         {
             "color": [
-                120,
-                0,
-                0,
-                255
-            ],
-            "physApplied": true,
-            "isSpriteless": false,
-            "position": [
-                30.0,
-                0.0
-            ],
-            "scale": [
-                0.05,
-                0.05
-            ],
-            "spritePath": "Resources/Sprites/triangle-enemy.png",
-            "tags": [
-                "Enemy",
-                "ChargeEnemy",
-                "Pogo"
-            ],
-            "zIndex": 2
-        },
-        {
-            "color": [
-                120,
-                0,
-                0,
-                255
-            ],
-            "isSpriteless": false,
-            "position": [
-                50.0,
-                0.0
-            ],
-            "physApplied": true,
-            "scale": [
-                0.05,
-                0.05
-            ],
-            "spritePath": "Resources/Sprites/triangle-enemy.png",
-            "tags": [
-                "Enemy",
-                "JumpEnemy",
-                "Pogo"
-            ],
-            "zIndex": 2
-        },
-        {
-            "color": [
                 200,
                 200,
                 255,
@@ -569,6 +519,160 @@
             ],
             "isSpriteless": false,
             "position": [
+                -5200.0,
+                300.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -5800.0,
+                0.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -5200.0,
+                800.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -5800.0,
+                1100.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -6400.0,
+                1400.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                30,
+                30,
+                30,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -7500.0,
+                1600.0
+            ],
+            "scale": [
+                0.01,
+                1.0
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Breakable"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                50,
+                50,
+                50,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -7500.0,
+                900.0
+            ],
+            "scale": [
+                0.4,
+                0.4
+            ],
+            "spritePath": "Resources/Sprites/circle.png",
+            "tags": [
+                "Ball"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
                 2700.0,
                 -100.0
             ],
@@ -714,6 +818,75 @@
                 "Ground"
             ],
             "zIndex": 0
+        },
+        {
+            "color": [
+                140,
+                140,
+                255,
+                255
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                30.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "Wormhole"
+            ],
+            "zIndex": 99
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                30.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "Wormhole"
+            ],
+            "zIndex": 97
+        },
+        {
+            "color": [
+                255,
+                140,
+                140,
+                255
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                30.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "WormholeNegative"
+            ],
+            "zIndex": 98
         }
     ],
     "ui": []

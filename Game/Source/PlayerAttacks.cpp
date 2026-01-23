@@ -207,6 +207,7 @@ void Player::Projectile(float delta_time)
                 uint32_t ball = GetFirstEntityWithTag("Ball");
                 SetPhysicsEnabled(ball, true);
                 RemoveEntity(collision.first);
+                continue;
             }
 
             if (EntityHasTag(collision.first, "Ground"))

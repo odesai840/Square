@@ -182,7 +182,7 @@ namespace SquareCore
                     CreateBodyInternal(entity);
                 }
             }
-            else if (entity.physicsHandle.isValid && !entity.visible) {
+            else if (entity.physicsHandle.isValid && (!entity.visible || entity.collider.type == ColliderType::NONE)) {
                 DestroyBodyInternal(entity);
             }
         }

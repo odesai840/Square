@@ -482,6 +482,20 @@ namespace SquareCore
         if (it != idToIndex.end())
         {
             entities[it->second].collider.type = type;
+            
+            if (physicsRef && entities[it->second].physicsHandle.isValid && type != ColliderType::NONE)
+            {
+                entityMutex.unlock();
+                physicsRef->DestroyBody(entityID);
+                physicsRef->CreateBody(entityID);
+                entityMutex.lock();
+            }
+            else if (physicsRef && entities[it->second].physicsHandle.isValid && type == ColliderType::NONE)
+            {
+                entityMutex.unlock();
+                physicsRef->DestroyBody(entityID);
+                entityMutex.lock();
+            }
         }
         else
         {
@@ -531,6 +545,14 @@ namespace SquareCore
         if (it != idToIndex.end())
         {
             entities[it->second].physApplied = enabled;
+            
+            if (physicsRef && entities[it->second].physicsHandle.isValid)
+            {
+                entityMutex.unlock();
+                physicsRef->DestroyBody(entityID);
+                physicsRef->CreateBody(entityID);
+                entityMutex.lock();
+            }
         }
     }
 
