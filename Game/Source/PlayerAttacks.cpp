@@ -63,6 +63,17 @@ void Player::Slash(float delta_time)
         {
             if (!EntityExists(collision.first)) continue;
 
+            if (EntityHasTag(collision.first, "Lever2Back"))
+            {
+                bool flip_x = !GetFlipX(collision.first);
+                FlipSprite(collision.first, flip_x, false);
+                if (uint32_t lever_2_block = GetFirstEntityWithTag("Lever2BackBlock"))
+                {
+                    RemoveEntity(lever_2_block);
+                    continue;
+                }
+            }
+
             if (EntityHasTag(collision.first, "Pogo"))
             {
                 if (slash_direction == Direction::DOWN)
@@ -71,6 +82,7 @@ void Player::Slash(float delta_time)
                     float pogo_bounce = 800.0f;
                     SetVelocity(player, player_velocity.x, pogo_bounce);
                 }
+                continue;
             }
         
             if (EntityHasTag(collision.first, "Enemy") && !EnemyHitByCurrentSlash(collision.first))
@@ -114,6 +126,7 @@ void Player::Slash(float delta_time)
                         DealDamage(health_property, collision.first, slash_damage);
                     }
                 }
+                continue;
             }
         }
 

@@ -10,6 +10,7 @@ void Player::OnStart()
     FlipSprite(player, true, false);
     SetEntityPersistent(player, true);
     AddPropertyToEntity(player, new Character(player_data.max_health, player_data.health, player_data.damage));
+    SetZIndex(player, 1000);
     
     slash_fps = 7.0f / slash_length;
     slash = AddAnimatedEntity("Resources/Sprites/slash-sheet-2.png", 7, slash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 0.25f, 0.1f, false);
@@ -17,6 +18,7 @@ void Player::OnStart()
     AddTagToEntity(slash, "PlayerSlash");
     SetEntityVisible(slash, false);
     SetEntityPersistent(slash, true);
+    SetZIndex(slash, 1000);
 
     dash_fps = 6.0f / dash_length;
     dash = AddAnimatedEntity("Resources/Sprites/dash-sheet.png", 6, dash_fps, player_data.x_pos, player_data.y_pos, 0.0f, 1.0f, 0.5f, false);
@@ -25,6 +27,7 @@ void Player::OnStart()
     SetEntityVisible(dash, false);
     SetEntityPersistent(dash, true);
     SetEntityColor(dash, SquareCore::RGBA(200, 200, 200, 255));
+    SetZIndex(dash, 1000);
     
     projectile_fps = 100.0f;
     for (int i = 0; i < 5; i++)

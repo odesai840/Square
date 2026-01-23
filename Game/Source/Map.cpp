@@ -16,7 +16,7 @@ void Map::OnStart()
     SetAudioLooping(level_1_music, true);
     SetAudioLooping(level_2_music, true);
     SetAudioLooping(level_3_music, true);
-    
+    SetAudioMasterVolume(0.0f);
     PlayAudioClip(main_menu_music);
     
     /*dialogTestTrigger = AddSpritelessEntity(10, 10, SquareCore::RGBA(0,0,0,0), 200, -250);
@@ -24,8 +24,9 @@ void Map::OnStart()
     AddTagToEntity(dialogTestTrigger, "DialogTrigger");
     SetEntityPersistent(dialogTestTrigger, true);*/
     
-    SetCameraZoom(0.85f);
-    SetCameraBounds(-12500.0f, -400.0f, 6000.0f, 2200.0f);
+    //SetCameraZoom(0.85f);
+    SetCameraZoom(0.1f);
+    SetCameraBounds(-10000.0f, -6000.0f, 6000.0f, 10000.0f);
     EnableCameraBounds(true);
     SetGravity(-1500.0f);
 }
