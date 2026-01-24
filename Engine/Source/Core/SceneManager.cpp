@@ -199,7 +199,6 @@ namespace SquareCore
                     scaleX = entityJson["scale"][0];
                     scaleY = entityJson["scale"][1];
                 }
-                bool physEnabled = entityJson.value("physApplied", false);
                 int zIndex = entityJson["zIndex"];
 
                 std::vector<std::string> tags;
@@ -216,8 +215,7 @@ namespace SquareCore
                         entityJson["spritelessColor"][2],
                         entityJson["spritelessColor"][3]
                     );
-                    id = entityManagerRef->AddSpritelessEntity(width, height, color, posX, posY, rotation, scaleX, scaleY,
-                                                               physEnabled);
+                    id = entityManagerRef->AddSpritelessEntity(width, height, color, posX, posY, rotation, scaleX, scaleY);
                 } else {
                     std::string spritePath = entityJson.value("spritePath", "");
                     int totalFrames = entityJson.value("totalFrames", 1);
@@ -225,10 +223,9 @@ namespace SquareCore
 
                     if (totalFrames > 1 || fps > 0) {
                         id = entityManagerRef->AddAnimatedEntity(spritePath.c_str(), totalFrames, fps, posX, posY, rotation, scaleX,
-                                                                 scaleY, physEnabled, tags);
+                                                                 scaleY, false, tags);
                     } else {
-                        id = entityManagerRef->AddEntity(spritePath.c_str(), posX, posY, rotation, scaleX, scaleY, physEnabled,
-                                                         tags);
+                        id = entityManagerRef->AddEntity(spritePath.c_str(), posX, posY, rotation, scaleX, scaleY, false, tags);
                     }
                 }
 
@@ -241,6 +238,11 @@ namespace SquareCore
                     entity->drag = entityJson.value("drag", 0.0f);
                     entity->tags = tags;
                     entity->zIndex = zIndex;
+                    
+                    if (entityJson.contains("physApplied"))
+                    {
+                        entityManagerRef->SetPhysicsEnabled(id, entityJson["physApplied"].get<bool>());
+                    }
 
                     if (entityJson.contains("color")) {
                         entity->color = RGBA(

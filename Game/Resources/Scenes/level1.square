@@ -43,7 +43,7 @@
                 "Ground",
                 "ValidGround"
             ],
-            "zIndex": 1
+            "zIndex": 3
         },
         {
             "color": [
@@ -65,7 +65,7 @@
             "tags": [
                 "Ground"
             ],
-            "zIndex": 1
+            "zIndex": 3
         },
         {
             "color": [
@@ -683,6 +683,81 @@
             "spritePath": "Resources/Sprites/circle.png",
             "tags": [
                 "Ball"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "position": [
+                -7500.0,
+                -150
+            ],
+            "scale": [
+                0.4,
+                0.4
+            ],
+            "spritePath": "Resources/Sprites/ball-rubble.png",
+            "collider":{
+                "type": 0
+            },
+            "tags": [
+                "BallRubble"
+            ],
+            "zIndex": -1
+        },
+        {
+            "color": [
+                30,
+                30,
+                30,
+                255
+            ],
+            "flipX": true,
+            "isSpriteless": false,
+            "position": [
+                -7500.0,
+                95.0
+            ],
+            "scale": [
+                0.65,
+                0.65
+            ],
+            "spritePath": "Resources/Sprites/triangle-enemy.png",
+            "collider":{
+                "type": 1
+            },
+            "tags": [
+                "CrushedEnemy"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                75
+            ],
+            "isSpriteless": false,
+            "position": [
+                -7500.0,
+                50.0
+            ],
+            "scale": [
+                0.8,
+                0.8
+            ],
+            "spritePath": "Resources/Sprites/energy-shield.png",
+            "collider":{
+                "type": 2
+            },
+            "tags": [
+                "CrushedEnemyShield"
             ],
             "zIndex": 1
         },

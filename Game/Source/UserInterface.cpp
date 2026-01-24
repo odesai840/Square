@@ -35,11 +35,11 @@ void UserInterface::OnStart()
     text_size = GetTextSize(credits_title);
     SetUIElementPosition(credits_title, 1920.0f / 2.0f - text_size.x / 2.0f, 150.0f);
     credits_info_od = AddUIText(1920.0f / 2.0f, 300.0f, 24, SquareCore::RGBA(255, 255, 255, 255), "Resources/Fonts/Helvetica.ttf",
-    "Ohm Desai - Lead Engine Programmer, Gameplay Programmer, Story, Level Design");
+    "Ohm Desai - Lead Engine Programmer, Gameplay Programmer, Story, Art, Music, Level Design");
     text_size = GetTextSize(credits_info_od);
     SetUIElementPosition(credits_info_od, 1920.0f / 2.0f - text_size.x / 2.0f, 300.0f);
     credits_info_ck = AddUIText(1920.0f / 2.0f, 300.0f, 24, SquareCore::RGBA(255, 255, 255, 255), "Resources/Fonts/Helvetica.ttf",
-    "Caleb Kronstad - Lead Gameplay Programmer, Engine Programmer, Art, Music, Level Design");
+    "Caleb Kronstad - Lead Gameplay Programmer, Engine Programmer, Story, Art, Music, Level Design");
     text_size = GetTextSize(credits_info_ck);
     SetUIElementPosition(credits_info_ck, 1920.0f / 2.0f - text_size.x / 2.0f, 350.0f);
     

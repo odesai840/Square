@@ -26,4 +26,7 @@ private:
     std::vector<uint32_t> wormholes_negative;
     float wormhole_rotation = 0.0f;
     float wormhole_speed = 55.0f;
+    
+    uint32_t ball_entity = 0;
+    uint32_t crushed_enemy = 0;
 };

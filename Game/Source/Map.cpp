@@ -16,7 +16,7 @@ void Map::OnStart()
     SetAudioLooping(level_1_music, true);
     SetAudioLooping(level_2_music, true);
     SetAudioLooping(level_3_music, true);
-    //SetAudioMasterVolume(0.0f);
+    SetAudioMasterVolume(0.0f);
     PlayAudioClip(main_menu_music);
     
     SetCameraZoom(0.85f);
@@ -42,6 +42,31 @@ void Map::OnUpdate(float deltaTime)
         uint32_t player_id = GetFirstEntityWithTag("Player");
         SquareCore::Vec2 player_pos = GetPosition(player_id);
         LoadMap(current_map, {player_pos.x, player_pos.y});
+    }
+    
+    if (EntityExists(ball_entity))
+    {
+        auto collisions = GetEntityCollisions(ball_entity);
+        for (auto collision : collisions)
+        {
+            if (!EntityExists(collision.first)) continue;
+            
+            if (EntityHasTag(collision.first, "CrushedEnemyShield"))
+            {
+                RemoveEntity(crushed_enemy);
+                RemoveEntity(collision.first);
+                continue;
+            }
+            
+            if (EntityHasTag(collision.first, "Ground"))
+            {
+                uint32_t ball_rubble = GetFirstEntityWithTag("BallRubble");
+                
+                SetEntityColor(ball_rubble, SquareCore::RGBA(255, 255, 255, 255));
+                
+                RemoveEntity(ball_entity);
+            }
+        }
     }
 }
 
@@ -69,6 +94,9 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             RemoveEntity(level_2_exit);
         }
     }
+
+    ball_entity = GetFirstEntityWithTag("Ball");
+    crushed_enemy = GetFirstEntityWithTag("CrushedEnemy");
     
     switch (level)
     {
