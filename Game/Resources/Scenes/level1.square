@@ -1,4 +1,10 @@
 {
+    "background-color": [
+        40,
+        40,
+        40,
+        255
+    ],
     "entities": [
         {
             "color": [
@@ -24,9 +30,9 @@
         },
         {
             "color": [
-                0,
-                50,
-                0,
+                70,
+                70,
+                70,
                 255
             ],
             "isSpriteless": false,

@@ -27,6 +27,7 @@ namespace SquareCore
             rect->text.text = textStr;
             if (rect->text.font)
             {
+                TTF_SetFontSize(rect->text.font, scaledFontSize);
                 rect->text.textObject = TTF_CreateText(textEngineRef, rect->text.font, textStr.c_str(), textStr.length());
                 if (rect->text.textObject)
                 {
@@ -65,6 +66,7 @@ namespace SquareCore
             button->text.text = textStr;
             if (button->text.font)
             {
+                TTF_SetFontSize(button->text.font, scaledFontSize);
                 button->text.textObject = TTF_CreateText(textEngineRef, button->text.font, textStr.c_str(), textStr.length());
                 if (button->text.textObject)
                 {
@@ -98,6 +100,7 @@ namespace SquareCore
         
         if (font && textEngineRef)
         {
+            TTF_SetFontSize(font, scaledFontSize);
             ui_text->text.textObject = TTF_CreateText(textEngineRef, font, textStr.c_str(), textStr.length());
             if (ui_text->text.textObject)
             {
@@ -485,18 +488,17 @@ namespace SquareCore
                 TTF_GetTextColor(element->text.textObject, &textColor.r, &textColor.g, &textColor.b, &textColor.a);
             }
             
+            if (element->text.font)
+            {
+                TTF_SetFontSize(element->text.font, scaledFontSize);
+            }
+            
             if (element->text.textObject)
             {
                 TTF_DestroyText(element->text.textObject);
                 element->text.textObject = nullptr;
             }
-            if (element->text.font)
-            {
-                TTF_CloseFont(element->text.font);
-                element->text.font = nullptr;
-            }
             
-            element->text.font = TTF_OpenFont(element->text.fontPath.c_str(), scaledFontSize);
             if (element->text.font && textEngineRef && !element->text.text.empty())
             {
                 element->text.textObject = TTF_CreateText(textEngineRef, element->text.font,
