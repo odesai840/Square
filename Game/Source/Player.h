@@ -122,6 +122,9 @@ private:
     std::vector<uint32_t> recently_hit_by_enemies;
     std::vector<uint32_t> enemies_to_remove;
     std::vector<BounceEntity> recently_bounced_on;
+    
+    std::vector<uint32_t> trap_walls;
+    std::vector<uint32_t> spawned_enemy_ids;
 
     std::vector<float> bounds = {-10000.0f, -6000.0f, 6000.0f, 10000.0f};
     float target_bounds_y_min = bounds[1];

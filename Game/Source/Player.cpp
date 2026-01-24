@@ -412,7 +412,7 @@ void Player::OnCollision(float delta_time)
         
         if (EntityHasTag(collision.first, "TrapWallTrigger"))
         {
-            std::vector<uint32_t> trap_walls = GetAllEntitiesWithTag("TrapWall");
+            trap_walls = GetAllEntitiesWithTag("TrapWall");
             
             for (auto& trap_wall : trap_walls)
             {
@@ -421,9 +421,11 @@ void Player::OnCollision(float delta_time)
             
             for (int i = 0; i < 3; i++)
             {
-                enemy_manager->SpawnChargeEnemy({800 + i * 100.0f, 1950.0f});
+                uint32_t charge_enemy = enemy_manager->SpawnChargeEnemy({800 + i * 100.0f, 1950.0f});
                 uint32_t jump_enemy = enemy_manager->SpawnJumpEnemy({2100 - i * 100.0f, 1950.0f});
                 FlipSprite(jump_enemy, false, false);
+                spawned_enemy_ids.push_back(charge_enemy);
+                spawned_enemy_ids.push_back(jump_enemy);
             }
             
             RemoveEntity(collision.first);
@@ -487,6 +489,23 @@ void Player::DealDamage(Character* enemy_character, uint32_t enemy_id, int damag
 
     if (enemy_character->health <= 0)
     {
+        for (int i = 0; i < spawned_enemy_ids.size(); i++)
+        {
+            if (spawned_enemy_ids[i] == enemy_id)
+            {
+                spawned_enemy_ids.erase(spawned_enemy_ids.begin() + i);
+                if (spawned_enemy_ids.empty())
+                {
+                    trap_walls = GetAllEntitiesWithTag("TrapWall");
+            
+                    for (auto& trap_wall : trap_walls)
+                    {
+                        SetPosition(trap_wall, GetPosition(trap_wall).x, 1870.0f);
+                    }
+                }
+            }
+        }
+        
         if (EntityHasTag(enemy_id, "Level2Boss"))
         {
             if (uint32_t level_2_exit = GetFirstEntityWithTag("Level2Exit"))

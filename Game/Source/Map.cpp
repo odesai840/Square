@@ -16,13 +16,11 @@ void Map::OnStart()
     SetAudioLooping(level_1_music, true);
     SetAudioLooping(level_2_music, true);
     SetAudioLooping(level_3_music, true);
-    SetAudioMasterVolume(0.0f);
+    //SetAudioMasterVolume(0.0f);
     PlayAudioClip(main_menu_music);
     
     SetCameraZoom(0.85f);
     //SetCameraZoom(0.1f);
-    //SetCameraBounds(-14000.0f, -400.0f, 6000.0f, 10000.0f); // Level 1 bounds
-    SetCameraBounds(-10000.0f, -6000.0f, 6000.0f, 10000.0f);
     EnableCameraBounds(true);
     SetGravity(-1500.0f);
 }
@@ -88,6 +86,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             StopAudioClip(level_2_music);
             StopAudioClip(level_3_music);
             PlayAudioClip(level_1_music);
+            SetCameraBounds(-14000.0f, -400.0f, 6000.0f, 10000.0f);
             break;
         }
     case 2:
@@ -96,6 +95,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             StopAudioClip(main_menu_music);
             StopAudioClip(level_3_music);
             PlayAudioClip(level_2_music);
+            SetCameraBounds(-10000.0f, -400.0f, 6000.0f, 10000.0f);
             break;
         }
     case 3:
