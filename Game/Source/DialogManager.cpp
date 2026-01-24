@@ -3,6 +3,8 @@
 #include <json/json.hpp>
 #include <fstream>
 
+#include "Player.h"
+
 bool DialogManager::Load(const std::string& path)
 {
     std::ifstream file(path);

@@ -21,6 +21,7 @@ int main(int argc, char* argv[]) {
     player->SetDialogManager(userInterface->GetDialogManager());
     player->SetEnemyManager(enemy_manager);
     player->SetUserInterface(userInterface);
+    player->SetMap(map);
     userInterface->SetPlayerScript(player);
     userInterface->SetMap(map);
     enemy_manager->SetPlayerScript(player);
