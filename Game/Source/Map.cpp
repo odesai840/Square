@@ -38,6 +38,12 @@ void Map::OnUpdate(float deltaTime)
         SetRotation(wormholes_negative[i], -wormhole_rotation * (1.0f + (i*0.1f)));
     }
 
+    ability_icon_rotation += deltaTime * ability_icon_speed;
+    for (uint32_t icon : ability_icons)
+    {
+        SetRotation(icon, ability_icon_rotation);
+    }
+
     if (GetKeyPressed(debug_hot_reload))
     {
         uint32_t player_id = GetFirstEntityWithTag("Player");
@@ -82,6 +88,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
     if (enemy_manager) enemy_manager->LoadEnemies();
     if (player) player->TeleportPlayer({player_position.x, player_position.y});
 
+    ability_icons = GetAllEntitiesWithTag("Ability");
     wormholes = GetAllEntitiesWithTag("Wormhole");
     wormholes_negative = GetAllEntitiesWithTag("WormholeNegative");
     for (uint32_t wormhole : wormholes)

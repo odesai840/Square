@@ -16,6 +16,7 @@ public:
     void SetPlayerScript(Player* player_s) { this->player_script = player_s; }
     void SetMap(Map* m) { this->map = m; }
     void AreaTitle(std::string title, std::string info);
+    void AbilityGained(std::string title, std::string info);
 
 private:
     void DialogUpdate();
@@ -24,6 +25,7 @@ private:
     void UpdateHeals();
     void ShowCredits(bool show);
     void UpdateAreaTitle(float deltaTime);
+    void UpdateAbilityGained(float deltaTime);
     
 private:
     Map* map = nullptr;
@@ -44,14 +46,21 @@ private:
     std::vector<uint32_t> healthSquares;
     std::vector<uint32_t> healSquares;
 
+    enum TextState { FADE_IN, WAITING, FADE_OUT, DONE };
+    
     uint32_t top_of_screen_text = 0;
     uint32_t bottom_left_of_screen_text = 0;
-    float current_alpha = 0.0f;
-    enum AreaTitleState { FADE_IN, WAITING, FADE_OUT, DONE };
-    AreaTitleState area_title_state = DONE;
+    TextState area_title_state = DONE;
     float area_title_alpha = 0.0f;
     float area_title_wait_timer = 0.0f;
     float area_title_fade_speed = 150.0f;
+
+    uint32_t ability_gained_text = 0;
+    uint32_t ability_explained_text = 0;
+    TextState ability_title_state = DONE;
+    float ability_title_alpha = 0.0f;
+    float ability_title_wait_timer = 0.0f;
+    float ability_title_fade_speed = 150.0f;
 
     uint32_t main_menu_title = 0;
     uint32_t main_menu_play_button = 0;

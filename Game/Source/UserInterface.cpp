@@ -171,6 +171,30 @@ void UserInterface::AreaTitle(std::string title, std::string info)
     area_title_wait_timer = 0.0f;
 }
 
+void UserInterface::AbilityGained(std::string title, std::string info)
+{
+    if (ability_gained_text)
+        RemoveUIElement(ability_gained_text);
+    if (ability_explained_text)
+        RemoveUIElement(ability_explained_text);
+    
+    ability_gained_text = AddUIText(1920.0f / 2.0f, 150.0f, 64, SquareCore::RGBA(255, 255, 255, 0), "Resources/Fonts/Helvetica.ttf", title);
+    SquareCore::Vec2 text_size = GetTextSize(ability_gained_text);
+    SetUIElementPosition(ability_gained_text, 1920.0f / 2.0f - text_size.x / 2.0f, 150.0f);
+    SetUIElementVisible(ability_gained_text, true);
+    SetUIElementPersistent(ability_gained_text, true);
+
+    ability_explained_text = AddUIText(1920.0f / 2.0f, 300.0f, 24, SquareCore::RGBA(255, 255, 255, 0), "Resources/Fonts/Helvetica.ttf", title);
+    text_size = GetTextSize(ability_explained_text);
+    SetUIElementPosition(ability_explained_text, 1920.0f / 2.0f - text_size.x / 2.0f, 150.0f);
+    SetUIElementVisible(ability_explained_text, true);
+    SetUIElementPersistent(ability_explained_text, true);
+
+    ability_title_alpha = 0.0f;
+    ability_title_state = FADE_IN;
+    ability_title_wait_timer = 0.0f;
+}
+
 void UserInterface::UpdateAreaTitle(float deltaTime)
 {
     if (area_title_state == DONE) return;
@@ -206,6 +230,43 @@ void UserInterface::UpdateAreaTitle(float deltaTime)
     
     SetUITextColor(top_of_screen_text, SquareCore::RGBA(255, 255, 255, (int)area_title_alpha));
     SetUITextColor(bottom_left_of_screen_text, SquareCore::RGBA(255, 255, 255, (int)area_title_alpha));
+}
+
+void UserInterface::UpdateAbilityGained(float deltaTime)
+{
+    if (ability_title_state == DONE) return;
+    
+    if (ability_title_state == FADE_IN)
+    {
+        ability_title_alpha += ability_title_fade_speed * deltaTime;
+        if (ability_title_alpha >= 255.0f)
+        {
+            ability_title_alpha = 255.0f;
+            ability_title_state = WAITING;
+        }
+    }
+    else if (ability_title_state == WAITING)
+    {
+        ability_title_wait_timer += deltaTime;
+        if (ability_title_wait_timer >= 3.0f)
+        {
+            ability_title_state = FADE_OUT;
+        }
+    }
+    else if (ability_title_state == FADE_OUT)
+    {
+        ability_title_alpha -= ability_title_fade_speed * deltaTime;
+        if (ability_title_alpha <= 0.0f)
+        {
+            ability_title_alpha = 0.0f;
+            ability_title_state = DONE;
+            SetUIElementVisible(ability_gained_text, false);
+            SetUIElementVisible(ability_explained_text, false);
+        }
+    }
+    
+    SetUITextColor(ability_gained_text, SquareCore::RGBA(255, 255, 255, (int)ability_title_alpha));
+    SetUITextColor(ability_explained_text, SquareCore::RGBA(255, 255, 255, (int)ability_title_alpha));
 }
 
 void UserInterface::UpdateHeals()

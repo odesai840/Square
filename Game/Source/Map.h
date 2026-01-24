@@ -30,6 +30,10 @@ private:
     std::vector<uint32_t> wormholes_negative;
     float wormhole_rotation = 0.0f;
     float wormhole_speed = 55.0f;
+
+    std::vector<uint32_t> ability_icons;
+    float ability_icon_rotation = 0.0f;
+    float ability_icon_speed = 15.0f;
     
     uint32_t ball_entity = 0;
     uint32_t crushed_enemy = 0;

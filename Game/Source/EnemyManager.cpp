@@ -81,7 +81,7 @@ void EnemyManager::SpawnSecondBoss(const SquareCore::Vec2& position)
         AddTagToEntity(second_bosses[i], "Enemy");
         AddTagToEntity(second_bosses[i], "Pogo");
         AddTagToEntity(second_bosses[i], "SecondBoss");
-        Character* character_property = new Character(25, 25, 1);
+        Character* character_property = new Character(15, 15, 1);
         AddPropertyToEntity(second_bosses[i], character_property);
         second_boss_ch_properties[i] = character_property;
         SecondBoss* boss_property = new SecondBoss(pos);
