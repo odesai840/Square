@@ -659,6 +659,15 @@ void Player::DealDamage(Character* enemy_character, uint32_t enemy_id, int damag
             }
         }
         
+        if (EntityHasTag(enemy_id, "JumpBoss"))
+        {
+            if (uint32_t level_1_wormhole_shield = GetFirstEntityWithTag("Level1WormholeShield"))
+            {
+                RemoveEntity(level_1_wormhole_shield);
+                player_data.first_boss_dead = true;
+            }
+        }
+        
         SDL_Log(("Enemy : " + std::to_string(enemy_id) + " died").c_str());
         enemies_to_remove.push_back(enemy_id);
     }

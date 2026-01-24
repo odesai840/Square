@@ -49,7 +49,7 @@
                 "Ground",
                 "ValidGround"
             ],
-            "zIndex": 3
+            "zIndex": 500
         },
         {
             "color": [
@@ -71,7 +71,7 @@
             "tags": [
                 "Ground"
             ],
-            "zIndex": 3
+            "zIndex": 500
         },
         {
             "color": [
@@ -1157,33 +1157,56 @@
         },
         {
             "color": [
-                0,
-                100,
+                200,
+                200,
                 255,
                 255
             ],
             "isSpriteless": false,
             "position": [
                 2730.0,
-                1270.0
+                1100.0
             ],
             "scale": [
-                0.2,
-                0.2
+                0.15,
+                0.1
             ],
-            "spritePath": "Resources/Sprites/square.png",
+            "spritePath": "Resources/Sprites/mushroom.png",
+            "tags": [
+                "Bounce"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                2730.0,
+                1650.0
+            ],
+            "scale": [
+                0.5,
+                0.5
+            ],
+            "spritePath": "Resources/Sprites/ability.png",
             "collider": {
                 "type": 2
             },
             "tags": [
+                "Ability",
                 "GainProjectile"
             ],
             "zIndex": 0
         },
         {
             "color": [
-                0,
-                100,
+                255,
+                255,
                 255,
                 255
             ],
@@ -1193,22 +1216,194 @@
                 590.0
             ],
             "scale": [
-                0.2,
-                0.2
+                0.5,
+                0.5
             ],
-            "spritePath": "Resources/Sprites/square.png",
+            "spritePath": "Resources/Sprites/ability.png",
             "collider": {
                 "type": 2
             },
             "tags": [
+                "Ability",
                 "GainDoubleJump"
             ],
             "zIndex": 0
         },
         {
             "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -700.0,
+                198.0
+            ],
+            "scale": [
+                0.08,
+                0.08
+            ],
+            "spritePath": "Resources/Sprites/elvis-square.png",
+            "collider": {
+                "type": 0
+            },
+            "tags": [
+                "ElvisSquareley"
+            ],
+            "zIndex": 3
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "isSpriteless": false,
+            "position": [
+                -550.0,
+                287.0
+            ],
+            "scale": [
+                0.2,
+                0.25
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "collider": {
+                "type": 2
+            },
+            "tags": [
+                "DialogTriggerElvis"
+            ],
+            "zIndex": 3
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                75
+            ],
+            "isSpriteless": false,
+            "position": [
+                -13500.0,
+                -100.0
+            ],
+            "scale": [
+                0.3,
+                0.3
+            ],
+            "spritePath": "Resources/Sprites/energy-shield.png",
+            "collider":{
+                "type": 1
+            },
+            "tags": [
+                "Level1WormholeShield"
+            ],
+            "zIndex": 100
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                -13500.0,
+                -100.0
+            ],
+            "scale": [
+                2.0,
+                2.0
+            ],
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "Wormhole"
+            ],
+            "zIndex": 99
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                -13500.0,
+                -100.0
+            ],
+            "scale": [
+                2.0,
+                2.0
+            ],
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "Wormhole"
+            ],
+            "zIndex": 97
+        },
+        {
+            "color": [
+                255,
                 140,
                 140,
+                255
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                -13500.0,
+                -100.0
+            ],
+            "scale": [
+                2.0,
+                2.0
+            ],
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "WormholeNegative"
+            ],
+            "zIndex": 98
+        },
+        {
+            "color": [
+                140,
+                140,
+                255,
+                0
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                -13500.0,
+                -100.0
+            ],
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "WormholeTrigger",
+                "2"
+            ],
+            "zIndex": 99
+        },
+        {
+            "color": [
+                255,
+                255,
                 255,
                 255
             ],

@@ -323,6 +323,22 @@ void UserInterface::OnUpdate(float deltaTime)
             }
         }
     }
+    
+    if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(1))
+    {
+        if (uint32_t dialog_trigger = GetFirstEntityWithTag("DialogTriggerElvis"))
+        {
+            auto collisions = GetEntityCollisions(dialog_trigger);
+            for (const auto& collision : collisions)
+            {
+                if (EntityHasTag(collision.first, "Player"))
+                {
+                    dialogManager.Start(1);
+                    break;
+                }
+            }
+        }
+    }
 
     if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(2))
     {
@@ -334,6 +350,54 @@ void UserInterface::OnUpdate(float deltaTime)
                 if (EntityHasTag(collision.first, "Player"))
                 {
                     dialogManager.Start(2);
+                    break;
+                }
+            }
+        }
+    }
+    
+    if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(3))
+    {
+        if (uint32_t dialog_trigger = GetFirstEntityWithTag("DialogTriggerHex"))
+        {
+            auto collisions = GetEntityCollisions(dialog_trigger);
+            for (const auto& collision : collisions)
+            {
+                if (EntityHasTag(collision.first, "Player"))
+                {
+                    dialogManager.Start(3);
+                    break;
+                }
+            }
+        }
+    }
+    
+    if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(4))
+    {
+        if (uint32_t dialog_trigger = GetFirstEntityWithTag("DialogTriggerHepta"))
+        {
+            auto collisions = GetEntityCollisions(dialog_trigger);
+            for (const auto& collision : collisions)
+            {
+                if (EntityHasTag(collision.first, "Player"))
+                {
+                    dialogManager.Start(4);
+                    break;
+                }
+            }
+        }
+    }
+    
+    if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(5))
+    {
+        if (uint32_t dialog_trigger = GetFirstEntityWithTag("DialogTriggerLastOcta"))
+        {
+            auto collisions = GetEntityCollisions(dialog_trigger);
+            for (const auto& collision : collisions)
+            {
+                if (EntityHasTag(collision.first, "Player"))
+                {
+                    dialogManager.Start(5);
                     break;
                 }
             }

@@ -86,6 +86,7 @@ void Map::OnUpdate(float deltaTime)
 
 void Map::LoadMap(int level, SquareCore::Vec2 player_position)
 {
+    current_map = level;
     std::string scene_path;
     switch (level)
     {
