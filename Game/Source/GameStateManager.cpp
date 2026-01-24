@@ -39,9 +39,9 @@ PlayerData GameStateManager::LoadPlayerData(const std::string& save_path)
     if (json.contains("has_double_dash"))
         data.has_double_dash = json["has_double_dash"];
     if (json.contains("has_double_jump"))
-        data.has_double_dash = json["has_double_jump"];
+        data.has_double_jump = json["has_double_jump"];
     if (json.contains("has_projectile"))
-        data.has_double_dash = json["has_projectile"];
+        data.has_projectile = json["has_projectile"];
     if (json.contains("has_faster_slash"))
         data.has_faster_slash = json["has_faster_slash"];
     if (json.contains("the_wall_dead"))
