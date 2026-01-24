@@ -48,6 +48,7 @@ public:
     
     void SetMass(uint32_t entityID, float mass);
     void SetDrag(uint32_t entityID, float drag);
+    void SetGravityScale(uint32_t entityID, float gravityScale);
     void SetFixedRotation(uint32_t entityID, bool fixed);
 
 private:

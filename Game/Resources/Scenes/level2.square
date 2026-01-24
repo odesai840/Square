@@ -12,6 +12,33 @@
             "physEnabled": false,
             "isSpriteless": false,
             "position": [
+                -5200.0,
+                -2000.0
+            ],
+            "scale": [
+                2.0,
+                5.0
+            ],
+            "collider": {
+                "type": 2
+            },
+            "flipX": true,
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Boss2Activate"
+            ],
+            "zIndex": 25
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "physEnabled": false,
+            "isSpriteless": false,
+            "position": [
                 -2000.0,
                 -2500.0
             ],
@@ -404,6 +431,32 @@
                 70,
                 70,
                 70,
+                0
+            ],
+            "physEnabled": false,
+            "isSpriteless": false,
+            "position": [
+                -4000.0,
+                -4475.0
+            ],
+            "scale": [
+                0.1,
+                0.25
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "GainDoubleDash"
+            ],
+            "zIndex": 12
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
                 255
             ],
             "physEnabled": false,
@@ -423,7 +476,7 @@
             "tags": [
                 "Boss2Exit"
             ],
-            "zIndex": 12
+            "zIndex": -1
         },
         {
             "color": [

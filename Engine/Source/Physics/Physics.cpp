@@ -368,6 +368,11 @@ namespace SquareCore
         entity.physicsHandle.bodyId = b2CreateBody(worldId, &bodyDef);
         entity.physicsHandle.isValid = true;
         entity.physicsHandle.shapeId = CreateShapeForBody(entity.physicsHandle.bodyId, entity);
+        
+        if (b2Body_IsValid(entity.physicsHandle.bodyId))
+        {
+            b2Body_SetGravityScale(entity.physicsHandle.bodyId, entity.gravityScale);
+        }
     }
     
     void Physics::DestroyBody(uint32_t entityID)
@@ -713,6 +718,30 @@ namespace SquareCore
         if (entity->physicsHandle.isValid && b2Body_IsValid(entity->physicsHandle.bodyId))
         {
             b2Body_SetLinearDamping(entity->physicsHandle.bodyId, drag);
+        }
+    }
+
+    void Physics::SetGravityScale(uint32_t entityID, float gravityScale)
+    {
+        if (!entityManagerRef) return;
+        std::lock_guard<std::mutex> lock(entityManagerRef->GetMutex());
+
+        std::vector<Entity>& entities = entityManagerRef->GetEntitiesUnsafe();
+        Entity* entity = nullptr;
+        for (Entity& e : entities) {
+            if (e.ID == entityID) {
+                entity = &e;
+                break;
+            }
+        }
+        
+        if (!entity) return;
+
+        entity->gravityScale = gravityScale;
+
+        if (entity->physicsHandle.isValid && b2Body_IsValid(entity->physicsHandle.bodyId))
+        {
+            b2Body_SetGravityScale(entity->physicsHandle.bodyId, gravityScale);
         }
     }
 

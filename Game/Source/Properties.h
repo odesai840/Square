@@ -27,6 +27,21 @@ enum class ChargeEnemyState : uint8_t
     STUNNED
 };
 
+enum class SecondBossState : uint8_t
+{
+    IDLE,
+    TELEGRAPHING,
+    ATTACKING,
+    RETURNING
+};
+
+enum class SecondBossAttackType : uint8_t
+{
+    LEFT,
+    RIGHT,
+    ABOVE
+};
+
 struct Character : SquareCore::Property
 {
     int max_health = 10;
@@ -124,4 +139,26 @@ struct JumpBoss : SquareCore::Property
     float far_range = 2000.0f;
     
     bool hit_player_this_attack = false;
+};
+
+struct SecondBoss : SquareCore::Property
+{
+    int boss_index;
+    SquareCore::Vec2 spawn_position;
+    SecondBossState state = SecondBossState::IDLE;
+    SecondBossAttackType attack_type = SecondBossAttackType::LEFT;
+    
+    float telegraph_duration = 0.5f;
+    float telegraph_timer = 0.0f;
+    
+    SquareCore::Vec2 base_scale = {0.1f, 0.1f};
+    float attack_velocity = 1000.0f;
+    
+    bool is_dead = false;
+    
+    SecondBoss(int index, SquareCore::Vec2 spawn_pos)
+    {
+        this->boss_index = index;
+        this->spawn_position = spawn_pos;
+    }
 };

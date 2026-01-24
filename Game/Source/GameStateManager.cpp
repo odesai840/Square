@@ -32,6 +32,10 @@ PlayerData GameStateManager::LoadPlayerData(const std::string& save_path)
         data.health = json["health"];
     if (json.contains("level"))
         data.level = json["level"];
+    if (json.contains("heals"))
+        data.heals = json["heals"];
+    if (json.contains("max_heals"))
+        data.max_heals = json["max_heals"];
     if (json.contains("has_double_dash"))
         data.has_double_dash = json["has_double_dash"];
     if (json.contains("has_double_jump"))
@@ -61,6 +65,8 @@ void GameStateManager::SavePlayerData(const std::string& save_path, PlayerData d
     json["y_pos"] = data.y_pos;
     json["health"] = data.health;
     json["level"] = data.level;
+    json["heals"] = data.heals;
+    json["max_heals"] = data.max_heals;
     json["has_double_dash"] = data.has_double_dash;
     json["has_double_jump"] = data.has_double_jump;
     json["has_projectile"] = data.has_projectile;

@@ -1,4 +1,5 @@
 #include "EnemyManager.h"
+#include "Player.h"
 
 void EnemyManager::OnStart()
 {
@@ -61,6 +62,10 @@ uint32_t EnemyManager::SpawnJumpBoss(const SquareCore::Vec2& position)
     SetColliderPolygon(jump_boss, boss_collider_vertices);
     enemies.push_back(jump_boss);
     return jump_boss;
+}
+
+uint32_t EnemyManager::SpawnSecondBoss(const SquareCore::Vec2& position)
+{
 }
 
 void EnemyManager::AlterChargeEnemy(uint32_t enemy_id)
@@ -419,6 +424,11 @@ void EnemyManager::OnUpdate(float deltaTime)
                         }
                     }
                 }
+            }
+
+            if (SecondBoss* second_boss = dynamic_cast<SecondBoss*>(property))
+            {
+                
             }
         }
     }

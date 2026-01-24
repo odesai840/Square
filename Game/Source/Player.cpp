@@ -46,6 +46,8 @@ void Player::OnStart()
         SetColliderBox(projectile->id, 50.0f, 25.0f);
         SetZIndex(projectile->id, -1);
     }
+
+    player_data.heals = player_data.max_heals;
 }
 
 void Player::TeleportPlayer(const SquareCore::Vec2& position)
@@ -70,6 +72,7 @@ void Player::OnUpdate(float delta_time)
     Move(delta_time);
     Jump(delta_time);
     Dash(delta_time);
+    Heal(delta_time);
     Slash(delta_time);
     Projectile(delta_time);
     OnCollision(delta_time);
@@ -110,6 +113,7 @@ void Player::OnUpdate(float delta_time)
             if (Character* player_character = dynamic_cast<Character*>(player_property))
                 player_character->health = 10;
         }
+        player_data.heals = 3;
         SetTimeScale(1.0f);
     }
     //
@@ -302,6 +306,21 @@ void Player::Dash(float delta_time)
     }
 }
 
+void Player::Heal(float delta_time)
+{
+    if (GetKeyPressed(heal_bind) && player_data.heals > 0)
+    {
+        for (auto& player_property : GetAllEntityProperties(player))
+        {
+            if (Character* player_character = dynamic_cast<Character*>(player_property))
+            {
+                player_character->health = player_data.max_health;
+                player_data.heals--;
+            }
+        }
+    }
+}
+
 void Player::OnCollision(float delta_time)
 {
     bool bouncing = false;
@@ -325,6 +344,13 @@ void Player::OnCollision(float delta_time)
         if (EntityHasTag(collision.first, "Level2BoundsTrigger3") && !SquareCore::CompareFloats(target_bounds_y_min, -4800.0f))
         {
             target_bounds_y_min = -4800.0f;
+            continue;
+        }
+
+        if (EntityHasTag(collision.first, "Boss2Activate") && !enemy_manager->boss_2_active && !player_data.second_boss_dead)
+        {
+            enemy_manager->SpawnSecondBoss(SquareCore::Vec2(-5000.0f, -3800.0f));
+            enemy_manager->boss_2_active = true;
             continue;
         }
 

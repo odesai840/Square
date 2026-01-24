@@ -6,10 +6,12 @@ struct PlayerData
 {
     float x_pos = 0;
     float y_pos = 0;
-    int max_health = 10;
-    int health = 0;
+    int max_health = 5;
+    int health = 5;
     int level = 1;
     int damage = 1;
+    int heals = 3;
+    int max_heals = 3;
 
     bool has_double_dash = false;
     bool has_double_jump = false;

@@ -38,6 +38,7 @@ private:
     void Dash(float delta_time);
     void Slash(float delta_time);
     void Projectile(float delta_time);
+    void Heal(float delta_time);
     
     void OnCollision(float delta_time);
     bool IsGrounded(uint32_t playerId);

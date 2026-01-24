@@ -155,6 +155,7 @@ namespace SquareCore
         void SetVelocity(uint32_t entityID, float velX, float velY);
         void SetMass(uint32_t entityID, float mass);
         void SetDrag(uint32_t entityID, float drag);
+        void SetGravityScale(uint32_t entityID, float gravityScale);
         void SetFixedRotation(uint32_t entityID, bool fixed);
         // Gets an entity's velocity
         Vec2 GetVelocity(uint32_t entityID);

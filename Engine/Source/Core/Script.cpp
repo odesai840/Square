@@ -415,6 +415,14 @@ namespace SquareCore
         }
     }
 
+    void Script::SetGravityScale(uint32_t entityID, float gravityScale)
+    {
+        if (physicsRef)
+        {
+            physicsRef->SetGravityScale(entityID, gravityScale);
+        }
+    }
+
     void Script::SetFixedRotation(uint32_t entityID, bool fixed)
     {
         if (physicsRef)

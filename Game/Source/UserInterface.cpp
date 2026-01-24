@@ -99,26 +99,27 @@ void UserInterface::OnStart()
 
     player = GetFirstEntityWithTag("Player");
 
-    for (auto& property : GetAllEntityProperties(player))
-    {
-        if (Character* character = dynamic_cast<Character*>(property))
-        {
-            maxHealth = character->max_health;
-            break;
-        }
-    }
-
-    for (int i = 0; i < maxHealth; i++)
+    for (int i = 0; i < player_script->GetPlayerData().max_health; i++)
     {
         uint32_t healthSquare = AddUIRect(50.0f + i * 40.0f, 50.0f, 30.0f, 30.0f,
-                                          SquareCore::RGBA(100, 0, 0, 255), "",
+                                          SquareCore::RGBA(150, 0, 0, 255), "",
                                           {SquareCore::RGBA(0, 0, 0, 0)});
         SetUIElementPersistent(healthSquare, true);
         SetUIElementVisible(healthSquare, false);
         healthSquares.push_back(healthSquare);
     }
+    for (int i = 0; i < player_script->GetPlayerData().max_heals; i++)
+    {
+        uint32_t healSquare = AddUIRect(50.0f + i * 40.0f, 100.0f, 30.0f, 30.0f,
+                                          SquareCore::RGBA(200, 80, 65, 255), "",
+                                          {SquareCore::RGBA(0, 0, 0, 0)});
+        SetUIElementPersistent(healSquare, true);
+        SetUIElementVisible(healSquare, false);
+        healSquares.push_back(healSquare);
+    }
 
     UpdateHealthBar();
+    UpdateHeals();
 }
 
 void UserInterface::ShowCredits(bool show)
@@ -146,6 +147,18 @@ void UserInterface::ShowCredits(bool show)
     SetUIElementVisible(main_menu_quit_button, true);
 }
 
+void UserInterface::UpdateHeals()
+{
+    int current_heals = player_script->GetPlayerData().heals;
+    for (int i = 0; i < healSquares.size(); i++)
+    {
+        if (i < current_heals)
+            SetUIElementColor(healSquares[i], SquareCore::RGBA(200, 80, 65, 255));
+        else
+            SetUIElementColor(healSquares[i], SquareCore::RGBA(100, 100, 100, 255));
+    }
+}
+
 void UserInterface::UpdateHealthBar()
 {
     int currentHealth = 0;
@@ -161,7 +174,7 @@ void UserInterface::UpdateHealthBar()
     for (int i = 0; i < healthSquares.size(); i++)
     {
         if (i < currentHealth)
-            SetUIElementColor(healthSquares[i], SquareCore::RGBA(100, 0, 0, 255));
+            SetUIElementColor(healthSquares[i], SquareCore::RGBA(150, 0, 0, 255));
         else
             SetUIElementColor(healthSquares[i], SquareCore::RGBA(100, 100, 100, 255));
     }
@@ -170,6 +183,7 @@ void UserInterface::UpdateHealthBar()
 void UserInterface::OnUpdate(float deltaTime)
 {
     UpdateHealthBar();
+    UpdateHeals();
 
     if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(0))
     {
@@ -204,6 +218,10 @@ void UserInterface::OnPlay()
     for (uint32_t health_square : healthSquares)
     {
         SetUIElementVisible(health_square, true);
+    }
+    for (uint32_t heal_square : healSquares)
+    {
+        SetUIElementVisible(heal_square, true);
     }
 
     SetUIElementVisible(main_menu_title, false);

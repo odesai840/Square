@@ -94,6 +94,7 @@ struct Entity {
     bool physApplied = false;          // Whether physics is applied to this entity
     float mass = 1.0f;                 // Mass for physics calculations
     float drag = 0.0f;                 // Air resistance/drag coefficient
+    float gravityScale = 1.0f;         // Gravity scale multiplier for this entity
     bool fixedRotation = true;
 
     // Collision

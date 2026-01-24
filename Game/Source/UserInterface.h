@@ -20,6 +20,7 @@ private:
     void DialogUpdate();
     void Pause();
     void UpdateHealthBar();
+    void UpdateHeals();
     void ShowCredits(bool show);
     
 private:
@@ -39,7 +40,7 @@ private:
     uint32_t player = 0;
     Player* player_script = nullptr;
     std::vector<uint32_t> healthSquares;
-    int maxHealth = 0;
+    std::vector<uint32_t> healSquares;
 
     uint32_t main_menu_title = 0;
     uint32_t main_menu_play_button = 0;
