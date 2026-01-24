@@ -13,7 +13,7 @@ public:
     void OnUpdate(float deltaTime) override;
     void LoadMap(int level, SquareCore::Vec2 player_position);
     void SetEnemyManager(EnemyManager* enemy_manager) { this->enemy_manager = enemy_manager; }
-    void SetPlayer(Player* player) { this->player = player; }
+    void SetPlayerScript(Player* player) { this->player_script = player; }
     void SetUserInterface(UserInterface* ui) { this->ui = ui; }
 
 private:
@@ -22,7 +22,7 @@ private:
     uint32_t level_2_music = 0;
     uint32_t level_3_music = 0;
     EnemyManager* enemy_manager = nullptr;
-    Player* player = nullptr;
+    Player* player_script = nullptr;
     UserInterface* ui = nullptr;
 
     int current_map = 0;

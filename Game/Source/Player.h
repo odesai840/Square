@@ -6,6 +6,8 @@
 #include "GameStateManager.h"
 #include "Properties.h"
 
+class Map;
+
 struct BounceEntity
 {
     uint32_t id;
@@ -21,16 +23,23 @@ struct ProjectileEntity
     Direction direction = Direction::LEFT;
 };
 
+class UserInterface;
+
 class Player : public SquareCore::Script {
 public:
     Player() : projectile_pool(sizeof(ProjectileEntity), 5) {}
     void OnStart() override;
     void OnUpdate(float delta_time) override;
     void OnExit() override;
-    void SetDialogManager(DialogManager* dialog_manager) {this->dialog_manager = dialog_manager;}
-    void SetEnemyManager(EnemyManager* enemy_manager) { this->enemy_manager = enemy_manager; }
+    void SetDialogManager(DialogManager* dm) {this->dialog_manager = dm;}
+    void SetEnemyManager(EnemyManager* em) { this->enemy_manager = em; }
+    void SetUserInterface(UserInterface* ui) { this->user_interface = ui; }
+    void SetMap(Map* m) { this->map = m; }
     void TeleportPlayer(const SquareCore::Vec2& position);
     PlayerData& GetPlayerData() { return player_data; }
+
+    void HealMaxHealth();
+    void CancelVelocity();
 
 private:
     void Move(float delta_time);
@@ -57,6 +66,8 @@ private:
 
     DialogManager* dialog_manager;
     EnemyManager* enemy_manager;
+    UserInterface* user_interface;
+    Map* map;
 
     SquareCore::Vec2 last_grounded_position;
     uint32_t last_valid_ground_entity = 0;

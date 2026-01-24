@@ -17,7 +17,7 @@ void Map::OnStart()
     SetAudioLooping(level_1_music, true);
     SetAudioLooping(level_2_music, true);
     SetAudioLooping(level_3_music, true);
-    //SetAudioMasterVolume(0.0f);
+    SetAudioMasterVolume(0.0f);
     PlayAudioClip(main_menu_music);
     
     SetCameraZoom(0.85f);
@@ -25,6 +25,7 @@ void Map::OnStart()
     EnableCameraBounds(true);
     SetGravity(-1500.0f);
 }
+
 
 void Map::OnUpdate(float deltaTime)
 {
@@ -41,6 +42,7 @@ void Map::OnUpdate(float deltaTime)
     ability_icon_rotation += deltaTime * ability_icon_speed;
     for (uint32_t icon : ability_icons)
     {
+        if (!EntityExists(icon)) continue;
         SetRotation(icon, ability_icon_rotation);
     }
 
@@ -84,9 +86,29 @@ void Map::OnUpdate(float deltaTime)
 
 void Map::LoadMap(int level, SquareCore::Vec2 player_position)
 {
-    LoadScene(level_path);
+    std::string scene_path;
+    switch (level)
+    {
+    case 0:
+        scene_path = "Resources/Scenes/main_menu.square";
+        break;
+    case 1:
+        scene_path = "Resources/Scenes/level1.square";
+        break;
+    case 2:
+        scene_path = "Resources/Scenes/level2.square";
+        break;
+    case 3:
+        scene_path = "Resources/Scenes/level3.square";
+        break;
+    default:
+        scene_path = "Resources/Scenes/main_menu.square";
+        break;
+    }
+    
+    LoadScene(scene_path);
     if (enemy_manager) enemy_manager->LoadEnemies();
-    if (player) player->TeleportPlayer({player_position.x, player_position.y});
+    if (player_script) player_script->TeleportPlayer({player_position.x, player_position.y});
 
     ability_icons = GetAllEntitiesWithTag("Ability");
     wormholes = GetAllEntitiesWithTag("Wormhole");
@@ -102,15 +124,30 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
 
     if (uint32_t boss_2_exit = GetFirstEntityWithTag("Boss2Exit"))
     {
-        if (player->GetPlayerData().second_boss_dead)
+        if (player_script->GetPlayerData().second_boss_dead)
         {
             RemoveEntity(boss_2_exit);
         }
     }
 
+    player_script->HealMaxHealth();
+    
     ball_entity = GetFirstEntityWithTag("Ball");
     crushed_enemy = GetFirstEntityWithTag("CrushedEnemy");
     level_1_boss_door = GetFirstEntityWithTag("Level1BossDoor");
+    
+    uint32_t ability = GetFirstEntityWithTag("GainDoubleDash");
+    if (ability && player_script->GetPlayerData().has_double_dash)
+        RemoveEntity(ability);
+    ability = GetFirstEntityWithTag("GainDoubleJump") ;
+    if (ability && player_script->GetPlayerData().has_double_jump)
+        RemoveEntity(ability);
+    ability = GetFirstEntityWithTag("GainProjectile");
+    if (ability  && player_script->GetPlayerData().has_projectile)
+        RemoveEntity(ability);
+    ability = GetFirstEntityWithTag("GainFasterSlash");
+    if (ability  && player_script->GetPlayerData().has_faster_slash)
+        RemoveEntity(ability);
     
     switch (level)
     {
@@ -140,6 +177,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             PlayAudioClip(level_2_music);
             SetCameraBounds(-10000.0f, -400.0f, 6000.0f, 10000.0f);
             if (ui) ui->AreaTitle("The Slums", "Now Playing:\nThe Slums\nCaleb Kronstad");
+            //player_script->TeleportPlayer(SquareCore::Vec2(-5500.0, -4550.0f));
             break;
         }
     case 3:

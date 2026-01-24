@@ -16,13 +16,15 @@ int main(int argc, char* argv[]) {
     EnemyManager* enemy_manager = new EnemyManager();
     UserInterface* userInterface = new UserInterface();
     map->SetEnemyManager(enemy_manager);
-    map->SetPlayer(player);
+    map->SetPlayerScript(player);
+    map->SetUserInterface(userInterface);
     player->SetDialogManager(userInterface->GetDialogManager());
     player->SetEnemyManager(enemy_manager);
+    player->SetUserInterface(userInterface);
     userInterface->SetPlayerScript(player);
     userInterface->SetMap(map);
     enemy_manager->SetPlayerScript(player);
-    map->SetUserInterface(userInterface);
+    userInterface->GetDialogManager()->SetPlayerScript(player);
     app.PushScript(map);
     app.PushScript(player);
     app.PushScript(enemy_manager);

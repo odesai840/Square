@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "json/json.hpp"
+#include "Math/Math.h"
 
 struct PlayerData
 {
@@ -22,6 +23,8 @@ struct PlayerData
     bool second_boss_dead = false;
     bool third_boss_dead = false;
     bool the_wall_dead = false;
+
+    std::vector<SquareCore::Vec2> spawn_points = { {-100.0f, 200.0f}, {-250.0f, 200.0f}, {0.0f, 0.0f}};
 };
 
 class GameStateManager

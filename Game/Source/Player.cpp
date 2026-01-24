@@ -1,6 +1,8 @@
 #include "Player.h"
 #include "GameStateManager.h"
 #include "PlayerKeybinds.h"
+#include "UserInterface.h"
+#include "Map.h"
 
 void Player::OnStart()
 {
@@ -148,6 +150,22 @@ void Player::OnUpdate(float delta_time)
     }
     
     FollowCameraTarget(GetPosition(player), 10.0f, delta_time);
+}
+
+void Player::HealMaxHealth()
+{
+    for (auto& player_property : GetAllEntityProperties(player))
+    {
+        if (Character* player_character = dynamic_cast<Character*>(player_property))
+        {
+            player_character->health = player_data.max_health;
+        }
+    }
+}
+
+void Player::CancelVelocity()
+{
+    SetVelocity(player, 0.0f, 0.0f);
 }
 
 void Player::Move(float delta_time)
@@ -345,6 +363,31 @@ void Player::OnCollision(float delta_time)
     for (const auto& collision : collisions)
     {
         if (!EntityExists(collision.first)) continue;
+
+        if (EntityHasTag(collision.first, "WormholeTrigger"))
+        {
+            if (EntityHasTag(collision.first, "1"))
+            {
+                GameStateManager::SavePlayerData("Saves/S_001.square", player_data);
+                player_data.level = 1;
+                map->LoadMap(1, player_data.spawn_points[0]);
+                return;
+            }
+            if (EntityHasTag(collision.first, "2"))
+            {
+                GameStateManager::SavePlayerData("Saves/S_001.square", player_data);
+                player_data.level = 2;
+                map->LoadMap(2, player_data.spawn_points[1]);
+                return;
+            }
+            if (EntityHasTag(collision.first, "3"))
+            {
+                GameStateManager::SavePlayerData("Saves/S_001.square", player_data);
+                player_data.level = 3;
+                map->LoadMap(3, player_data.spawn_points[2]);
+                return;
+            }
+        }
         
         if (EntityHasTag(collision.first, "Level2BoundsTrigger1") && !SquareCore::CompareFloats(target_bounds_y_min, -400.0f))
         {
@@ -369,24 +412,32 @@ void Player::OnCollision(float delta_time)
             continue;
         }
 
-        if (EntityHasTag(collision.first, "GainDoubleDash"))
+        if (EntityHasTag(collision.first, "GainDoubleDash") && !player_data.has_double_dash)
         {
             player_data.has_double_dash = true;
+            user_interface->AbilityGained("Double Dash", "Press DASH in quick succession to dash twice");
+            RemoveEntity(collision.first);
             continue;
         }
-        if (EntityHasTag(collision.first, "GainDoubleJump"))
+        if (EntityHasTag(collision.first, "GainDoubleJump") && !player_data.has_double_jump)
         {
             player_data.has_double_jump = true;
+            user_interface->AbilityGained("Double Jump", "Press JUMP while in the air to jump a second time");
+            RemoveEntity(collision.first);
             continue;
         }
-        if (EntityHasTag(collision.first, "GainProjectile"))
+        if (EntityHasTag(collision.first, "GainProjectile") && !player_data.has_projectile)
         {
             player_data.has_projectile = true;
+            user_interface->AbilityGained("Projectile", "Press PROJECTILE to fire a ranged projectile");
+            RemoveEntity(collision.first);
             continue;
         }
-        if (EntityHasTag(collision.first, "GainFasterSlash"))
+        if (EntityHasTag(collision.first, "GainFasterSlash") && !player_data.has_faster_slash)
         {
             player_data.has_faster_slash = true;
+            user_interface->AbilityGained("Faster Slash", "idk maybe slash faster or something you can figure it out");
+            RemoveEntity(collision.first);
             continue;
         }
         
@@ -509,8 +560,6 @@ void Player::OnCollision(float delta_time)
             float platform_half_width = (ground_scale.x * 500.0f) / 2.0f;
             float horizontal_distance = abs(player_pos.x - ground_pos.x);
             float safe_zone = platform_half_width * 0.9f;
-            
-            SDL_Log(std::to_string(safe_zone).c_str());
 
             if (horizontal_distance < safe_zone)
             {

@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+class Player;
+
 struct DialogLine
 {
     std::string speaker;
@@ -23,12 +25,14 @@ public:
     
     bool IsActive() const { return active; }
     bool HasBeenSeen(int entryId) const { return seenEntries.count(entryId) > 0; }
-    
+
+    void SetPlayerScript(Player* player_s) { player_script = player_s; }
     DialogLine* GetCurrentLine() const;
     
 private:
     std::unordered_map<int, std::vector<DialogLine*>> entries;
     std::unordered_set<int> seenEntries;
+    Player* player_script = nullptr;
     
     bool active = false;
     int currentEntry = -1;

@@ -12,9 +12,11 @@ void UserInterface::OnStart()
     SquareCore::Vec2 text_size = GetTextSize(main_menu_title);
     SetUIElementPosition(main_menu_title, 1920.0f / 2.0f - text_size.x / 2.0f, 150.0f);
     
+    level = player_script->GetPlayerData().level;
+    spawn_point = player_script->GetPlayerData().spawn_points[level-1];
     main_menu_play_button = AddUIButton(1920.0f / 2.0f - 150.0f, 1080.0f / 2.0f - 100.0f, 300, 75,
                                         SquareCore::RGBA(50, 50, 50, 255), "PLAY", {SquareCore::RGBA(0, 0, 0, 0)},
-                                        [this] { map->LoadMap(player_script->GetPlayerData().level, {-100.0f, 200.0f}); OnPlay(); }, "Resources/Fonts/Helvetica.ttf", 32,
+                                        [this] { map->LoadMap(level, spawn_point); OnPlay(); }, "Resources/Fonts/Helvetica.ttf", 32,
                                         SquareCore::RGBA(255, 255, 255, 255));
     main_menu_credits_button = AddUIButton(1920.0f / 2.0f - 150.0f, 1080.0f / 2.0f + 0.0f, 300, 75,
                                       SquareCore::RGBA(50, 50, 50, 255), "CREDITS", {SquareCore::RGBA(0, 0, 0, 0)},
@@ -184,9 +186,9 @@ void UserInterface::AbilityGained(std::string title, std::string info)
     SetUIElementVisible(ability_gained_text, true);
     SetUIElementPersistent(ability_gained_text, true);
 
-    ability_explained_text = AddUIText(1920.0f / 2.0f, 300.0f, 24, SquareCore::RGBA(255, 255, 255, 0), "Resources/Fonts/Helvetica.ttf", title);
+    ability_explained_text = AddUIText(1920.0f / 2.0f, 300.0f, 24, SquareCore::RGBA(255, 255, 255, 0), "Resources/Fonts/Helvetica.ttf", info);
     text_size = GetTextSize(ability_explained_text);
-    SetUIElementPosition(ability_explained_text, 1920.0f / 2.0f - text_size.x / 2.0f, 150.0f);
+    SetUIElementPosition(ability_explained_text, 1920.0f / 2.0f - text_size.x / 2.0f, 300.0f);
     SetUIElementVisible(ability_explained_text, true);
     SetUIElementPersistent(ability_explained_text, true);
 
@@ -307,6 +309,7 @@ void UserInterface::OnUpdate(float deltaTime)
     UpdateHealthBar();
     UpdateHeals();
     UpdateAreaTitle(deltaTime);
+    UpdateAbilityGained(deltaTime);
 
     if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(0))
     {

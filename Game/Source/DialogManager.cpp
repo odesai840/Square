@@ -53,6 +53,7 @@ void DialogManager::Start(int entryId)
     if (seenEntries.count(entryId) > 0)
         return;
 
+    player_script->CancelVelocity();
     currentEntry = entryId;
     currentLine = 0;
     active = true;

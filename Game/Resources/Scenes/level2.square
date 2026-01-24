@@ -2,6 +2,203 @@
     "background-color": [ 90, 50, 40, 255 ],
     "entities": [
 
+        { // decoration
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physEnabled": false,
+            "isSpriteless": false,
+            "position": [
+                -4500.0,
+                1550.0
+            ],
+            "scale": [
+                0.5,
+                0.5
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/weapon-holder.png",
+            "tags": [
+            ],
+            "zIndex": -30
+        },
+        { // decoration
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physEnabled": false,
+            "isSpriteless": false,
+            "position": [
+                -4400.0,
+                1550.0
+            ],
+            "scale": [
+                0.5,
+                0.5
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/weapon-holder.png",
+            "tags": [
+            ],
+            "zIndex": -30
+        },
+        { // decoration
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physEnabled": false,
+            "isSpriteless": false,
+            "position": [
+                -4000.0,
+                1640.0
+            ],
+            "scale": [
+                0.5,
+                0.5
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/barracks.png",
+            "tags": [
+            ],
+            "zIndex": -30
+        },
+        { // decoration
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physEnabled": false,
+            "isSpriteless": false,
+            "position": [
+                -5300.0,
+                1500.0
+            ],
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/chair.png",
+            "tags": [
+            ],
+            "zIndex": -30
+        },
+        { // decoration
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physEnabled": false,
+            "isSpriteless": false,
+            "position": [
+                -6000.0,
+                2000.0
+            ],
+            "scale": [
+                3.0,
+                3.0
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/triangle-painting.png",
+            "tags": [
+            ],
+            "zIndex": -30
+        },
+        { // background
+            "color": [
+                20,
+                10,
+                5,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -5400.0,
+                2100.0
+            ],
+            "scale": [
+                4.0,
+                2.0
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+            ],
+            "zIndex": -100
+        },
+        { // background
+            "color": [
+                10,
+                10,
+                10,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -5400.0,
+                -300.0
+            ],
+            "scale": [
+                2.0,
+                2.0
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+            ],
+            "zIndex": -100
+        },
+        { // background
+            "color": [
+                10,
+                10,
+                10,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -3500.0,
+                -5655.0
+            ],
+            "scale": [
+                8.1,
+                10.0
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+            ],
+            "zIndex": -100
+        },
         {
             "color": [
                 70,
@@ -536,6 +733,33 @@
                 140,
                 140,
                 255,
+                0
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                0.0,
+                -150.0
+            ],
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "WormholeTrigger",
+                "3"
+            ],
+            "zIndex": 99
+        },
+        {
+            "color": [
+                140,
+                140,
+                255,
                 255
             ],
             "physApplied": false,
@@ -548,6 +772,9 @@
                 2.0,
                 2.0
             ],
+            "collider": {
+                "type": 2
+            },
             "spritePath": "Resources/Sprites/wormhole.png",
             "tags": [
                 "Wormhole"
@@ -1936,6 +2163,33 @@
                 140,
                 140,
                 255,
+                0
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                0.0,
+                -150.0
+            ],
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "WormholeTrigger",
+                "1"
+            ],
+            "zIndex": 99
+        },
+        {
+            "color": [
+                140,
+                140,
+                255,
                 255
             ],
             "physApplied": false,
@@ -1948,6 +2202,9 @@
                 2.0,
                 2.0
             ],
+            "collider": {
+                "type": 2
+            },
             "spritePath": "Resources/Sprites/wormhole.png",
             "tags": [
                 "Wormhole"

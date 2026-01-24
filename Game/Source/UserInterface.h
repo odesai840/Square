@@ -72,4 +72,7 @@ private:
     uint32_t credits_info_od = 0;
     uint32_t credits_info_ck = 0;
     uint32_t credits_back_button = 0;
+    
+    int level = 0;
+    SquareCore::Vec2 spawn_point = SquareCore::Vec2::zero();
 };

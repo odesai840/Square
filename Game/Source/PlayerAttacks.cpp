@@ -73,8 +73,7 @@ void Player::Slash(float delta_time)
 
             if (EntityHasTag(collision.first, "Lever2Back"))
             {
-                bool flip_x = !GetFlipX(collision.first);
-                FlipSprite(collision.first, flip_x, false);
+                FlipSprite(collision.first, true, false);
                 if (uint32_t lever_2_block = GetFirstEntityWithTag("Lever2BackBlock"))
                 {
                     RemoveEntity(lever_2_block);
@@ -84,8 +83,7 @@ void Player::Slash(float delta_time)
 
             if (EntityHasTag(collision.first, "Lever2Boss"))
             {
-                bool flip_x = !GetFlipX(collision.first);
-                FlipSprite(collision.first, flip_x, false);
+                FlipSprite(collision.first, true, false);
                 std::vector<uint32_t> lever_2_boss_blocks = GetAllEntitiesWithTag("Boss2Gate");
                 for (uint32_t block : lever_2_boss_blocks)
                 {
