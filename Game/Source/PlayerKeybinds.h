@@ -20,4 +20,4 @@ inline SDL_Scancode debug_restart_game = SDL_SCANCODE_N;
 inline bool mouse_visible = true;
 
 //inline std::string level_path = "Resources/Scenes/test.square";
-inline std::string level_path = "Resources/Scenes/level2.square";
+inline std::string level_path = "Resources/Scenes/level1.square";

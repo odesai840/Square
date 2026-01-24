@@ -47,16 +47,16 @@ void Player::OnStart()
         SetZIndex(projectile->id, -1);
     }
 
-    slash_audio = AddAudioClip("Resources/Audio/SFX/swordattackswoosh.mp3");
+    //slash_audio = AddAudioClip("Resources/Audio/SFX/swordattackswoosh.mp3");
     SetAudioLooping(slash_audio, false);
-    SetAudioVolume(slash_audio, 0.25f);
-    jump_audio = AddAudioClip("Resources/Audio/SFX/swoosh32maybejump.mp3");
+    SetAudioVolume(slash_audio, 0.15f);
+    //jump_audio = AddAudioClip("Resources/Audio/SFX/swoosh32maybejump.mp3");
     SetAudioLooping(jump_audio, false);
     SetAudioVolume(jump_audio, 0.1f);
-    projectile_audio = AddAudioClip("Resources/Audio/SFX/projectile_fire.mp3");
+    //projectile_audio = AddAudioClip("Resources/Audio/SFX/projectile_fire.mp3");
     SetAudioLooping(projectile_audio, false);
     SetAudioVolume(projectile_audio, 0.15f);
-    take_damage_audio = AddAudioClip("Resources/Audio/SFX/take_damage.mp3");
+    //take_damage_audio = AddAudioClip("Resources/Audio/SFX/take_damage.mp3");
     SetAudioLooping(take_damage_audio, false);
     SetAudioVolume(take_damage_audio, 0.25f);
 
@@ -508,7 +508,7 @@ void Player::OnCollision(float delta_time)
             
             float platform_half_width = (ground_scale.x * 500.0f) / 2.0f;
             float horizontal_distance = abs(player_pos.x - ground_pos.x);
-            float safe_zone = platform_half_width * 0.7f;
+            float safe_zone = platform_half_width * 0.9f;
             
             SDL_Log(std::to_string(safe_zone).c_str());
 
