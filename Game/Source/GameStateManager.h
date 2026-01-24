@@ -21,6 +21,7 @@ struct PlayerData
     bool first_boss_dead = false;
     bool second_boss_dead = false;
     bool third_boss_dead = false;
+    bool the_wall_dead = false;
 };
 
 class GameStateManager

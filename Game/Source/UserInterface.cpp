@@ -147,6 +147,67 @@ void UserInterface::ShowCredits(bool show)
     SetUIElementVisible(main_menu_quit_button, true);
 }
 
+void UserInterface::AreaTitle(std::string title, std::string info)
+{
+    if (top_of_screen_text != 0)
+        RemoveUIElement(top_of_screen_text);
+    if (bottom_left_of_screen_text != 0)
+        RemoveUIElement(bottom_left_of_screen_text);
+    
+    top_of_screen_text = AddUIText(1920.0f / 2.0f, 150.0f, 64, SquareCore::RGBA(255, 255, 255, 0), "Resources/Fonts/Helvetica.ttf", title);
+    SquareCore::Vec2 text_size = GetTextSize(top_of_screen_text);
+    SetUIElementPosition(top_of_screen_text, 1920.0f / 2.0f - text_size.x / 2.0f, 150.0f);
+    SetUIElementVisible(top_of_screen_text, true);
+    SetUIElementPersistent(top_of_screen_text, true);
+    
+    bottom_left_of_screen_text = AddUIText(0.0f, 150.0f, 24, SquareCore::RGBA(255, 255, 255, 0), "Resources/Fonts/Helvetica.ttf", info);
+    text_size = GetTextSize(bottom_left_of_screen_text);
+    SetUIElementPosition(bottom_left_of_screen_text, text_size.x / 2.0f, 1080.0f - 150.0f);
+    SetUIElementVisible(bottom_left_of_screen_text, true);
+    SetUIElementPersistent(bottom_left_of_screen_text, true);
+    
+    area_title_alpha = 0.0f;
+    area_title_state = FADE_IN;
+    area_title_wait_timer = 0.0f;
+}
+
+void UserInterface::UpdateAreaTitle(float deltaTime)
+{
+    if (area_title_state == DONE) return;
+    
+    if (area_title_state == FADE_IN)
+    {
+        area_title_alpha += area_title_fade_speed * deltaTime;
+        if (area_title_alpha >= 255.0f)
+        {
+            area_title_alpha = 255.0f;
+            area_title_state = WAITING;
+        }
+    }
+    else if (area_title_state == WAITING)
+    {
+        area_title_wait_timer += deltaTime;
+        if (area_title_wait_timer >= 3.0f)
+        {
+            area_title_state = FADE_OUT;
+        }
+    }
+    else if (area_title_state == FADE_OUT)
+    {
+        area_title_alpha -= area_title_fade_speed * deltaTime;
+        if (area_title_alpha <= 0.0f)
+        {
+            area_title_alpha = 0.0f;
+            area_title_state = DONE;
+            SetUIElementVisible(top_of_screen_text, false);
+            SetUIElementVisible(bottom_left_of_screen_text, false);
+        }
+    }
+    
+    SetUITextColor(top_of_screen_text, SquareCore::RGBA(255, 255, 255, (int)area_title_alpha));
+    SetUITextColor(bottom_left_of_screen_text, SquareCore::RGBA(255, 255, 255, (int)area_title_alpha));
+}
+
 void UserInterface::UpdateHeals()
 {
     int current_heals = player_script->GetPlayerData().heals;
@@ -184,6 +245,7 @@ void UserInterface::OnUpdate(float deltaTime)
 {
     UpdateHealthBar();
     UpdateHeals();
+    UpdateAreaTitle(deltaTime);
 
     if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(0))
     {
@@ -194,6 +256,22 @@ void UserInterface::OnUpdate(float deltaTime)
             {
                 dialogManager.Start(0);
                 break;
+            }
+        }
+    }
+
+    if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(2))
+    {
+        if (uint32_t dialog_trigger = GetFirstEntityWithTag("DialogTriggerPapagon"))
+        {
+            auto collisions = GetEntityCollisions(dialog_trigger);
+            for (const auto& collision : collisions)
+            {
+                if (EntityHasTag(collision.first, "Player"))
+                {
+                    dialogManager.Start(2);
+                    break;
+                }
             }
         }
     }

@@ -22,6 +22,7 @@ int main(int argc, char* argv[]) {
     userInterface->SetPlayerScript(player);
     userInterface->SetMap(map);
     enemy_manager->SetPlayerScript(player);
+    map->SetUserInterface(userInterface);
     app.PushScript(map);
     app.PushScript(player);
     app.PushScript(enemy_manager);

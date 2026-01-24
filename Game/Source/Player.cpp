@@ -111,7 +111,7 @@ void Player::OnUpdate(float delta_time)
         for (auto& player_property : GetAllEntityProperties(player))
         {
             if (Character* player_character = dynamic_cast<Character*>(player_property))
-                player_character->health = 10;
+                player_character->health = player_data.max_health;
         }
         player_data.heals = 3;
         SetTimeScale(1.0f);
@@ -194,7 +194,7 @@ void Player::Jump(float delta_time)
     if (grounded)
         can_double_jump = true;
     
-    if (GetKeyPressed(jump_bind) && (grounded || (has_double_jump && can_double_jump)) && !dialog_manager->IsActive())
+    if (GetKeyPressed(jump_bind) && (grounded || (player_data.has_double_jump && can_double_jump)) && !dialog_manager->IsActive())
     {
         if (!grounded)
         {
@@ -225,7 +225,7 @@ void Player::Dash(float delta_time)
         dashes_used++;
         time_since_last_dash = 0.0f;
 
-        int max_dashes = has_double_dash ? 2 : 1;
+        int max_dashes = player_data.has_double_dash ? 2 : 1;
         if (dashes_used >= max_dashes)
         {
             in_cooldown = true;
@@ -282,7 +282,7 @@ void Player::Dash(float delta_time)
         }
     }
 
-    int max_dashes = has_double_dash ? 2 : 1;
+    int max_dashes = player_data.has_double_dash ? 2 : 1;
     if (!in_cooldown && dashes_used > 0 && dashes_used < max_dashes)
     {
         time_since_last_dash += delta_time;
@@ -327,6 +327,7 @@ void Player::OnCollision(float delta_time)
     bool onlyCollidingWithTop = true;
     uint32_t bounce_entity = 0;
     std::vector<std::pair<uint32_t, int>> collisions = GetEntityCollisions(player);
+    std::vector<uint32_t> enemies_hit_this_frame;
     for (const auto& collision : collisions)
     {
         if (!EntityExists(collision.first)) continue;
@@ -349,7 +350,7 @@ void Player::OnCollision(float delta_time)
 
         if (EntityHasTag(collision.first, "Boss2Activate") && !enemy_manager->boss_2_active && !player_data.second_boss_dead)
         {
-            enemy_manager->SpawnSecondBoss(SquareCore::Vec2(-5000.0f, -3800.0f));
+            enemy_manager->SpawnSecondBoss(SquareCore::Vec2(-5000.0f, -3700.0f));
             enemy_manager->boss_2_active = true;
             continue;
         }
@@ -378,16 +379,33 @@ void Player::OnCollision(float delta_time)
         // player collides with an enemy
         if (EntityHasTag(collision.first, "Enemy"))
         {
-            float knockback_x = (player_direction == Direction::RIGHT ? -1.0f : 1.0f) * 500.0f;
-            float knockback_y = collision.second != 0 ? 200.0f : 0.0f;
-            collision.second == 0 ? knockback_x *= 10.0f : knockback_x *= 1.0f;
+            bool already_processed = false;
+            for (uint32_t hit_enemy : enemies_hit_this_frame)
+            {
+                if (hit_enemy == collision.first)
+                {
+                    already_processed = true;
+                    break;
+                }
+            }
+        
+            if (already_processed) continue;
+            enemies_hit_this_frame.push_back(collision.first);
 
-            SetVelocity(player, knockback_x, knockback_y);
+            if (!EntityHasTag(collision.first, "SecondBoss"))
+            {
+                float knockback_x = (player_direction == Direction::RIGHT ? -1.0f : 1.0f) * 500.0f;
+                float knockback_y = collision.second != 0 ? 200.0f : 0.0f;
+                collision.second == 0 ? knockback_x *= 10.0f : knockback_x *= 1.0f;
+
+                SetVelocity(player, knockback_x, knockback_y);
+            }
 
             bool can_hit = true;
             JumpEnemy* jump_enemy = nullptr;
             ChargeEnemy* charge_enemy = nullptr;
             JumpBoss* jump_boss = nullptr;
+            SecondBoss* second_boss = nullptr;
     
             for (auto& enemy_property : GetAllEntityProperties(collision.first))
             {
@@ -409,10 +427,17 @@ void Player::OnCollision(float delta_time)
                     if (jump_boss->hit_player_this_attack)
                         can_hit = false;
                 }
+                if (SecondBoss* sb = dynamic_cast<SecondBoss*>(enemy_property))
+                {
+                    second_boss = sb;
+                    if (sb->hit_player_this_attack)
+                        can_hit = false;
+                }
             }
     
             if (can_hit)
             {
+                SDL_Log("Dealing damage - can_take_damage before: %d", can_take_damage);
                 for (auto& enemy_property : GetAllEntityProperties(collision.first))
                 {
                     if (Character* enemy_character = dynamic_cast<Character*>(enemy_property))
@@ -427,12 +452,15 @@ void Player::OnCollision(float delta_time)
                                     charge_enemy->hit_player_this_attack = true;
                                 if (jump_boss)
                                     jump_boss->hit_player_this_attack = true;
+                                if (second_boss)
+                                    second_boss->hit_player_this_attack = true;
                         
                                 TakeDamage(player_character, enemy_character->damage);
                             }
                         }
                     }
                 }
+                SDL_Log("Damage dealt");
             }
         }
         
@@ -495,6 +523,7 @@ void Player::TakeDamage(Character* player_character, int damage)
 {
     if (!can_take_damage) return;
     can_take_damage = false;
+    can_take_damage_timer = 0.0f;
     
     player_character->health -= damage;
     SDL_Log(("Player health: " + std::to_string(player_character->health)).c_str());

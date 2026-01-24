@@ -15,6 +15,7 @@ public:
     DialogManager* GetDialogManager() { return &dialogManager; }
     void SetPlayerScript(Player* player_s) { this->player_script = player_s; }
     void SetMap(Map* m) { this->map = m; }
+    void AreaTitle(std::string title, std::string info);
 
 private:
     void DialogUpdate();
@@ -22,6 +23,7 @@ private:
     void UpdateHealthBar();
     void UpdateHeals();
     void ShowCredits(bool show);
+    void UpdateAreaTitle(float deltaTime);
     
 private:
     Map* map = nullptr;
@@ -41,6 +43,15 @@ private:
     Player* player_script = nullptr;
     std::vector<uint32_t> healthSquares;
     std::vector<uint32_t> healSquares;
+
+    uint32_t top_of_screen_text = 0;
+    uint32_t bottom_left_of_screen_text = 0;
+    float current_alpha = 0.0f;
+    enum AreaTitleState { FADE_IN, WAITING, FADE_OUT, DONE };
+    AreaTitleState area_title_state = DONE;
+    float area_title_alpha = 0.0f;
+    float area_title_wait_timer = 0.0f;
+    float area_title_fade_speed = 150.0f;
 
     uint32_t main_menu_title = 0;
     uint32_t main_menu_play_button = 0;

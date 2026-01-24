@@ -12,6 +12,11 @@ void Player::Slash(float delta_time)
         slash_in_cooldown = true;
         slash_cooldown_elapsed = 0.0f;
         
+        if (player_data.has_faster_slash)
+            slash_cooldown = 0.1f;
+        else
+            slash_cooldown = 0.3f;
+        
         if (is_looking_up)
         {
             slash_direction = Direction::UP;
@@ -170,11 +175,9 @@ void Player::Slash(float delta_time)
 
 void Player::Projectile(float delta_time)
 {
-    if (!has_projectile) return;
-
     SquareCore::Vec2 player_position = GetPosition(player);
     
-    if (GetMouseButtonPressed(2) && !dialog_manager->IsActive() && !projectile_in_cooldown)
+    if (GetMouseButtonPressed(2) && !dialog_manager->IsActive() && !projectile_in_cooldown && player_data.has_projectile)
     {
         for (int i = 0; i < projectile_pool.GetTotal(); i++)
         {

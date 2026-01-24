@@ -44,6 +44,8 @@ PlayerData GameStateManager::LoadPlayerData(const std::string& save_path)
         data.has_double_dash = json["has_projectile"];
     if (json.contains("has_faster_slash"))
         data.has_faster_slash = json["has_faster_slash"];
+    if (json.contains("the_wall_dead"))
+        data.the_wall_dead = json["the_wall_dead"];
     if (json.contains("max_health"))
         data.max_health = json["max_health"];
     if (json.contains("damage"))
@@ -76,6 +78,7 @@ void GameStateManager::SavePlayerData(const std::string& save_path, PlayerData d
     json["first_boss_dead"] = data.first_boss_dead;
     json["second_boss_dead"] = data.second_boss_dead;
     json["third_boss_dead"] = data.third_boss_dead;
+    json["the_wall_dead"] = data.the_wall_dead;
 
     std::filesystem::path path(save_path);
     if (path.has_parent_path())

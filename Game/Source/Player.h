@@ -57,11 +57,6 @@ private:
 
     DialogManager* dialog_manager;
     EnemyManager* enemy_manager;
-    
-    // upgrades
-    bool has_double_dash = true;
-    bool has_double_jump = true;
-    bool has_projectile = true;
 
     SquareCore::Vec2 last_grounded_position;
 
@@ -86,7 +81,7 @@ private:
 
     bool is_looking_up = false;
     bool is_looking_down = false;
-    bool last_vertical_look_was_up = true;\
+    bool last_vertical_look_was_up = true;
 
     SquareCore::PoolAllocator projectile_pool;
     float projectile_max_life = 3.0f;

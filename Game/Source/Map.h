@@ -4,6 +4,8 @@
 #include "Player.h"
 #include "Script.h"
 
+class UserInterface;
+
 class Map : public SquareCore::Script
 {
 public:
@@ -12,6 +14,7 @@ public:
     void LoadMap(int level, SquareCore::Vec2 player_position);
     void SetEnemyManager(EnemyManager* enemy_manager) { this->enemy_manager = enemy_manager; }
     void SetPlayer(Player* player) { this->player = player; }
+    void SetUserInterface(UserInterface* ui) { this->ui = ui; }
 
 private:
     uint32_t main_menu_music = 0;
@@ -20,6 +23,7 @@ private:
     uint32_t level_3_music = 0;
     EnemyManager* enemy_manager = nullptr;
     Player* player = nullptr;
+    UserInterface* ui = nullptr;
 
     int current_map = 0;
     std::vector<uint32_t> wormholes;

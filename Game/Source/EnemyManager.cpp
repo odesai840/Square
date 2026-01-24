@@ -29,7 +29,8 @@ void EnemyManager::LoadEnemies()
 
 uint32_t EnemyManager::SpawnChargeEnemy(const SquareCore::Vec2& position)
 {
-    uint32_t charge_enemy = AddEntity("Resources/Sprites/triangle-enemy.png", position.x, position.y, 0.0f, 0.075f, 0.075f, true, {"Enemy", "ChargeEnemy", "Pogo"});
+    uint32_t charge_enemy = AddEntity("Resources/Sprites/triangle-enemy.png", position.x, position.y, 0.0f, 0.075f,
+                                      0.075f, true, {"Enemy", "ChargeEnemy", "Pogo"});
     AlterChargeEnemy(charge_enemy);
     enemies.push_back(charge_enemy);
 
@@ -38,7 +39,8 @@ uint32_t EnemyManager::SpawnChargeEnemy(const SquareCore::Vec2& position)
 
 uint32_t EnemyManager::SpawnJumpEnemy(const SquareCore::Vec2& position)
 {
-    uint32_t jump_enemy = AddEntity("Resources/Sprites/triangle-enemy.png", position.x, position.y, 0.0f, 0.075f, 0.075f, true, {"Enemy", "JumpEnemy", "Pogo"});
+    uint32_t jump_enemy = AddEntity("Resources/Sprites/triangle-enemy.png", position.x, position.y, 0.0f, 0.075f,
+                                    0.075f, true, {"Enemy", "JumpEnemy", "Pogo"});
     AlterJumpEnemy(jump_enemy);
     enemies.push_back(jump_enemy);
 
@@ -64,8 +66,30 @@ uint32_t EnemyManager::SpawnJumpBoss(const SquareCore::Vec2& position)
     return jump_boss;
 }
 
-uint32_t EnemyManager::SpawnSecondBoss(const SquareCore::Vec2& position)
+void EnemyManager::SpawnSecondBoss(const SquareCore::Vec2& position)
 {
+    for (int i = 0; i < 3; i++)
+    {
+        if (second_bosses[i])
+            RemoveEntity(second_bosses[i]);
+        SquareCore::Vec2 pos = {position.x + (i * 200.0f), position.y};
+        second_bosses[i] = AddAnimatedEntity("Resources/Sprites/flyangle-sheet.png", 2, 10.0f, pos.x, pos.y, 0.0f,
+                                             0.075f, 0.075f, true);
+        SetPhysicsEnabled(second_bosses[i], true);
+        SetGravityScale(second_bosses[i], 0.0f);
+        SetDrag(second_bosses[i], 5.0f);
+        AddTagToEntity(second_bosses[i], "Enemy");
+        AddTagToEntity(second_bosses[i], "Pogo");
+        AddTagToEntity(second_bosses[i], "SecondBoss");
+        Character* character_property = new Character(1, 1, 1);
+        AddPropertyToEntity(second_bosses[i], character_property);
+        second_boss_ch_properties[i] = character_property;
+        SecondBoss* boss_property = new SecondBoss(pos);
+        AddPropertyToEntity(second_bosses[i], boss_property);
+        second_boss_properties[i] = boss_property;
+        SetColliderPolygon(second_bosses[i], boss_2_collider_vertices);
+        enemies.push_back(second_bosses[i]);
+    }
 }
 
 void EnemyManager::AlterChargeEnemy(uint32_t enemy_id)
@@ -112,6 +136,38 @@ void EnemyManager::OnUpdate(float deltaTime)
     if (player == 0) return;
 
     SquareCore::Vec2 player_position = GetPosition(player);
+
+    int dead_count = 0;
+    for (int i = 0; i < 3; i++)
+    {
+        if (!EntityExists(second_bosses[i]) && boss_2_active)
+            dead_count++;
+        
+        if (EntityExists(second_bosses[i]))
+        {
+            for (auto& property : GetAllEntityProperties(second_bosses[i]))
+            {
+                if (Character* ch = dynamic_cast<Character*>(property))
+                {
+                    if (ch->health <= 0)
+                    {
+                        for (auto& prop2 : GetAllEntityProperties(second_bosses[i]))
+                        {
+                            if (SecondBoss* sb = dynamic_cast<SecondBoss*>(prop2))
+                                sb->is_dead = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (dead_count >= 3)
+    {
+        if (uint32_t boss_2_exit = GetFirstEntityWithTag("Boss2Exit"))
+            RemoveEntity(boss_2_exit);
+        boss_2_active = false;
+        player_script->GetPlayerData().second_boss_dead = true;
+    }
 
     for (uint32_t enemy : enemies)
     {
@@ -368,9 +424,9 @@ void EnemyManager::OnUpdate(float deltaTime)
                     }
                 }
             }
-            
+
             JumpBoss* jump_property = dynamic_cast<JumpBoss*>(property);
-            if (jump_boss_active && jump_property)
+            if (boss_1_active && jump_property)
             {
                 jump_property->jump_cooldown_timer += deltaTime;
                 SquareCore::Vec2 enemy_position = GetPosition(enemy);
@@ -425,11 +481,149 @@ void EnemyManager::OnUpdate(float deltaTime)
                     }
                 }
             }
-
-            if (SecondBoss* second_boss = dynamic_cast<SecondBoss*>(property))
+            
+            SecondBoss* second_boss = dynamic_cast<SecondBoss*>(property);
+            if (second_boss && boss_2_active)
             {
-                
+                if (boss_2_active)
+                {
+                    if (intro_countdown > 0.0f)
+                        intro_countdown -= deltaTime;
+                    else
+                    {
+                        if (!EntityExists(second_bosses[active_boss]))
+                        {
+                            int start_boss = active_boss;
+                            do
+                            {
+                                active_boss++;
+                                if (active_boss == 3) active_boss = 0;
+                            }
+                            while ((!EntityExists(second_bosses[active_boss]) || second_boss_properties[active_boss]->
+                                is_dead) && active_boss != start_boss);
+                            continue;
+                        }
+
+                        int alive_count = 0;
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (EntityExists(second_bosses[i]) && !second_boss_properties[i]->is_dead)
+                                alive_count++;
+                        }
+                        float current_time_between_attacks = time_between_attacks * (alive_count / 3.0f);
+                        float current_wind_up_time = wind_up_time * (alive_count / 3.0f);
+
+                        if (is_winding_up)
+                        {
+                            wind_up_timer += deltaTime;
+                            if (wind_up_timer >= current_wind_up_time)
+                            {
+                                is_winding_up = false;
+                                switch (current_attack_type)
+                                {
+                                case 0:
+                                    SetVelocity(second_bosses[active_boss], 0.0f, 0.0f);
+                                    SetVelocity(second_bosses[active_boss], 5000.0f, 0.0f);
+                                    break;
+                                case 1:
+                                    SetVelocity(second_bosses[active_boss], 0.0f, 0.0f);
+                                    SetVelocity(second_bosses[active_boss], -5000.0f, 0.0f);
+                                    break;
+                                case 2:
+                                    SetVelocity(second_bosses[active_boss], 0.0f, 0.0f);
+                                    SetVelocity(second_bosses[active_boss], 0.0f, -5000.0f);
+                                    break;
+                                default: break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (time_elapsed_between_attacks < current_time_between_attacks)
+                            {
+                                time_elapsed_between_attacks += deltaTime;
+                            }
+                            else
+                            {
+                                if (!active_boss_has_attacked)
+                                {
+                                    if (time_elapsed_between_attacks >= current_time_between_attacks)
+                                    {
+                                        time_elapsed_between_attacks = 0.0f;
+                                        DetermineSecondBossAttack(second_bosses[active_boss]);
+                                        active_boss_has_attacked = true;
+                                    }
+                                    else
+                                    {
+                                        time_elapsed_between_attacks += deltaTime;
+                                    }
+                                }
+                                else
+                                {
+                                    SquareCore::Vec2 spawn_pos = second_boss_properties[active_boss]->spawn_position;
+                                    SetPosition(second_bosses[active_boss], spawn_pos.x, spawn_pos.y);
+
+                                    int start_boss = active_boss;
+                                    do
+                                    {
+                                        active_boss++;
+                                        if (active_boss == 3) active_boss = 0;
+                                    }
+                                    while ((!EntityExists(second_bosses[active_boss]) || second_boss_properties[active_boss]->is_dead) && active_boss != start_boss);
+
+                                    active_boss_has_attacked = false;
+                                    time_elapsed_between_attacks = 0.0f;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
+    }
+}
+
+void EnemyManager::DetermineSecondBossAttack(uint32_t boss_id)
+{
+    SetVelocity(boss_id, 0.0f, 0.0f);
+    wind_up_timer = 0.0f;
+
+    for (auto& property : GetAllEntityProperties(boss_id))
+    {
+        if (SecondBoss* sb = dynamic_cast<SecondBoss*>(property))
+        {
+            sb->hit_player_this_attack = false;
+        }
+    }
+
+    switch (rand() % 3)
+    {
+    case 0:
+        {
+            left_attack_pos = GetPosition(GetFirstEntityWithTag("Boss2LeftAttackPosition"));
+            SetPosition(boss_id, left_attack_pos.x, left_attack_pos.y);
+            FlipSprite(boss_id, true, false);
+            is_winding_up = true;
+            current_attack_type = 0;
+            break;
+        }
+    case 1:
+        {
+            right_attack_pos = GetPosition(GetFirstEntityWithTag("Boss2RightAttackPosition"));
+            SetPosition(boss_id, right_attack_pos.x, right_attack_pos.y);
+            FlipSprite(boss_id, false, false);
+            is_winding_up = true;
+            current_attack_type = 1;
+            break;
+        }
+    case 2:
+        {
+            SquareCore::Vec2 player_pos = GetPosition(player);
+            SetPosition(boss_id, player_pos.x, -4000.0f);
+            is_winding_up = true;
+            current_attack_type = 2;
+            break;
+        }
+    default: break;
     }
 }

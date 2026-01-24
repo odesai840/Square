@@ -143,22 +143,22 @@ struct JumpBoss : SquareCore::Property
 
 struct SecondBoss : SquareCore::Property
 {
-    int boss_index;
+    uint32_t id = 0;
     SquareCore::Vec2 spawn_position;
     SecondBossState state = SecondBossState::IDLE;
     SecondBossAttackType attack_type = SecondBossAttackType::LEFT;
     
     float telegraph_duration = 0.5f;
     float telegraph_timer = 0.0f;
-    
-    SquareCore::Vec2 base_scale = {0.1f, 0.1f};
     float attack_velocity = 1000.0f;
+
+    bool attacking = false;
+    bool hit_player_this_attack = false;
     
     bool is_dead = false;
     
-    SecondBoss(int index, SquareCore::Vec2 spawn_pos)
+    SecondBoss(SquareCore::Vec2 spawn_pos)
     {
-        this->boss_index = index;
         this->spawn_position = spawn_pos;
     }
 };

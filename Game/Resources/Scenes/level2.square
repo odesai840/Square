@@ -4,6 +4,58 @@
 
         {
             "color": [
+                70,
+                70,
+                70,
+                0
+            ],
+            "physEnabled": false,
+            "isSpriteless": false,
+            "position": [
+                -4450.0,
+                -4550.0
+            ],
+            "scale": [
+                0.01,
+                0.01
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Boss2RightAttackPosition"
+            ],
+            "zIndex": 15
+        },
+        {
+            "color": [
+                70,
+                70,
+                70,
+                0
+            ],
+            "physEnabled": false,
+            "isSpriteless": false,
+            "position": [
+                -5500.0,
+                -4550.0
+            ],
+            "scale": [
+                0.01,
+                0.01
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Boss2LeftAttackPosition"
+            ],
+            "zIndex": 15
+        },
+        {
+            "color": [
                 255,
                 255,
                 255,
@@ -1369,7 +1421,7 @@
             "physEnabled": false,
             "isSpriteless": false,
             "position": [
-                -1300.0,
+                -1200.0,
                 -200.0
             ],
             "scale": [
@@ -1381,7 +1433,7 @@
             },
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "DialogTrigger"
+                "DialogTriggerPapagon"
             ],
             "zIndex": 12
         },

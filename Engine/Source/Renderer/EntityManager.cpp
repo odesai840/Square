@@ -749,7 +749,7 @@ namespace SquareCore
             return entities[it->second].properties;
         }
         
-        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "RemoveTagFromEntity: Entity ID %u not found", entityID);
+        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "GetAllEntityProperties: Entity ID %u not found", entityID);
         return {};
     }
 

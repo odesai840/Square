@@ -1,6 +1,7 @@
 #include "Map.h"
 
 #include "PlayerKeybinds.h"
+#include "UserInterface.h"
 
 void Map::OnStart()
 {
@@ -87,11 +88,11 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
         SetColliderType(wormhole, SquareCore::ColliderType::NONE);
     }
 
-    if (uint32_t level_2_exit = GetFirstEntityWithTag("Level2Exit"))
+    if (uint32_t boss_2_exit = GetFirstEntityWithTag("Boss2Exit"))
     {
         if (player->GetPlayerData().second_boss_dead)
         {
-            RemoveEntity(level_2_exit);
+            RemoveEntity(boss_2_exit);
         }
     }
 
@@ -115,6 +116,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             StopAudioClip(level_3_music);
             PlayAudioClip(level_1_music);
             SetCameraBounds(-14000.0f, -400.0f, 6000.0f, 10000.0f);
+            if (ui) ui->AreaTitle("The Cage", "Now Playing:\nThe Cage\nCaleb Kronstad and Ohm Desai");
             break;
         }
     case 2:
@@ -124,6 +126,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             StopAudioClip(level_3_music);
             PlayAudioClip(level_2_music);
             SetCameraBounds(-10000.0f, -400.0f, 6000.0f, 10000.0f);
+            if (ui) ui->AreaTitle("The Slums", "Now Playing:\nThe Slums\nCaleb Kronstad");
             break;
         }
     case 3:
@@ -132,6 +135,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             StopAudioClip(level_2_music);
             StopAudioClip(main_menu_music);
             PlayAudioClip(level_3_music);
+            if (ui) ui->AreaTitle("The Palace", "Now Playing:\nThe Palace\nCaleb Kronstad");
             break;
         }
     default:
