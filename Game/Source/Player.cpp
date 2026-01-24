@@ -488,7 +488,21 @@ void Player::OnCollision(float delta_time)
         
         if (collision.second == 2 && EntityHasTag(collision.first, "ValidGround"))
         {
-            last_grounded_position = GetPosition(player);
+            SquareCore::Vec2 player_pos = GetPosition(player);
+            SquareCore::Vec2 ground_pos = GetPosition(collision.first);
+            SquareCore::Vec2 ground_scale = GetScale(collision.first);
+            
+            float platform_half_width = (ground_scale.x * 500.0f) / 2.0f;
+            float horizontal_distance = abs(player_pos.x - ground_pos.x);
+            float safe_zone = platform_half_width * 0.7f;
+            
+            SDL_Log(std::to_string(safe_zone).c_str());
+
+            if (horizontal_distance < safe_zone)
+            {
+                last_grounded_position = player_pos;
+                last_valid_ground_entity = collision.first;
+            }
         }
 
         // player collides with a bouncy object

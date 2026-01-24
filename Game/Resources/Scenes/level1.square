@@ -1,8 +1,8 @@
 {
     "background-color": [
-        40,
-        40,
-        40,
+        0,
+        20,
+        0,
         255
     ],
     "entities": [
@@ -91,7 +91,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 0
         },
@@ -113,7 +114,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 0
         },
@@ -135,7 +137,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 1
         },
@@ -148,10 +151,33 @@
             ],
             "isSpriteless": false,
             "position": [
-                -450,
-                1000
+                210,
+                1095
             ],
             "rotation": -10,
+            "scale": [
+                0.3,
+                0.3
+            ],
+            "spritePath": "Resources/Sprites/sign.png",
+            "collider": {
+                "type": 0
+            },
+            "zIndex": -1
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                590,
+                517
+            ],
+            "rotation": 5,
             "scale": [
                 0.3,
                 0.3
@@ -180,7 +206,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 1
         },
@@ -226,7 +253,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 1
         },
@@ -248,7 +276,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 0
         },
@@ -270,7 +299,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 0
         },
@@ -292,7 +322,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 0
         },
@@ -314,9 +345,32 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 0
+        },
+        {
+            "color": [
+                0,
+                200,
+                0,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -2720.0,
+                -250.0
+            ],
+            "scale": [
+                3.5,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Spike"
+            ],
+            "zIndex": -1
         },
         {
             "color": [
@@ -358,7 +412,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 0
         },
@@ -380,7 +435,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 1
         },
@@ -424,7 +480,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 1
         },
@@ -468,7 +525,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 1
         },
@@ -512,7 +570,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 1
         },
@@ -534,7 +593,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 0
         },
@@ -556,7 +616,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 1
         },
@@ -578,7 +639,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 1
         },
@@ -600,7 +662,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 1
         },
@@ -622,7 +685,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 1
         },
@@ -644,7 +708,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 1
         },
@@ -785,9 +850,32 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 0
+        },
+        {
+            "color": [
+                0,
+                200,
+                0,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                2950.0,
+                -250.0
+            ],
+            "scale": [
+                4.5,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Spike"
+            ],
+            "zIndex": -1
         },
         {
             "color": [
@@ -807,7 +895,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 0
         },
@@ -829,7 +918,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 0
         },
@@ -851,7 +941,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 0
         },
@@ -873,7 +964,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 0
         },
@@ -895,7 +987,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 0
         },
@@ -917,7 +1010,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 1
         },
@@ -939,6 +1033,7 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
+                "Level1BossDoor",
                 "Ground"
             ],
             "zIndex": 0
@@ -984,7 +1079,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "Ground"
+                "Ground",
+                "ValidGround"
             ],
             "zIndex": 0
         },
@@ -1031,7 +1127,8 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "TrapWall"
+                "TrapWall",
+                "Ground"
             ],
             "zIndex": 0
         },
@@ -1053,7 +1150,58 @@
             ],
             "spritePath": "Resources/Sprites/square.png",
             "tags": [
-                "TrapWall"
+                "TrapWall",
+                "Ground"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                0,
+                100,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                2730.0,
+                1270.0
+            ],
+            "scale": [
+                0.2,
+                0.2
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "collider": {
+                "type": 2
+            },
+            "tags": [
+                "GainProjectile"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                0,
+                100,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                5500.0,
+                590.0
+            ],
+            "scale": [
+                0.2,
+                0.2
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "collider": {
+                "type": 2
+            },
+            "tags": [
+                "GainDoubleJump"
             ],
             "zIndex": 0
         },
@@ -1067,12 +1215,12 @@
             "physApplied": false,
             "isSpriteless": false,
             "position": [
-                30.0,
-                0.0
+                150.0,
+                -100.0
             ],
             "scale": [
-                1.0,
-                1.0
+                2.0,
+                2.0
             ],
             "spritePath": "Resources/Sprites/wormhole.png",
             "tags": [
@@ -1090,12 +1238,12 @@
             "physApplied": false,
             "isSpriteless": false,
             "position": [
-                30.0,
-                0.0
+                150.0,
+                -100.0
             ],
             "scale": [
-                1.0,
-                1.0
+                2.0,
+                2.0
             ],
             "spritePath": "Resources/Sprites/wormhole.png",
             "tags": [
@@ -1113,12 +1261,12 @@
             "physApplied": false,
             "isSpriteless": false,
             "position": [
-                30.0,
-                0.0
+                150.0,
+                -100.0
             ],
             "scale": [
-                1.0,
-                1.0
+                2.0,
+                2.0
             ],
             "spritePath": "Resources/Sprites/wormhole.png",
             "tags": [

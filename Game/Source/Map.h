@@ -33,4 +33,6 @@ private:
     
     uint32_t ball_entity = 0;
     uint32_t crushed_enemy = 0;
+    
+    uint32_t level_1_boss_door = 0;
 };

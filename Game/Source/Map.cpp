@@ -65,7 +65,12 @@ void Map::OnUpdate(float deltaTime)
                 
                 SetEntityColor(ball_rubble, SquareCore::RGBA(255, 255, 255, 255));
                 
+                SetRotation(level_1_boss_door, 70.0f);
+                SetPosition(level_1_boss_door, -7900.0f, -100.0f);
+                
                 RemoveEntity(ball_entity);
+                
+                enemy_manager->SpawnJumpBoss({-11000.0f, 500.0f});
             }
         }
     }
@@ -98,6 +103,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
 
     ball_entity = GetFirstEntityWithTag("Ball");
     crushed_enemy = GetFirstEntityWithTag("CrushedEnemy");
+    level_1_boss_door = GetFirstEntityWithTag("Level1BossDoor");
     
     switch (level)
     {

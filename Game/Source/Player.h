@@ -59,6 +59,7 @@ private:
     EnemyManager* enemy_manager;
 
     SquareCore::Vec2 last_grounded_position;
+    uint32_t last_valid_ground_entity = 0;
 
     Direction player_direction = Direction::LEFT;
 
