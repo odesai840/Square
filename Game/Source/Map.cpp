@@ -17,7 +17,7 @@ void Map::OnStart()
     SetAudioLooping(level_1_music, true);
     SetAudioLooping(level_2_music, true);
     SetAudioLooping(level_3_music, true);
-    SetAudioMasterVolume(0.0f);
+    //SetAudioMasterVolume(0.0f);
     PlayAudioClip(main_menu_music);
     
     SetCameraZoom(0.85f);

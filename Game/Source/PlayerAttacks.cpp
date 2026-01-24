@@ -8,6 +8,9 @@ void Player::Slash(float delta_time)
     
     if (GetMouseButtonPressed(0) && !dialog_manager->IsActive() && !is_slashing && !slash_in_cooldown && !(player_velocity.x > 600.0f || player_velocity.x < -600.0f))
     {
+        StopAudioClip(slash_audio);
+        PlayAudioClip(slash_audio);
+        
         is_slashing = true;
         slash_in_cooldown = true;
         slash_cooldown_elapsed = 0.0f;
@@ -106,7 +109,6 @@ void Player::Slash(float delta_time)
         
             if (EntityHasTag(collision.first, "Enemy") && !EnemyHitByCurrentSlash(collision.first))
             {
-                SDL_Log("enemy mynsoeuiynosienyiseny");
                 damaged_by_slash_enemies.push_back(collision.first);
                 
                 for (auto& property : GetAllEntityProperties(collision.first))
@@ -179,6 +181,9 @@ void Player::Projectile(float delta_time)
     
     if (GetMouseButtonPressed(2) && !dialog_manager->IsActive() && !projectile_in_cooldown && player_data.has_projectile)
     {
+        StopAudioClip(projectile_audio);
+        PlayAudioClip(projectile_audio);
+        
         for (int i = 0; i < projectile_pool.GetTotal(); i++)
         {
             ProjectileEntity* projectile = static_cast<ProjectileEntity*>(projectile_pool.GetPointer(i));

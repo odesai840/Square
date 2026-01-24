@@ -63,6 +63,13 @@ private:
 
     Direction player_direction = Direction::LEFT;
 
+    uint32_t slash_audio = 0;
+    uint32_t jump_audio = 0;
+    uint32_t heal_audio = 0;
+    uint32_t dash_audio = 0;
+    uint32_t projectile_audio = 0;
+    uint32_t take_damage_audio = 0;
+
     int slash_damage = 1;
     int projectile_damage = 2;
 
