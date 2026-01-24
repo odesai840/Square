@@ -59,6 +59,7 @@ private:
 
 private:
     bool loaded = false;
+    bool is_transitioning = false;
     
     PlayerData player_data;
     uint32_t player = 0;

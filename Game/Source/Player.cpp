@@ -366,25 +366,36 @@ void Player::OnCollision(float delta_time)
 
         if (EntityHasTag(collision.first, "WormholeTrigger"))
         {
+            if (is_transitioning) continue;
+    
             if (EntityHasTag(collision.first, "1"))
             {
+                is_transitioning = true;
                 GameStateManager::SavePlayerData("Saves/S_001.square", player_data);
                 player_data.level = 1;
+                RemoveEntity(collision.first);
                 map->LoadMap(1, player_data.spawn_points[0]);
+                is_transitioning = false;
                 return;
             }
             if (EntityHasTag(collision.first, "2"))
             {
+                is_transitioning = true;
                 GameStateManager::SavePlayerData("Saves/S_001.square", player_data);
                 player_data.level = 2;
+                RemoveEntity(collision.first);
                 map->LoadMap(2, player_data.spawn_points[1]);
+                is_transitioning = false;
                 return;
             }
             if (EntityHasTag(collision.first, "3"))
             {
+                is_transitioning = true;
                 GameStateManager::SavePlayerData("Saves/S_001.square", player_data);
                 player_data.level = 3;
+                RemoveEntity(collision.first);
                 map->LoadMap(3, player_data.spawn_points[2]);
+                is_transitioning = false;
                 return;
             }
         }
