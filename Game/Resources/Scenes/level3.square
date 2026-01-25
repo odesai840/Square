@@ -6,6 +6,7 @@
         255
     ],
     "entities": [
+        // main ground
         {
             "color": [
                 40,
@@ -19,7 +20,7 @@
                 -390.0
             ],
             "scale": [
-                3.0,
+                20.0,
                 0.25
             ],
             "spritePath": "Resources/Sprites/square.png",
@@ -28,6 +29,519 @@
                 "ValidGround"
             ],
             "zIndex": 500
+        },
+        // spawn ground
+        {
+            "color": [
+                40,
+                25,
+                5,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                8800.0,
+                640.0
+            ],
+            "scale": [
+                1.5,
+                1.7
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 1
+        },
+        // right map bound wall
+        {
+            "color": [
+                40,
+                25,
+                5,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                9340.0,
+                4200.0
+            ],
+            "scale": [
+                0.5,
+                5.0
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 1
+        },
+        // gate guard
+        {
+            "color": [
+                30,
+                30,
+                30,
+                255
+            ],
+            "flipX": true,
+            "isSpriteless": false,
+            "position": [
+                5100.0,
+                95.0
+            ],
+            "scale": [
+                0.65,
+                0.65
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/triangle-enemy.png",
+            "zIndex": 1
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                75
+            ],
+            "isSpriteless": false,
+            "position": [
+                5100.0,
+                50.0
+            ],
+            "scale": [
+                0.8,
+                0.8
+            ],
+            "spritePath": "Resources/Sprites/energy-shield.png",
+            "zIndex": 2
+        },
+        // gate wall
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                4200.0,
+                800.0
+            ],
+            "scale": [
+                1.0,
+                2.0
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 1
+        },
+        // right tower wall
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                3620.0,
+                2400.0
+            ],
+            "scale": [
+                0.1,
+                5.0
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 2
+        },
+        // tower inside background
+        {
+            "color": [
+                20,
+                20,
+                20,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                2810.0,
+                2400.0
+            ],
+            "scale": [
+                1.5,
+                5.0
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 0
+        },
+        // tower left wall
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                2000.0,
+                2400.0
+            ],
+            "scale": [
+                0.1,
+                5.0
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 2
+        },
+        // vertical platforms next to spawn
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                7850.0,
+                200.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                7850.0,
+                700.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                7850.0,
+                1200.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 0
+        },
+        // horizontal platforms next to spawn
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                6850.0,
+                1500.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                5700.0,
+                1700.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 1
+        },
+        // platforms on tower wall (outside)
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                3800.0,
+                2300.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                3800.0,
+                2800.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                3800.0,
+                3300.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                3800.0,
+                3800.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                3800.0,
+                4300.0
+            ],
+            "scale": [
+                0.3,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                140,
+                140,
+                255,
+                255
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                8650.0,
+                1750.0
+            ],
+            "scale": [
+                2.0,
+                2.0
+            ],
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "Wormhole"
+            ],
+            "zIndex": 99
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                8650.0,
+                1750.0
+            ],
+            "scale": [
+                2.0,
+                2.0
+            ],
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "Wormhole"
+            ],
+            "zIndex": 97
+        },
+        {
+            "color": [
+                255,
+                140,
+                140,
+                255
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                8650.0,
+                1750.0
+            ],
+            "scale": [
+                2.0,
+                2.0
+            ],
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "WormholeNegative"
+            ],
+            "zIndex": 98
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                8650.0,
+                1750.0
+            ],
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "WormholeTrigger",
+                "2"
+            ],
+            "zIndex": 99
         }
     ],
     "ui": []
