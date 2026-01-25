@@ -144,6 +144,15 @@ void Player::CancelVelocity()
     SetVelocity(player, 0.0f, 0.0f);
 }
 
+void Player::UpdateCameraBounds(float min_x, float min_y, float max_x, float max_y)
+{
+    bounds[0] = min_x;
+    bounds[1] = min_y;
+    bounds[2] = max_x;
+    bounds[3] = max_y;
+    target_bounds_y_min = min_y;
+}
+
 void Player::Move(float delta_time)
 {
     SquareCore::Vec2 player_velocity = GetVelocity(player);

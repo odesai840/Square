@@ -1,0 +1,34 @@
+{
+    "background-color": [
+        70,
+        90,
+        120,
+        255
+    ],
+    "entities": [
+        {
+            "color": [
+                40,
+                25,
+                5,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                0.0,
+                -390.0
+            ],
+            "scale": [
+                3.0,
+                0.25
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 500
+        }
+    ],
+    "ui": []
+}

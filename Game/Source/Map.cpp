@@ -64,6 +64,7 @@ void Map::OnUpdate(float deltaTime)
             {
                 RemoveEntity(crushed_enemy);
                 RemoveEntity(collision.first);
+                player_script->GetPlayerData().the_wall_dead = true;
                 continue;
             }
             
@@ -122,6 +123,14 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
     {
         SetColliderType(wormhole, SquareCore::ColliderType::NONE);
     }
+    
+    if (uint32_t level_1_wormhole_shield = GetFirstEntityWithTag("Level1WormholeShield"))
+    {
+        if (player_script->GetPlayerData().first_boss_dead)
+        {
+            RemoveEntity(level_1_wormhole_shield);
+        }
+    }
 
     if (uint32_t boss_2_exit = GetFirstEntityWithTag("Boss2Exit"))
     {
@@ -133,9 +142,36 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
 
     player_script->HealMaxHealth();
     
-    ball_entity = GetFirstEntityWithTag("Ball");
-    crushed_enemy = GetFirstEntityWithTag("CrushedEnemy");
-    level_1_boss_door = GetFirstEntityWithTag("Level1BossDoor");
+    if (player_script->GetPlayerData().the_wall_dead)
+    {
+        if (level == 1)
+        {
+            uint32_t rope = GetFirstEntityWithTag("Breakable");
+            RemoveEntity(rope);
+        
+            uint32_t ball_rubble = GetFirstEntityWithTag("BallRubble");
+            SetEntityColor(ball_rubble, SquareCore::RGBA(255, 255, 255, 255));
+            
+            uint32_t crushed_enemy_shield = GetFirstEntityWithTag("CrushedEnemyShield");
+            RemoveEntity(crushed_enemy_shield);
+            
+            ball_entity = GetFirstEntityWithTag("Ball");
+            RemoveEntity(ball_entity);
+            
+            crushed_enemy = GetFirstEntityWithTag("CrushedEnemy");
+            RemoveEntity(crushed_enemy);
+            
+            level_1_boss_door = GetFirstEntityWithTag("Level1BossDoor");
+            SetRotation(level_1_boss_door, 70.0f);
+            SetPosition(level_1_boss_door, -7900.0f, -100.0f);
+        }
+    }
+    else
+    {
+        ball_entity = GetFirstEntityWithTag("Ball");
+        crushed_enemy = GetFirstEntityWithTag("CrushedEnemy");
+        level_1_boss_door = GetFirstEntityWithTag("Level1BossDoor");
+    }
     
     uint32_t ability = GetFirstEntityWithTag("GainDoubleDash");
     if (ability && player_script->GetPlayerData().has_double_dash)
@@ -167,6 +203,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             StopAudioClip(level_3_music);
             PlayAudioClip(level_1_music);
             SetCameraBounds(-14000.0f, -400.0f, 6000.0f, 10000.0f);
+            player_script->UpdateCameraBounds(-14000.0f, -400.0f, 6000.0f, 10000.0f);
             if (ui) ui->AreaTitle("The Cage", "Now Playing:\nThe Cage\nCaleb Kronstad and Ohm Desai");
             break;
         }
@@ -177,6 +214,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             StopAudioClip(level_3_music);
             PlayAudioClip(level_2_music);
             SetCameraBounds(-10000.0f, -400.0f, 6000.0f, 10000.0f);
+            player_script->UpdateCameraBounds(-10000.0f, -400.0f, 6000.0f, 10000.0f);
             if (ui) ui->AreaTitle("The Slums", "Now Playing:\nThe Slums\nCaleb Kronstad");
             //player_script->TeleportPlayer(SquareCore::Vec2(-5500.0, -4550.0f));
             break;

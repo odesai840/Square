@@ -1468,6 +1468,33 @@
                 "WormholeNegative"
             ],
             "zIndex": 98
+        },
+        {
+            "color": [
+                140,
+                140,
+                255,
+                0
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                150.0,
+                -100.0
+            ],
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "WormholeTrigger",
+                "3"
+            ],
+            "zIndex": 99
         }
     ],
     "ui": []

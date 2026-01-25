@@ -40,6 +40,7 @@ public:
 
     void HealMaxHealth();
     void CancelVelocity();
+    void UpdateCameraBounds(float min_x, float min_y, float max_x, float max_y);
 
 private:
     void Move(float delta_time);

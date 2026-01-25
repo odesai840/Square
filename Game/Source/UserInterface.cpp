@@ -339,10 +339,10 @@ void UserInterface::OnUpdate(float deltaTime)
             }
         }
     }
-
+    
     if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(2))
     {
-        if (uint32_t dialog_trigger = GetFirstEntityWithTag("DialogTriggerPapagon"))
+        if (uint32_t dialog_trigger = GetFirstEntityWithTag("DialogTriggerBigTriangle"))
         {
             auto collisions = GetEntityCollisions(dialog_trigger);
             for (const auto& collision : collisions)
@@ -355,10 +355,10 @@ void UserInterface::OnUpdate(float deltaTime)
             }
         }
     }
-    
+
     if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(3))
     {
-        if (uint32_t dialog_trigger = GetFirstEntityWithTag("DialogTriggerHex"))
+        if (uint32_t dialog_trigger = GetFirstEntityWithTag("DialogTriggerPapagon"))
         {
             auto collisions = GetEntityCollisions(dialog_trigger);
             for (const auto& collision : collisions)
@@ -374,7 +374,7 @@ void UserInterface::OnUpdate(float deltaTime)
     
     if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(4))
     {
-        if (uint32_t dialog_trigger = GetFirstEntityWithTag("DialogTriggerHepta"))
+        if (uint32_t dialog_trigger = GetFirstEntityWithTag("DialogTriggerHex"))
         {
             auto collisions = GetEntityCollisions(dialog_trigger);
             for (const auto& collision : collisions)
@@ -390,7 +390,7 @@ void UserInterface::OnUpdate(float deltaTime)
     
     if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(5))
     {
-        if (uint32_t dialog_trigger = GetFirstEntityWithTag("DialogTriggerLastOcta"))
+        if (uint32_t dialog_trigger = GetFirstEntityWithTag("DialogTriggerHepta"))
         {
             auto collisions = GetEntityCollisions(dialog_trigger);
             for (const auto& collision : collisions)
@@ -398,6 +398,38 @@ void UserInterface::OnUpdate(float deltaTime)
                 if (EntityHasTag(collision.first, "Player"))
                 {
                     dialogManager.Start(5);
+                    break;
+                }
+            }
+        }
+    }
+    
+    if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(6))
+    {
+        if (uint32_t dialog_trigger = GetFirstEntityWithTag("DialogTriggerLastOcta"))
+        {
+            auto collisions = GetEntityCollisions(dialog_trigger);
+            for (const auto& collision : collisions)
+            {
+                if (EntityHasTag(collision.first, "Player"))
+                {
+                    dialogManager.Start(6);
+                    break;
+                }
+            }
+        }
+    }
+    
+    if (!dialogManager.IsActive() && !dialogManager.HasBeenSeen(7))
+    {
+        if (uint32_t dialog_trigger = GetFirstEntityWithTag("DialogTriggerReginald"))
+        {
+            auto collisions = GetEntityCollisions(dialog_trigger);
+            for (const auto& collision : collisions)
+            {
+                if (EntityHasTag(collision.first, "Player"))
+                {
+                    dialogManager.Start(7);
                     break;
                 }
             }
