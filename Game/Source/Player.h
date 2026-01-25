@@ -97,7 +97,7 @@ private:
     bool can_double_jump = false;
 
     bool can_take_damage = true;
-    float can_take_damage_cooldown = 0.1f;
+    float can_take_damage_cooldown = 1.0f;
     float can_take_damage_timer = 0.0f;
 
     bool is_looking_up = false;

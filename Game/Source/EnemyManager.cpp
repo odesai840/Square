@@ -66,6 +66,63 @@ uint32_t EnemyManager::SpawnJumpBoss(const SquareCore::Vec2& position)
     return jump_boss;
 }
 
+uint32_t EnemyManager::SpawnFinalBoss(const SquareCore::Vec2& position)
+{
+    if (final_boss)
+        RemoveEntity(final_boss);
+    final_boss = AddEntity("Resources/Sprites/final-boss.png", position.x, position.y, 0.0f, 0.25f, 0.25f, true);
+    SetEntityColor(final_boss, SquareCore::RGBA(255, 255, 255, 255));
+    SetPhysicsEnabled(final_boss, true);
+    AddTagToEntity(final_boss, "Enemy");
+    AddTagToEntity(final_boss, "Pogo");
+    AddTagToEntity(final_boss, "FinalBoss");
+    SetDrag(final_boss, 5.0f);
+    SetGravityScale(final_boss, 0.0f);
+    SetEntityPersistent(final_boss, true);
+    AddPropertyToEntity(final_boss, new Character(75, 75, 2));
+    SetZIndex(final_boss, 25);
+    FinalBoss* fb = new FinalBoss();
+    AddPropertyToEntity(final_boss, fb);
+    SetColliderPolygon(final_boss, final_boss_collider_vertices);
+    enemies.push_back(final_boss);
+
+    for (int i = 0; i < fb->shot_positions.size(); i++)
+    {
+        int slot = projectile_pool.Alloc();
+        EnemyProjectileEntity* projectile = static_cast<EnemyProjectileEntity*>(projectile_pool.GetPointer(slot));
+        projectile->id = AddEntity("Resources/Sprites/lazar.png", position.x, position.y, 0.0f, 1.0f, 0.1f, true);
+        projectile->active = false;
+        projectile->timer = 0.0f;
+        projectile->direction = Direction::DOWN;
+
+        SetColliderType(projectile->id, SquareCore::ColliderType::TRIGGER);
+        SetGravityScale(projectile->id, 0.0f);
+        AddTagToEntity(projectile->id, "Enemy");
+        AddTagToEntity(projectile->id, "EnemyProjectile");
+        SetEntityVisible(projectile->id, false);
+        SetEntityPersistent(projectile->id, true);
+        SetZIndex(projectile->id, -1);
+        AddPropertyToEntity(projectile->id, new Character(1, 1, 1));
+    }
+
+    fb->sword_entity = AddEntity("Resources/Sprites/sword.png", position.x, position.y, 0.0f, 2.0f, 2.0f, true);
+    AddTagToEntity(fb->sword_entity, "Enemy");
+    AddTagToEntity(fb->sword_entity, "EnemyProjectile");
+    AddPropertyToEntity(fb->sword_entity, new Character(1, 1, 2));
+    SetGravityScale(fb->sword_entity, 0.0f);
+    SetEntityVisible(fb->sword_entity, false);
+    SetColliderType(fb->sword_entity, SquareCore::ColliderType::TRIGGER);
+    SetColliderBox(fb->sword_entity, 75.0f, 150.0f);
+    SetZIndex(fb->sword_entity, 26);
+
+    fb->gun_entity = AddEntity("Resources/Sprites/gun.png", position.x, position.y, 0.0f, 1.0f, 1.0f, false);
+    SetColliderType(fb->gun_entity, SquareCore::ColliderType::NONE);
+    SetEntityVisible(fb->gun_entity, false);
+    SetZIndex(fb->gun_entity, 26);
+
+    return final_boss;
+}
+
 void EnemyManager::SpawnSecondBoss(const SquareCore::Vec2& position)
 {
     for (int i = 0; i < 3; i++)
@@ -98,7 +155,7 @@ void EnemyManager::AlterChargeEnemy(uint32_t enemy_id)
     SetEntityColor(enemy_id, SquareCore::RGBA(82, 9, 9, 255));
     SetScale(enemy_id, SquareCore::Vec2(0.075f, 0.075f));
     SetPhysicsEnabled(enemy_id, true);
-    FlipSprite(enemy_id, random_direction == Direction::RIGHT, false);
+    FlipSprite(enemy_id, false, true);
     SetDrag(enemy_id, 5.0f);
     SetMass(enemy_id, 25.0f);
     SetEntityPersistent(enemy_id, false);
@@ -142,7 +199,7 @@ void EnemyManager::OnUpdate(float deltaTime)
     {
         if (!EntityExists(second_bosses[i]) && boss_2_active)
             dead_count++;
-        
+
         if (EntityExists(second_bosses[i]))
         {
             for (auto& property : GetAllEntityProperties(second_bosses[i]))
@@ -189,7 +246,8 @@ void EnemyManager::OnUpdate(float deltaTime)
                 float vertical_distance = std::abs(player_position.y - enemy_position.y);
 
                 bool is_grounded = std::abs(enemy_velocity.y) < 50.0f;
-                bool can_see_player = horizontal_distance <= jump_property->detection_range && vertical_distance < 100.0f;
+                bool can_see_player = horizontal_distance <= jump_property->detection_range && vertical_distance <
+                    100.0f;
 
                 if (jump_property->aggro_on_player)
                 {
@@ -304,7 +362,8 @@ void EnemyManager::OnUpdate(float deltaTime)
                                 player_in_front = player_position.x < enemy_position.x;
                             }
 
-                            bool can_see_player = player_in_front && horizontal_distance < 600.0f && vertical_distance < 100.0f;
+                            bool can_see_player = player_in_front && horizontal_distance < 600.0f && vertical_distance <
+                                100.0f;
 
                             if (can_see_player)
                             {
@@ -481,103 +540,325 @@ void EnemyManager::OnUpdate(float deltaTime)
                     }
                 }
             }
-            
+
             SecondBoss* second_boss = dynamic_cast<SecondBoss*>(property);
             if (second_boss && boss_2_active)
             {
-                if (boss_2_active)
+                if (intro_countdown > 0.0f)
+                    intro_countdown -= deltaTime;
+                else
                 {
-                    if (intro_countdown > 0.0f)
-                        intro_countdown -= deltaTime;
+                    if (!EntityExists(second_bosses[active_boss]))
+                    {
+                        int start_boss = active_boss;
+                        do
+                        {
+                            active_boss++;
+                            if (active_boss == 3) active_boss = 0;
+                        }
+                        while ((!EntityExists(second_bosses[active_boss]) || second_boss_properties[active_boss]->
+                            is_dead) && active_boss != start_boss);
+                        continue;
+                    }
+
+                    int alive_count = 0;
+                    for (int i = 0; i < 3; i++)
+                    {
+                        if (EntityExists(second_bosses[i]) && !second_boss_properties[i]->is_dead)
+                            alive_count++;
+                    }
+                    float current_time_between_attacks = time_between_attacks * (alive_count / 3.0f);
+                    float current_wind_up_time = wind_up_time * (alive_count / 3.0f);
+
+                    if (is_winding_up)
+                    {
+                        wind_up_timer += deltaTime;
+                        if (wind_up_timer >= current_wind_up_time)
+                        {
+                            is_winding_up = false;
+                            switch (current_attack_type)
+                            {
+                            case 0:
+                                SetVelocity(second_bosses[active_boss], 0.0f, 0.0f);
+                                SetVelocity(second_bosses[active_boss], 5000.0f, 0.0f);
+                                break;
+                            case 1:
+                                SetVelocity(second_bosses[active_boss], 0.0f, 0.0f);
+                                SetVelocity(second_bosses[active_boss], -5000.0f, 0.0f);
+                                break;
+                            case 2:
+                                SetVelocity(second_bosses[active_boss], 0.0f, 0.0f);
+                                SetVelocity(second_bosses[active_boss], 0.0f, -5000.0f);
+                                break;
+                            default: break;
+                            }
+                        }
+                    }
                     else
                     {
-                        if (!EntityExists(second_bosses[active_boss]))
+                        if (time_elapsed_between_attacks < current_time_between_attacks)
                         {
-                            int start_boss = active_boss;
-                            do
-                            {
-                                active_boss++;
-                                if (active_boss == 3) active_boss = 0;
-                            }
-                            while ((!EntityExists(second_bosses[active_boss]) || second_boss_properties[active_boss]->
-                                is_dead) && active_boss != start_boss);
-                            continue;
-                        }
-
-                        int alive_count = 0;
-                        for (int i = 0; i < 3; i++)
-                        {
-                            if (EntityExists(second_bosses[i]) && !second_boss_properties[i]->is_dead)
-                                alive_count++;
-                        }
-                        float current_time_between_attacks = time_between_attacks * (alive_count / 3.0f);
-                        float current_wind_up_time = wind_up_time * (alive_count / 3.0f);
-
-                        if (is_winding_up)
-                        {
-                            wind_up_timer += deltaTime;
-                            if (wind_up_timer >= current_wind_up_time)
-                            {
-                                is_winding_up = false;
-                                switch (current_attack_type)
-                                {
-                                case 0:
-                                    SetVelocity(second_bosses[active_boss], 0.0f, 0.0f);
-                                    SetVelocity(second_bosses[active_boss], 5000.0f, 0.0f);
-                                    break;
-                                case 1:
-                                    SetVelocity(second_bosses[active_boss], 0.0f, 0.0f);
-                                    SetVelocity(second_bosses[active_boss], -5000.0f, 0.0f);
-                                    break;
-                                case 2:
-                                    SetVelocity(second_bosses[active_boss], 0.0f, 0.0f);
-                                    SetVelocity(second_bosses[active_boss], 0.0f, -5000.0f);
-                                    break;
-                                default: break;
-                                }
-                            }
+                            time_elapsed_between_attacks += deltaTime;
                         }
                         else
                         {
-                            if (time_elapsed_between_attacks < current_time_between_attacks)
+                            if (!active_boss_has_attacked)
                             {
-                                time_elapsed_between_attacks += deltaTime;
-                            }
-                            else
-                            {
-                                if (!active_boss_has_attacked)
+                                if (time_elapsed_between_attacks >= current_time_between_attacks)
                                 {
-                                    if (time_elapsed_between_attacks >= current_time_between_attacks)
-                                    {
-                                        time_elapsed_between_attacks = 0.0f;
-                                        DetermineSecondBossAttack(second_bosses[active_boss]);
-                                        active_boss_has_attacked = true;
-                                    }
-                                    else
-                                    {
-                                        time_elapsed_between_attacks += deltaTime;
-                                    }
+                                    time_elapsed_between_attacks = 0.0f;
+                                    DetermineSecondBossAttack(second_bosses[active_boss]);
+                                    active_boss_has_attacked = true;
                                 }
                                 else
                                 {
-                                    SquareCore::Vec2 spawn_pos = second_boss_properties[active_boss]->spawn_position;
-                                    SetPosition(second_bosses[active_boss], spawn_pos.x, spawn_pos.y);
-
-                                    int start_boss = active_boss;
-                                    do
-                                    {
-                                        active_boss++;
-                                        if (active_boss == 3) active_boss = 0;
-                                    }
-                                    while ((!EntityExists(second_bosses[active_boss]) || second_boss_properties[active_boss]->is_dead) && active_boss != start_boss);
-
-                                    active_boss_has_attacked = false;
-                                    time_elapsed_between_attacks = 0.0f;
+                                    time_elapsed_between_attacks += deltaTime;
                                 }
+                            }
+                            else
+                            {
+                                SquareCore::Vec2 spawn_pos = second_boss_properties[active_boss]->spawn_position;
+                                SetPosition(second_bosses[active_boss], spawn_pos.x, spawn_pos.y);
+
+                                int start_boss = active_boss;
+                                do
+                                {
+                                    active_boss++;
+                                    if (active_boss == 3) active_boss = 0;
+                                }
+                                while ((!EntityExists(second_bosses[active_boss]) || second_boss_properties[active_boss]
+                                    ->is_dead) && active_boss != start_boss);
+
+                                active_boss_has_attacked = false;
+                                time_elapsed_between_attacks = 0.0f;
                             }
                         }
                     }
                 }
+            }
+
+            FinalBoss* fb = dynamic_cast<FinalBoss*>(property);
+            if (final_boss && fb && boss_3_active && fb->state != FinalBossState::TALKING)
+            {
+                if (fb->state == FinalBossState::IDLE)
+                    fb->time_elapsed_between_attacks += deltaTime;
+
+                if (fb->time_elapsed_between_attacks > fb->time_between_attacks)
+                {
+                    fb->time_elapsed_between_attacks = 0.0f;
+                    fb->state = FinalBossState::ATTACKING;
+                    fb->time_elapsed_after_firing = 0.0f;
+
+                    SDL_Log("=== STARTING NEW ATTACK ===");
+
+                    FinalBossAttackType chosen_attack;
+                    float distance = SquareCore::Abs(GetPosition(final_boss).x - GetPosition(player).x);
+
+                    if (rand() % 2 == 0)
+                    {
+                        chosen_attack = FinalBossAttackType::SHOOT;
+                    }
+                    else
+                    {
+                        if (distance < fb->slam_range)
+                        {
+                            chosen_attack = FinalBossAttackType::SLAM;
+                        }
+                        else if (distance > fb->slash_range)
+                        {
+                            chosen_attack = FinalBossAttackType::SLASH;
+                        }
+                        else
+                        {
+                            chosen_attack = (rand() % 2 == 0) ? FinalBossAttackType::SLAM : FinalBossAttackType::SLASH;
+                        }
+                    }
+
+                    if (chosen_attack == fb->last_attack_type)
+                    {
+                        std::vector<FinalBossAttackType> available_attacks;
+                        if (FinalBossAttackType::SHOOT != fb->last_attack_type)
+                            available_attacks.push_back(FinalBossAttackType::SHOOT);
+                        if (FinalBossAttackType::SLAM != fb->last_attack_type)
+                            available_attacks.push_back(FinalBossAttackType::SLAM);
+                        if (FinalBossAttackType::SLASH != fb->last_attack_type)
+                            available_attacks.push_back(FinalBossAttackType::SLASH);
+    
+                        if (!available_attacks.empty())
+                        {
+                            chosen_attack = available_attacks[rand() % available_attacks.size()];
+                        }
+                    }
+
+                    fb->attack_type = chosen_attack;
+                    fb->last_attack_type = chosen_attack;
+                    
+                    if (fb->attack_type == FinalBossAttackType::SHOOT)
+                    {
+                        SetGravityScale(final_boss, 0.0f);
+                        fb->shots_fired = 0;
+                        SDL_Log("Attack Type: SHOOT (distance: %.2f)", distance);
+                    }
+                    else if (fb->attack_type == FinalBossAttackType::SLAM)
+                    {
+                        fb_direction = (player_position.x > GetPosition(final_boss).x) ? 1.0f : -1.0f;
+                        FlipSprite(enemy, !(fb_direction <= 0), false);
+                        fb->slammed = false;
+                        SetGravityScale(final_boss, 1.0f);
+                        final_boss_slam_active = true;
+                        SetEntityVisible(fb->sword_entity, true);
+                        SetRotation(fb->sword_entity, 0.0f);
+                        SetPosition(fb->sword_entity, GetPosition(final_boss).x + (fb_direction * 300.0f), GetPosition(final_boss).y + 300.0f);
+                        SDL_Log("Attack Type: SLAM (distance: %.2f)", distance);
+                    }
+                    else if (fb->attack_type == FinalBossAttackType::SLASH)
+                    {
+                        fb_direction = (player_position.x > GetPosition(final_boss).x) ? 1.0f : -1.0f;
+                        FlipSprite(enemy, !(fb_direction <= 0), false);
+                        SetGravityScale(final_boss, 1.0f);
+
+                        fb->slashed = false;
+                        SquareCore::Vec2 boss_pos = GetPosition(final_boss);
+
+                        SetEntityVisible(fb->sword_entity, true);
+                        SetPosition(fb->sword_entity, boss_pos.x + (fb_direction * 200.0f), boss_pos.y);
+                        SetRotation(fb->sword_entity, fb_direction * 90.0f);
+                        SDL_Log("Attack Type: SLASH (distance: %.2f)", distance);
+                    }
+                }
+
+                if (fb->attack_type == FinalBossAttackType::SLASH && fb->state == FinalBossState::ATTACKING)
+                {
+                    if (fb->slash_length_elapsed < fb->slash_length)
+                    {
+                        fb->slash_length_elapsed += deltaTime;
+
+                        SquareCore::Vec2 boss_pos = GetPosition(final_boss);
+                        SquareCore::Vec2 boss_vel = GetVelocity(final_boss);
+                        
+                        SetPosition(fb->sword_entity, boss_pos.x + (fb_direction * 100.0f), boss_pos.y);
+
+                        if (fb->slash_length_elapsed >= fb->slash_length / 4.0f)
+                        {
+                            if (!fb->slashed)
+                            {
+                                SetVelocity(final_boss, fb_direction * fb->slash_force, GetVelocity(final_boss).y);
+                                SetVelocity(fb->sword_entity, fb_direction * fb->slash_force, 0.0f);
+                                fb->slashed = true;
+                            }
+                            else if (abs(boss_vel.x) <= 25.0f)
+                            {
+                                SetEntityVisible(fb->sword_entity, false);
+                                SetVelocity(fb->sword_entity, 0.0f, 0.0f);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        SetEntityVisible(fb->sword_entity, false);
+                        SetVelocity(fb->sword_entity, 0.0f, 0.0f);
+                        SetVelocity(final_boss, 0.0f, 0.0f);
+                        final_boss_slash_active = false;
+                        fb->slash_length_elapsed = 0.0f;
+                        fb->slashed = false;
+                        fb->attack_type = FinalBossAttackType::NONE;
+                        fb->state = FinalBossState::IDLE;
+                    }
+                }
+
+                if (fb->attack_type == FinalBossAttackType::SLAM && fb->state == FinalBossState::ATTACKING)
+                {
+                    if (fb->slam_length_elapsed < fb->slam_length)
+                    {
+                        fb->slam_length_elapsed += deltaTime;
+
+                        if (fb->slam_length_elapsed >= fb->slam_length / 4.0f && !fb->slammed)
+                        {
+                            fb->slammed = true;
+                            SetVelocity(fb->sword_entity, 0.0f, -fb->slam_speed);
+                        }
+                    }
+                    else
+                    {
+                        SetEntityVisible(fb->sword_entity, false);
+                        SetVelocity(fb->sword_entity, 0.0f, 0.0f);
+                        final_boss_slam_active = false;
+                        fb->slam_length_elapsed = 0.0f;
+                        fb->slammed = false;
+                        fb->attack_type = FinalBossAttackType::NONE;
+                        fb->state = FinalBossState::IDLE;
+                    }
+                }
+
+                if (fb->attack_type == FinalBossAttackType::SHOOT && fb->state == FinalBossState::ATTACKING)
+                {
+                    if (fb->shots_fired < fb->num_shots)
+                    {
+                        if (fb->time_elapsed_after_firing >= fb->time_between_shots)
+                        {
+                            fb->time_elapsed_after_firing = 0.0f;
+                            SetEntityVisible(fb->gun_entity, true);
+                            SetPosition(final_boss, fb->shot_positions.at(fb->shots_fired).x,
+                                        fb->shot_positions.at(fb->shots_fired).y);
+                            SetPosition(fb->gun_entity, fb->shot_positions.at(fb->shots_fired).x,
+                                        fb->shot_positions.at(fb->shots_fired).y - 100.0f);
+
+                            for (int i = 0; i < projectile_pool.GetTotal(); i++)
+                            {
+                                ProjectileEntity* projectile = static_cast<ProjectileEntity*>(projectile_pool.
+                                    GetPointer(i));
+                                if (!projectile->active)
+                                {
+                                    SquareCore::Vec2 boss_pos = GetPosition(final_boss);
+                                    SetPosition(projectile->id, boss_pos.x, boss_pos.y);
+                                    SetVelocity(projectile->id, 0.0f, -2000.0f);
+                                    SetEntityVisible(projectile->id, true);
+                                    projectile->active = true;
+                                    projectile->timer = 0.0f;
+                                    projectile->direction = Direction::DOWN;
+                                    SDL_Log("Fired projectile %d/%d", fb->shots_fired + 1, fb->num_shots);
+                                    break;
+                                }
+                            }
+
+                            fb->shots_fired++;
+                        }
+                        else
+                        {
+                            fb->time_elapsed_after_firing += deltaTime;
+                        }
+                    }
+                    else
+                    {
+                        SetEntityVisible(fb->gun_entity, false);
+                        SetGravityScale(final_boss, 1.0f);
+                        SquareCore::Vec2 velocity = GetVelocity(final_boss);
+                        if (std::abs(velocity.y) < 50.0f)
+                        {
+                            SDL_Log("SHOOT attack complete, returning to IDLE");
+                            fb->state = FinalBossState::IDLE;
+                            fb->shots_fired = 0;
+                            fb->time_elapsed_after_firing = 0.0f;
+                            fb->attack_type = FinalBossAttackType::NONE;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < projectile_pool.GetTotal(); i++)
+    {
+        ProjectileEntity* projectile = static_cast<ProjectileEntity*>(projectile_pool.GetPointer(i));
+        if (projectile->active)
+        {
+            projectile->timer += deltaTime;
+            if (projectile->timer >= 2.0f)
+            {
+                projectile->active = false;
+                SetEntityVisible(projectile->id, false);
+                SetVelocity(projectile->id, 0.0f, 0.0f);
+                projectile->timer = 0.0f;
             }
         }
     }

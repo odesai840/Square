@@ -140,8 +140,11 @@ void Player::Slash(float delta_time)
                 {
                     knockback_y = 200.0f;
                 }
-            
-                SetVelocity(collision.first, enemy_velocity.x + knockback_x, enemy_velocity.y + knockback_y);
+
+                if (!EntityHasTag(collision.first, "EnemyProjectile"))
+                {
+                    SetVelocity(collision.first, enemy_velocity.x + knockback_x, enemy_velocity.y + knockback_y);
+                }
             
                 for (auto& property : GetAllEntityProperties(collision.first))
                 {
@@ -268,8 +271,9 @@ void Player::Projectile(float delta_time)
                 
                 float knockback_x = (projectile->direction == Direction::RIGHT ? 1.0f : -1.0f) * projectile_knockback;
                 float knockback_y = 300.0f;
-                
-                SetVelocity(collision.first, knockback_x, knockback_y);
+
+                if (!EntityHasTag(collision.first, "EnemyProjectile"))
+                    SetVelocity(collision.first, knockback_x, knockback_y);
 
                 for (auto& property : GetAllEntityProperties(collision.first))
                 {

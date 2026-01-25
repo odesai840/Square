@@ -22,7 +22,7 @@
                 0.15,
                 0.1
             ],
-            "spritePath": "Resources/Sprites/mushroom.png",
+            "spritePath": "Resources/Sprites/mushroom-2.png",
             "tags": [
                 "Bounce"
             ],
@@ -228,7 +228,7 @@
                 0.15,
                 0.1
             ],
-            "spritePath": "Resources/Sprites/mushroom.png",
+            "spritePath": "Resources/Sprites/mushroom-2.png",
             "tags": [
                 "Bounce"
             ],
@@ -388,7 +388,7 @@
                 0.15,
                 0.1
             ],
-            "spritePath": "Resources/Sprites/mushroom.png",
+            "spritePath": "Resources/Sprites/mushroom-2.png",
             "tags": [
                 "Bounce"
             ],
@@ -456,7 +456,7 @@
                 0.15,
                 0.1
             ],
-            "spritePath": "Resources/Sprites/mushroom.png",
+            "spritePath": "Resources/Sprites/mushroom-2.png",
             "tags": [
                 "Bounce"
             ],
@@ -501,7 +501,7 @@
                 0.15,
                 0.1
             ],
-            "spritePath": "Resources/Sprites/mushroom.png",
+            "spritePath": "Resources/Sprites/mushroom-2.png",
             "tags": [
                 "Bounce"
             ],
@@ -546,7 +546,7 @@
                 0.15,
                 0.1
             ],
-            "spritePath": "Resources/Sprites/mushroom.png",
+            "spritePath": "Resources/Sprites/mushroom-2.png",
             "tags": [
                 "Bounce"
             ],
@@ -1171,7 +1171,7 @@
                 0.15,
                 0.1
             ],
-            "spritePath": "Resources/Sprites/mushroom.png",
+            "spritePath": "Resources/Sprites/mushroom-2.png",
             "tags": [
                 "Bounce"
             ],

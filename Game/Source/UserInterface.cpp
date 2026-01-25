@@ -13,6 +13,7 @@ void UserInterface::OnStart()
     SetUIElementPosition(main_menu_title, 1920.0f / 2.0f - text_size.x / 2.0f, 150.0f);
     
     level = player_script->GetPlayerData().level;
+    if (level <= 0) level = 1;
     spawn_point = player_script->GetPlayerData().spawn_points[level-1];
     main_menu_play_button = AddUIButton(1920.0f / 2.0f - 150.0f, 1080.0f / 2.0f + 200.0f, 300, 75,
                                         SquareCore::RGBA(50, 50, 50, 255), "PLAY", {SquareCore::RGBA(0, 0, 0, 0)},

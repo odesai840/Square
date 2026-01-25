@@ -42,6 +42,21 @@ enum class SecondBossAttackType : uint8_t
     ABOVE
 };
 
+enum class FinalBossState : uint8_t
+{
+    TALKING,
+    ATTACKING,
+    IDLE
+};
+
+enum class FinalBossAttackType : uint8_t
+{
+    NONE,
+    SLASH,
+    SHOOT,
+    SLAM
+};
+
 struct Character : SquareCore::Property
 {
     int max_health = 10;
@@ -161,4 +176,38 @@ struct SecondBoss : SquareCore::Property
     {
         this->spawn_position = spawn_pos;
     }
+};
+
+struct FinalBoss : SquareCore::Property
+{
+    FinalBossState state = FinalBossState::IDLE;
+    FinalBossAttackType attack_type = FinalBossAttackType::NONE;
+
+    FinalBossAttackType last_attack_type = FinalBossAttackType::NONE;
+
+    SquareCore::Vec2 spawn_position;
+    
+    float time_between_attacks = 1.0f;
+    float time_elapsed_between_attacks = 0.0f;
+
+    int num_shots = 5;
+    int shots_fired = 0;
+    std::vector<SquareCore::Vec2> shot_positions = { {0.0f, 500.0f}, {200.0f, 500.0f}, {400.0f, 500.0f}, {600.0f, 500.0f}, {800.0f, 500.0f}};
+    float time_between_shots = 0.5f;
+    float time_elapsed_after_firing = 0.0f;
+    
+    uint32_t sword_entity = 0;
+    uint32_t gun_entity = 0;
+
+    bool slashed = false;
+    float slash_range = 800.0f;
+    float slash_length = 2.0f;
+    float slash_length_elapsed = 0.0f;
+    float slash_force = 5000.0f;
+
+    bool slammed = false;
+    float slam_range = 100.0f;
+    float slam_length = 1.0f;
+    float slam_length_elapsed = 0.0f;
+    float slam_speed = 2000.0f;
 };

@@ -400,6 +400,27 @@ void Player::OnCollision(float delta_time)
             target_bounds_y_min = -4800.0f;
             continue;
         }
+        
+        if (EntityHasTag(collision.first, "Level3BoundsTrigger1") && !SquareCore::CompareFloats(target_bounds_y_min, -400.0f))
+        {
+            target_bounds_y_min = -400.0f;
+            continue;
+        }
+        if (EntityHasTag(collision.first, "Level3BoundsTrigger2") && !SquareCore::CompareFloats(target_bounds_y_min, 0.0f))
+        {
+            target_bounds_y_min = 0.0f;
+            continue;
+        }
+        if (EntityHasTag(collision.first, "Level3BoundsTrigger3") && !SquareCore::CompareFloats(target_bounds_y_min, 0.0f))
+        {
+            target_bounds_y_min = 0.0f;
+            continue;
+        }
+        if (EntityHasTag(collision.first, "Level3BoundsTrigger4") && !SquareCore::CompareFloats(target_bounds_y_min, 0.0f))
+        {
+            target_bounds_y_min = 0.0f;
+            continue;
+        }
 
         if (EntityHasTag(collision.first, "Boss2Activate") && !enemy_manager->boss_2_active && !player_data.second_boss_dead)
         {
@@ -467,6 +488,11 @@ void Player::OnCollision(float delta_time)
             ChargeEnemy* charge_enemy = nullptr;
             JumpBoss* jump_boss = nullptr;
             SecondBoss* second_boss = nullptr;
+
+            if (EntityHasTag(collision.first, "EnemyProjectile"))
+            {
+                can_hit = true;
+            }
     
             for (auto& enemy_property : GetAllEntityProperties(collision.first))
             {
@@ -517,6 +543,8 @@ void Player::OnCollision(float delta_time)
                                     second_boss->hit_player_this_attack = true;
                         
                                 TakeDamage(player_character, enemy_character->damage);
+                                if (player_character->health <= 0)
+                                    return;
                             }
                         }
                     }
@@ -580,6 +608,8 @@ void Player::OnCollision(float delta_time)
                 if (Character* player_character = dynamic_cast<Character*>(player_property))
                 {
                     TakeDamage(player_character, 1);
+                    if (player_character->health <= 0)
+                        return;
                 }
             }
             SetVelocity(player, 0.0f, 0.0f);
@@ -604,7 +634,9 @@ void Player::TakeDamage(Character* player_character, int damage)
 
     if (player_character->health <= 0)
     {
-        map->LoadMap(map->current_map, player_data.spawn_points[map->current_map-1]);
+        int spawn_index = map->current_map > 0 ? map->current_map - 1 : 0;
+        last_grounded_position = player_data.spawn_points[spawn_index];
+        map->LoadMap(map->current_map, player_data.spawn_points[spawn_index]);
         SDL_Log("Player died");
     }
 }
@@ -612,6 +644,8 @@ void Player::TakeDamage(Character* player_character, int damage)
 void Player::DealDamage(Character* enemy_character, uint32_t enemy_id, int damage)
 {
     if (!EntityExists(enemy_id)) return;
+
+    if (EntityHasTag(enemy_id, "EnemyProjectile")) return;
     
     enemy_character->health -= damage;
     SDL_Log(("Enemy : " + std::to_string(enemy_id) + " now has " + std::to_string(enemy_character->health) + " health").c_str());

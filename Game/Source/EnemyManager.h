@@ -7,9 +7,18 @@
 
 class Player;
 
+struct EnemyProjectileEntity
+{
+    uint32_t id;
+    bool active = false;
+    float timer = 0.0f;
+    Direction direction = Direction::LEFT;
+};
+
 class EnemyManager : public SquareCore::Script
 {
 public:
+    EnemyManager() : projectile_pool(sizeof(EnemyProjectileEntity), 5) {}
     void OnStart() override;
     void OnUpdate(float deltaTime) override;
 
@@ -19,10 +28,14 @@ public:
     uint32_t SpawnJumpEnemy(const SquareCore::Vec2& position);
     uint32_t SpawnJumpBoss(const SquareCore::Vec2& position = SquareCore::Vec2(-6000.0f, 50.0f));
     void SpawnSecondBoss(const SquareCore::Vec2& position = SquareCore::Vec2(0.0f, 0.0f));
+    uint32_t SpawnFinalBoss(const SquareCore::Vec2& position);
 
     bool boss_1_active = false;
     bool boss_2_active = false;
     bool boss_3_active = false;
+
+    bool final_boss_slam_active = false;
+    bool final_boss_slash_active = false;
 
 private:
     void AlterChargeEnemy(uint32_t enemy_id);
@@ -44,6 +57,11 @@ private:
         SquareCore::Vec2(-275.5f, -275.5f),
         SquareCore::Vec2(0.0f, 275.5f),
         SquareCore::Vec2(275.5f, -275.5f)
+    };
+    std::vector<SquareCore::Vec2> final_boss_collider_vertices={
+        SquareCore::Vec2(-275.5f * 0.5f, -275.5f * 0.5f),
+        SquareCore::Vec2(0.0f, 275.5f * 0.5f),
+        SquareCore::Vec2(275.5f * 0.5f, -275.5f * 0.5f)
     };
     std::vector<SquareCore::Vec2> boss_2_collider_vertices={
         SquareCore::Vec2(-275.5f * 0.1f, -275.5f *0.1f),
@@ -68,4 +86,8 @@ private:
     int current_attack_type = -1;
 
     float intro_countdown = 3.0f;
+
+    uint32_t final_boss = 0;
+    SquareCore::PoolAllocator projectile_pool;
+    float fb_direction = 0.0f;
 };
