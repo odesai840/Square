@@ -15,6 +15,8 @@ public:
     void SetEnemyManager(EnemyManager* enemy_manager) { this->enemy_manager = enemy_manager; }
     void SetPlayerScript(Player* player) { this->player_script = player; }
     void SetUserInterface(UserInterface* ui) { this->ui = ui; }
+    
+    int current_map = 0;
 
 private:
     uint32_t main_menu_music = 0;
@@ -25,7 +27,6 @@ private:
     Player* player_script = nullptr;
     UserInterface* ui = nullptr;
 
-    int current_map = 0;
     std::vector<uint32_t> wormholes;
     std::vector<uint32_t> wormholes_negative;
     float wormhole_rotation = 0.0f;

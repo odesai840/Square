@@ -104,33 +104,8 @@ void Player::OnUpdate(float delta_time)
     }
 
     // DEBUG KEYS
-    if (GetKeyPressed(debug_save))
-    {
-        for (auto property : GetAllEntityProperties(player))
-        {
-            if (Character* cprop = dynamic_cast<Character*>(property))
-            {
-                cprop->health -= 1;
-            }
-        }
-    }
     if (GetKeyPressed(debug_collision))
         ToggleDebugCollisions();
-    if (GetKeyPressed(debug_mouse_cursor))
-    {
-        mouse_visible = !mouse_visible;
-        SetMouseVisible(mouse_visible);
-    }
-    if (GetKeyPressed(debug_restart_game))
-    {
-        for (auto& player_property : GetAllEntityProperties(player))
-        {
-            if (Character* player_character = dynamic_cast<Character*>(player_property))
-                player_character->health = player_data.max_health;
-        }
-        player_data.heals = 3;
-        SetTimeScale(1.0f);
-    }
     //
 
     if (!enemies_to_remove.empty())
@@ -161,6 +136,7 @@ void Player::HealMaxHealth()
             player_character->health = player_data.max_health;
         }
     }
+    player_data.heals = player_data.max_heals;
 }
 
 void Player::CancelVelocity()
@@ -619,7 +595,7 @@ void Player::TakeDamage(Character* player_character, int damage)
 
     if (player_character->health <= 0)
     {
-        SetTimeScale(0.0f);
+        map->LoadMap(map->current_map, player_data.spawn_points[map->current_map-1]);
         SDL_Log("Player died");
     }
 }
