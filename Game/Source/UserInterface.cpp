@@ -14,15 +14,15 @@ void UserInterface::OnStart()
     
     level = player_script->GetPlayerData().level;
     spawn_point = player_script->GetPlayerData().spawn_points[level-1];
-    main_menu_play_button = AddUIButton(1920.0f / 2.0f - 150.0f, 1080.0f / 2.0f - 100.0f, 300, 75,
+    main_menu_play_button = AddUIButton(1920.0f / 2.0f - 150.0f, 1080.0f / 2.0f + 200.0f, 300, 75,
                                         SquareCore::RGBA(50, 50, 50, 255), "PLAY", {SquareCore::RGBA(0, 0, 0, 0)},
                                         [this] { map->LoadMap(level, spawn_point); OnPlay(); }, "Resources/Fonts/Helvetica.ttf", 32,
                                         SquareCore::RGBA(255, 255, 255, 255));
-    main_menu_credits_button = AddUIButton(1920.0f / 2.0f - 150.0f, 1080.0f / 2.0f + 0.0f, 300, 75,
+    main_menu_credits_button = AddUIButton(1920.0f / 2.0f - 150.0f, 1080.0f / 2.0f + 300.0f, 300, 75,
                                       SquareCore::RGBA(50, 50, 50, 255), "CREDITS", {SquareCore::RGBA(0, 0, 0, 0)},
                                       [this] { ShowCredits(true); }, "Resources/Fonts/Helvetica.ttf", 32,
                                       SquareCore::RGBA(255, 255, 255, 255));
-    main_menu_quit_button = AddUIButton(1920.0f / 2.0f - 150.0f, 1080.0f / 2.0f + 100.0f, 300, 75,
+    main_menu_quit_button = AddUIButton(1920.0f / 2.0f - 150.0f, 1080.0f / 2.0f + 400.0f, 300, 75,
                                       SquareCore::RGBA(50, 50, 50, 255), "QUIT", {SquareCore::RGBA(0, 0, 0, 0)},
                                       [this] { Quit(); }, "Resources/Fonts/Helvetica.ttf", 32,
                                       SquareCore::RGBA(255, 255, 255, 255));

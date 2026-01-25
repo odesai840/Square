@@ -80,6 +80,7 @@ void Map::OnUpdate(float deltaTime)
                 RemoveEntity(ball_entity);
                 
                 enemy_manager->SpawnJumpBoss({-11000.0f, 500.0f});
+                enemy_manager->boss_1_active = true;
             }
         }
     }

@@ -641,6 +641,7 @@ void Player::DealDamage(Character* enemy_character, uint32_t enemy_id, int damag
             {
                 RemoveEntity(level_2_exit);
                 player_data.second_boss_dead = true;
+                enemy_manager->boss_2_active = false;
             }
         }
         
@@ -650,6 +651,7 @@ void Player::DealDamage(Character* enemy_character, uint32_t enemy_id, int damag
             {
                 RemoveEntity(level_1_wormhole_shield);
                 player_data.first_boss_dead = true;
+                enemy_manager->boss_1_active = false;
             }
         }
         
