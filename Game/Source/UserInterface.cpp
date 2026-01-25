@@ -476,6 +476,8 @@ void UserInterface::OnPlay()
 
 void UserInterface::Pause()
 {
+    if (map->current_map == 0) return;
+    
     if (paused)
     {
         SetMouseVisible(false);
