@@ -48,8 +48,6 @@ void Player::OnStart()
         SetColliderBox(projectile->id, 50.0f, 25.0f);
         SetZIndex(projectile->id, -1);
     }
-    
-    SDL_Log("test");
 
     for (int i = 0; i < slash_audio.size(); i++)
     {
@@ -114,6 +112,9 @@ void Player::OnStart()
     UpdateAudioVolumes();
 
     player_data.heals = player_data.max_heals;
+    
+    if (uint32_t key = GetFirstEntityWithTag("GainKey") && has_key)
+        SetEntityVisible(key, false);
 }
 
 void Player::TeleportPlayer(const SquareCore::Vec2& position)
@@ -143,6 +144,16 @@ void Player::OnUpdate(float delta_time)
     Projectile(delta_time);
     OnCollision(delta_time);
     UpdateBounceEntities(delta_time);
+    
+    if (in_octagon_dialogue)
+    {
+        if (dialog_manager->HasBeenSeen(5))
+        {
+            PlayPickupSound();
+            player_data.has_faster_slash = true;
+            user_interface->AbilityGained("Faster Slash", "idk maybe slash faster or something you can figure it out");
+        }
+    }
     
     if (in_final_boss_dialogue)
     {
@@ -174,8 +185,8 @@ void Player::OnUpdate(float delta_time)
     }
 
     // DEBUG KEYS
-    if (GetKeyPressed(debug_collision))
-        ToggleDebugCollisions();
+    /*if (GetKeyPressed(debug_collision))
+        ToggleDebugCollisions();*/
     //
 
     if (!enemies_to_remove.empty())
@@ -514,6 +525,11 @@ void Player::OnCollision(float delta_time)
             SetEntityVisible(fbdc, false);
         }
         
+        if (EntityHasTag(collision.first, "DialogTriggerLastOcta"))
+        {
+            in_octagon_dialogue = true;
+        }
+        
         if (EntityHasTag(collision.first, "DialogTriggerReginald") && !enemy_manager->boss_3_active)
         {
             map->MuteAllMusic();
@@ -570,7 +586,7 @@ void Player::OnCollision(float delta_time)
         {
             PlayPickupSound();
             has_key = true;
-            user_interface->AbilityGained("Mysterious Golden Key", "I wonder what this goes to?");
+            user_interface->AbilityGained("Mysterious Golden Key", "I wonder what this unlocks?");
             RemoveEntity(collision.first);
             continue;
         }
@@ -666,7 +682,6 @@ void Player::OnCollision(float delta_time)
                         }
                     }
                 }
-                SDL_Log("Damage dealt");
             }
         }
         
@@ -756,9 +771,19 @@ void Player::TakeDamage(Character* player_character, int damage)
 
     if (player_character->health <= 0)
     {
+        bool was_boss_3_active = enemy_manager->boss_3_active;
+    
         int spawn_index = map->current_map > 0 ? map->current_map - 1 : 0;
         last_grounded_position = player_data.spawn_points[spawn_index];
         map->LoadMap(map->current_map, player_data.spawn_points[spawn_index]);
+    
+        if (was_boss_3_active)
+        {
+            dialog_manager->ClearSeenEntry(6);
+            TeleportPlayer({-11880.0, 5375.0});
+            SetCameraPosition(GetPosition(player));
+        }
+    
         SDL_Log("Player died");
     }
 }

@@ -24,7 +24,8 @@ public:
     void Close();
     
     bool IsActive() const { return active; }
-    bool HasBeenSeen(int entryId) const { return seenEntries.count(entryId) > 0; }
+    bool HasBeenSeen(int entryId) const { return seenEntries.count(entryId) > 0; }\
+    void ClearSeenEntry(int entryId) { seenEntries.erase(entryId); }
 
     void SetPlayerScript(Player* player_s) { player_script = player_s; }
     DialogLine* GetCurrentLine() const;

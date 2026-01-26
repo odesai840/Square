@@ -1,4 +1,7 @@
 #include "EnemyManager.h"
+
+#include <iostream>
+
 #include "Player.h"
 
 void EnemyManager::OnStart()
@@ -16,7 +19,13 @@ void EnemyManager::LoadEnemies()
     second_bosses = {};
     second_boss_properties = {};
     second_boss_ch_properties = {};
+    
+    for (EnemyProjectileEntity& projectile : boss_projectiles)
+    {
+        RemoveEntity(projectile.id);
+    }
     boss_projectiles = {};
+    
     boss_1_active = false;
     boss_2_active = false;
     boss_3_active = false;
@@ -90,7 +99,6 @@ uint32_t EnemyManager::SpawnFinalBoss(const SquareCore::Vec2& position)
     AddTagToEntity(final_boss, "FinalBoss");
     SetDrag(final_boss, 5.0f);
     SetGravityScale(final_boss, 0.0f);
-    SetEntityPersistent(final_boss, true);
     AddPropertyToEntity(final_boss, new Character(75, 75, 2));
     SetZIndex(final_boss, 25);
     FinalBoss* fb = new FinalBoss();
@@ -711,6 +719,7 @@ void EnemyManager::OnUpdate(float deltaTime)
                     if (fb->attack_type == FinalBossAttackType::SHOOT)
                     {
                         SetGravityScale(final_boss, 0.0f);
+                        SetVelocity(final_boss, 0.0f, 0.0f);
                         fb->shots_fired = 0;
                         SDL_Log("Attack Type: SHOOT (distance: %.2f)", distance);
                     }
@@ -830,11 +839,6 @@ void EnemyManager::OnUpdate(float deltaTime)
                         continue;
                     }
                     
-                    if (fb->shots_fired == 0)
-                    {
-                        SetGravityScale(final_boss, 0.0f);
-                    }
-                    
                     if (fb->shots_fired < fb->num_shots)
                     {
                         if (fb->time_elapsed_after_firing >= fb->time_between_shots)
@@ -852,10 +856,10 @@ void EnemyManager::OnUpdate(float deltaTime)
                                 {
                                     SquareCore::Vec2 boss_pos = GetPosition(final_boss);
                                     player_script->PlayLaserSound();
-                                    SetVelocity(final_boss, 0.0f, 0.0f);
                                     SetPosition(projectile.id, boss_pos.x, boss_pos.y);
                                     SetVelocity(projectile.id, 0.0f, -2000.0f);
                                     SetEntityVisible(projectile.id, true);
+                                    SetVelocity(final_boss, 0.0f, 0.0f);
                                     projectile.active = true;
                                     projectile.timer = 0.0f;
                                     projectile.direction = Direction::DOWN;
@@ -875,15 +879,12 @@ void EnemyManager::OnUpdate(float deltaTime)
                     {
                         SetEntityVisible(fb->gun_entity, false);
                         SetGravityScale(final_boss, 1.0f);
-                        SquareCore::Vec2 velocity = GetVelocity(final_boss);
-                        if (std::abs(velocity.y) < 50.0f)
+                        if (GetPosition(final_boss).y <= 5310.0)
                         {
-                            SDL_Log("SHOOT attack complete, returning to IDLE");
                             fb->state = FinalBossState::IDLE;
                             fb->shots_fired = 0;
                             fb->time_elapsed_after_firing = 0.0f;
                             fb->attack_type = FinalBossAttackType::NONE;
-                            SetGravityScale(final_boss, 0.0f);
                         }
                     }
                 }

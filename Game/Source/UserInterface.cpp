@@ -132,9 +132,9 @@ void UserInterface::OnStart()
                                               player_script->UpdateAudioVolumes();
                                          }, "Resources/Fonts/Helvetica.ttf", 32,
                                          SquareCore::RGBA(255, 255, 255, 255));
-    pauseMenuControlsText = AddUIText(1920.0f / 2.0f - 150.0f, 1080.0f / 2.0f + 150.0f, 16,
+    pauseMenuControlsText = AddUIText(1920.0f / 2.0f - 200.0f, 1080.0f / 2.0f + 250.0f, 16,
                                        SquareCore::RGBA(255, 255, 255, 255), "Resources/Fonts/Helvetica.ttf", 
-                                       "CONTROLS:\nMove - WASD\nJump - SPACE\nDash - SHIFT\nSlash - LMB\nShoot - RMB\nHeal - E"
+                                       "CONTROLS:\nMove/Look - WASD\nJump - SPACE\nDash - SHIFT\nSlash - LMB\nShoot - RMB\nHeal - E"
                                        );
 
     SetUIElementVisible(pauseMenuControlsText, false);
@@ -162,6 +162,7 @@ void UserInterface::OnStart()
     SetUIElementPersistent(pauseMenuSfxMinusButton, true);
     SetUIElementPersistent(pauseMenuSfxVolumeText, true);
     SetUIElementPersistent(pauseMenuSfxPlusButton, true);
+    SetUIElementPersistent(pauseMenuControlsText, true);
 
     SetButtonSprites(pauseMenuResumeButton, "Resources/Sprites/albinauric_fatty.png", "Resources/Sprites/fish.png",
                      "Resources/Sprites/albinauric_fatty.png");
@@ -551,6 +552,7 @@ void UserInterface::Pause()
         SetUIElementVisible(pauseMenuSfxVolumeText, false);
         SetUIElementVisible(pauseMenuSfxPlusButton, false);
         SetUIElementVisible(pauseMenuControlsText, false);
+        
         SetTimeScale(1.0f);
     }
     else if (!paused)

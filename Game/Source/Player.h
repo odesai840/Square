@@ -74,13 +74,14 @@ private:
     void UpdateBounceEntities(float delta_time);
     void TakeDamage(Character* player_character, int damage);
     void DealDamage(Character* enemy_character, uint32_t enemy_id, int damage);
-
+    
 private:
     bool loaded = false;
     bool is_transitioning = false;
     bool in_final_boss_dialogue = false;
+    bool in_octagon_dialogue = false;
     
-    bool has_key = false;
+    bool has_key = true;
     
     PlayerData player_data;
     uint32_t player = 0;

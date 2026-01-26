@@ -60,6 +60,7 @@ void AudioManager::StopAudioClip(uint32_t id) {
     if (it == audioClips.end()) {
         return;
     }
+    ma_sound_seek_to_pcm_frame(&audioClips[id]->sound, 0);
     ma_sound_stop(&audioClips[id]->sound);
 }
 

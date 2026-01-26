@@ -199,6 +199,8 @@ struct FinalBoss : SquareCore::Property
     
     uint32_t sword_entity = 0;
     uint32_t gun_entity = 0;
+    
+    bool gravity_enabled_for_fall = false;
 
     bool slashed = false;
     float slash_range = 800.0f;

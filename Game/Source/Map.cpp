@@ -10,7 +10,7 @@ void Map::OnStart()
     level_2_music = AddAudioClip("Resources/Audio/03.mp3");
     level_3_music = AddAudioClip("Resources/Audio/11.mp3");
     final_boss_music = AddAudioClip("Resources/Audio/14.wav");
-    SetAudioVolume(main_menu_music, 0.1f);
+    SetAudioVolume(main_menu_music, 0.0f);
     SetAudioVolume(level_1_music, 0.1f);
     SetAudioVolume(level_2_music, 0.1f);
     SetAudioVolume(level_3_music, 0.1f);
@@ -18,10 +18,11 @@ void Map::OnStart()
     SetAudioLooping(level_1_music, true);
     SetAudioLooping(level_2_music, true);
     SetAudioLooping(level_3_music, true);
+    SetAudioLooping(final_boss_music, true);
     SetAudioMasterVolume(1.0f);
     
-    //SetCameraZoom(0.85f);
-    SetCameraZoom(0.3f);
+    SetCameraZoom(0.85f);
+    //SetCameraZoom(0.1f);
     EnableCameraBounds(true);
     SetGravity(-1500.0f);
     
@@ -48,12 +49,12 @@ void Map::OnUpdate(float deltaTime)
         SetRotation(icon, ability_icon_rotation);
     }
 
-    if (GetKeyPressed(debug_hot_reload))
+    /*if (GetKeyPressed(debug_hot_reload))
     {
         uint32_t player_id = GetFirstEntityWithTag("Player");
         SquareCore::Vec2 player_pos = GetPosition(player_id);
         LoadMap(current_map, {player_pos.x, player_pos.y});
-    }
+    }*/
     
     if (EntityExists(ball_entity))
     {
@@ -215,8 +216,6 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             player_script->UpdateCameraBounds(-14000.0f, -400.0f, 6000.0f, 10000.0f);
             SetCameraPosition(player_script->GetPlayerData().spawn_points[0]);
             if (ui) ui->AreaTitle("The Cage", "Now Playing:\nThe Cage\nCaleb Kronstad and Ohm Desai");
-            //enemy_manager->SpawnFinalBoss({200.0f, 100.0f});
-            //enemy_manager->boss_3_active = true;
             break;
         }
     case 2:
@@ -244,9 +243,10 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             player_script->UpdateCameraBounds(-14000.0f, -10000.0f, 9500.0f, 14000.0f);
             SetCameraPosition(player_script->GetPlayerData().spawn_points[2]);
             if (ui) ui->AreaTitle("The Palace", "Now Playing:\nThe Palace\nCaleb Kronstad");
+            //player_script->TeleportPlayer({-10500.0,5475.0});
             if (!player_script->GetPlayerData().third_boss_dead)
             {
-                enemy_manager->SpawnFinalBoss({-9000.0f, 5200.0f});
+                enemy_manager->SpawnFinalBoss({-9200.0f, 5200.0f});
                 enemy_manager->boss_3_active = false;
             }
             break;
@@ -270,6 +270,7 @@ void Map::UpdateMusicVolumes()
     SetAudioVolume(level_1_music, player_script->GetPlayerData().music_volume);
     SetAudioVolume(level_2_music, player_script->GetPlayerData().music_volume);
     SetAudioVolume(level_3_music, player_script->GetPlayerData().music_volume);
+    SetAudioVolume(final_boss_music, player_script->GetPlayerData().music_volume);
 }
 
 void Map::MuteAllMusic()
