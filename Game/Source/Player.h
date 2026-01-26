@@ -41,6 +41,13 @@ public:
     void HealMaxHealth();
     void CancelVelocity();
     void UpdateCameraBounds(float min_x, float min_y, float max_x, float max_y);
+    
+    void PlayLaserSound();
+    void PlaySwordSound();
+    void PlayBounceSound();
+    void PlayDashSound();
+    
+    void UpdateAudioVolumes();
 
 private:
     void Move(float delta_time);
@@ -75,13 +82,25 @@ private:
     uint32_t last_valid_ground_entity = 0;
 
     Direction player_direction = Direction::LEFT;
-
-    uint32_t slash_audio = 0;
-    uint32_t jump_audio = 0;
-    uint32_t heal_audio = 0;
-    uint32_t dash_audio = 0;
-    uint32_t projectile_audio = 0;
-    uint32_t take_damage_audio = 0;
+    
+    uint32_t slash_audio[5] = {0, 0, 0, 0, 0};
+    int slash_audio_index = 0;
+    uint32_t jump_audio[5] = {0, 0, 0, 0, 0};
+    int jump_audio_index = 0;
+    uint32_t heal_audio[5] = {0, 0, 0, 0, 0};
+    int heal_audio_index = 0;
+    uint32_t dash_audio[5] = {0, 0, 0, 0, 0};
+    int dash_audio_index = 0;
+    uint32_t projectile_audio[5] = {0, 0, 0, 0, 0};
+    int projectile_audio_index = 0;
+    uint32_t take_damage_audio[5] = {0, 0, 0, 0, 0};
+    int take_damage_audio_index = 0;
+    uint32_t bounce_audio[5] = {0, 0, 0, 0, 0};
+    int bounce_audio_index = 0;
+    uint32_t final_boss_laser_audio[5] = {0, 0, 0, 0, 0};
+    int final_boss_laser_audio_index = 0;
+    uint32_t final_boss_sword_audio[5] = {0, 0, 0, 0, 0};
+    int final_boss_sword_audio_index = 0;
 
     int slash_damage = 1;
     int projectile_damage = 2;

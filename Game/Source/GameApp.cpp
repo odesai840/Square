@@ -7,6 +7,10 @@
 #include "Map.h"
 #include "UserInterface.h"
 
+#ifdef _WIN32
+#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+#endif
+
 int main(int argc, char* argv[]) {
     // Square application
     SquareCore::Application app;

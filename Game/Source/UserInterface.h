@@ -17,15 +17,16 @@ public:
     void SetMap(Map* m) { this->map = m; }
     void AreaTitle(std::string title, std::string info);
     void AbilityGained(std::string title, std::string info);
+    void ShowCredits(bool show);
 
 private:
     void DialogUpdate();
     void Pause();
     void UpdateHealthBar();
     void UpdateHeals();
-    void ShowCredits(bool show);
     void UpdateAreaTitle(float deltaTime);
     void UpdateAbilityGained(float deltaTime);
+    void UpdateVolumeDisplays();
     
 private:
     Map* map = nullptr;
@@ -39,6 +40,14 @@ private:
     uint32_t pauseMenuBox = 0;
     uint32_t pauseMenuResumeButton = 0;
     uint32_t pauseMenuQuitButton = 0;
+    uint32_t pauseMenuMusicLabel = 0;
+    uint32_t pauseMenuMusicMinusButton = 0;
+    uint32_t pauseMenuMusicVolumeText = 0;
+    uint32_t pauseMenuMusicPlusButton = 0;
+    uint32_t pauseMenuSfxLabel = 0;
+    uint32_t pauseMenuSfxMinusButton = 0;
+    uint32_t pauseMenuSfxVolumeText = 0;
+    uint32_t pauseMenuSfxPlusButton = 0;
     bool paused = false;
 
     uint32_t player = 0;

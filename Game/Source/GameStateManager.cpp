@@ -56,6 +56,10 @@ PlayerData GameStateManager::LoadPlayerData(const std::string& save_path)
         data.second_boss_dead = json["second_boss_dead"];
     if (json.contains("third_boss_dead"))
         data.third_boss_dead = json["third_boss_dead"];
+    if (json.contains("music_volume"))
+        data.music_volume = json["music_volume"];
+    if (json.contains("sfx_volume"))
+        data.sfx_volume = json["sfx_volume"];
 
     return data;
 }
@@ -79,6 +83,8 @@ void GameStateManager::SavePlayerData(const std::string& save_path, PlayerData d
     json["second_boss_dead"] = data.second_boss_dead;
     json["third_boss_dead"] = data.third_boss_dead;
     json["the_wall_dead"] = data.the_wall_dead;
+    json["music_volume"] = data.music_volume;
+    json["sfx_volume"] = data.sfx_volume;
 
     std::filesystem::path path(save_path);
     if (path.has_parent_path())

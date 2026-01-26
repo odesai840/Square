@@ -18,7 +18,7 @@ struct EnemyProjectileEntity
 class EnemyManager : public SquareCore::Script
 {
 public:
-    EnemyManager() : projectile_pool(sizeof(EnemyProjectileEntity), 5) {}
+    EnemyManager() : projectile_pool(sizeof(EnemyProjectileEntity), 8) {}
     void OnStart() override;
     void OnUpdate(float deltaTime) override;
 

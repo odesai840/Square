@@ -190,9 +190,9 @@ struct FinalBoss : SquareCore::Property
     float time_between_attacks = 1.0f;
     float time_elapsed_between_attacks = 0.0f;
 
-    int num_shots = 5;
+    int num_shots = 8;
     int shots_fired = 0;
-    std::vector<SquareCore::Vec2> shot_positions = { {0.0f, 500.0f}, {200.0f, 500.0f}, {400.0f, 500.0f}, {600.0f, 500.0f}, {800.0f, 500.0f}};
+    std::vector<SquareCore::Vec2> shot_positions = { {-9000.0f, 6000.0f}, {-9300.0f, 6000.0f}, {-9600.0f, 6000.0f}, {-9900.0f, 6000.0f}, {-10200.0f, 6000.0f}, {-10500.0f, 6000.0f}, {-10800.0f, 6000.0f}, {-11100, 6000.0f} };
     float time_between_shots = 0.5f;
     float time_elapsed_after_firing = 0.0f;
     

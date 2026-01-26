@@ -48,19 +48,50 @@ void Player::OnStart()
         SetColliderBox(projectile->id, 50.0f, 25.0f);
         SetZIndex(projectile->id, -1);
     }
+    
+    SDL_Log("test");
 
-    //slash_audio = AddAudioClip("Resources/Audio/SFX/swordattackswoosh.mp3");
-    SetAudioLooping(slash_audio, false);
-    SetAudioVolume(slash_audio, 0.15f);
-    //jump_audio = AddAudioClip("Resources/Audio/SFX/swoosh32maybejump.mp3");
-    SetAudioLooping(jump_audio, false);
-    SetAudioVolume(jump_audio, 0.1f);
-    //projectile_audio = AddAudioClip("Resources/Audio/SFX/projectile_fire.mp3");
-    SetAudioLooping(projectile_audio, false);
-    SetAudioVolume(projectile_audio, 0.15f);
-    //take_damage_audio = AddAudioClip("Resources/Audio/SFX/take_damage.mp3");
-    SetAudioLooping(take_damage_audio, false);
-    SetAudioVolume(take_damage_audio, 0.25f);
+    for (int i = 0; i < 5; i++)
+    {
+        slash_audio[i] = AddAudioClip("Resources/Audio/SFX/swoosh.mp3");
+        SetAudioLooping(slash_audio[i], false);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        jump_audio[i] = AddAudioClip("Resources/Audio/SFX/jump.wav");
+        SetAudioLooping(jump_audio[i], false);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        projectile_audio[i] = AddAudioClip("Resources/Audio/SFX/projectile.wav");
+        SetAudioLooping(projectile_audio[i], false);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        dash_audio[i] = AddAudioClip("Resources/Audio/SFX/dash.wav");
+        SetAudioLooping(dash_audio[i], false);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        take_damage_audio[i] = AddAudioClip("Resources/Audio/SFX/damage.mp3");
+        SetAudioLooping(take_damage_audio[i], false);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        bounce_audio[i] = AddAudioClip("Resources/Audio/SFX/bounce.wav");
+        SetAudioLooping(bounce_audio[i], false);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        final_boss_laser_audio[i] = AddAudioClip("Resources/Audio/SFX/boss_lazar.wav");
+        SetAudioLooping(final_boss_laser_audio[i], false);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        final_boss_sword_audio[i] = AddAudioClip("Resources/Audio/SFX/sword_slash.wav");
+        SetAudioLooping(final_boss_sword_audio[i], false);
+    }
+    UpdateAudioVolumes();
 
     player_data.heals = player_data.max_heals;
 }
@@ -68,6 +99,30 @@ void Player::OnStart()
 void Player::TeleportPlayer(const SquareCore::Vec2& position)
 {
     SetPosition(player, position.x, position.y);
+}
+
+void Player::PlayLaserSound()
+{
+    PlayAudioClip(final_boss_laser_audio[final_boss_laser_audio_index]);
+    final_boss_laser_audio_index = (final_boss_laser_audio_index + 1) % 5;
+}
+
+void Player::PlaySwordSound()
+{
+    PlayAudioClip(final_boss_sword_audio[final_boss_sword_audio_index]);
+    final_boss_sword_audio_index = (final_boss_sword_audio_index + 1) % 5;
+}
+
+void Player::PlayBounceSound()
+{
+    PlayAudioClip(bounce_audio[bounce_audio_index]);
+    bounce_audio_index = (bounce_audio_index + 1) % 5;
+}
+
+void Player::PlayDashSound()
+{
+    PlayAudioClip(dash_audio[dash_audio_index]);
+    dash_audio_index = (dash_audio_index + 1) % 5;
 }
 
 void Player::OnExit()
@@ -153,6 +208,42 @@ void Player::UpdateCameraBounds(float min_x, float min_y, float max_x, float max
     target_bounds_y_min = min_y;
 }
 
+void Player::UpdateAudioVolumes()
+{
+    for (int i = 0; i < 5; i++)
+    {
+        SetAudioVolume(slash_audio[i], player_data.sfx_volume);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        SetAudioVolume(jump_audio[i], player_data.sfx_volume);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        SetAudioVolume(projectile_audio[i], player_data.sfx_volume);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        SetAudioVolume(dash_audio[i], player_data.sfx_volume / 2.0f);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        SetAudioVolume(take_damage_audio[i], player_data.sfx_volume * 2.0f);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        SetAudioVolume(bounce_audio[i], player_data.sfx_volume * 2.0f);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        SetAudioVolume(final_boss_laser_audio[i], player_data.sfx_volume);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        SetAudioVolume(final_boss_sword_audio[i], player_data.sfx_volume / 2.0f);
+    }
+}
+
 void Player::Move(float delta_time)
 {
     SquareCore::Vec2 player_velocity = GetVelocity(player);
@@ -212,7 +303,9 @@ void Player::Jump(float delta_time)
     
     if (GetKeyPressed(jump_bind) && (grounded || (player_data.has_double_jump && can_double_jump)) && !dialog_manager->IsActive())
     {
-        PlayAudioClip(jump_audio);
+        PlayAudioClip(jump_audio[jump_audio_index]);
+        jump_audio_index = (jump_audio_index + 1) % 5;
+        
         if (!grounded)
         {
             can_double_jump = false;
@@ -238,6 +331,9 @@ void Player::Dash(float delta_time)
 
     if (GetKeyPressed(dash_bind) && !is_dashing && player_velocity.x != 0.0f && !in_cooldown && !dialog_manager->IsActive())
     {
+        PlayAudioClip(dash_audio[dash_audio_index]);
+        dash_audio_index = (dash_audio_index + 1) % 5;
+        
         is_dashing = true;
         dashes_used++;
         time_since_last_dash = 0.0f;
@@ -619,7 +715,11 @@ void Player::OnCollision(float delta_time)
     }
 
     if (bouncing && onlyCollidingWithTop && bounce_entity)
+    {
+        PlayAudioClip(bounce_audio[bounce_audio_index]);
+        bounce_audio_index = (bounce_audio_index + 1) % 5;
         HandleBounceEntities(delta_time, bounce_entity);
+    }
 }
 
 void Player::TakeDamage(Character* player_character, int damage)
@@ -628,7 +728,8 @@ void Player::TakeDamage(Character* player_character, int damage)
     can_take_damage = false;
     can_take_damage_timer = 0.0f;
 
-    PlayAudioClip(take_damage_audio);
+    PlayAudioClip(take_damage_audio[take_damage_audio_index]);
+    take_damage_audio_index = (take_damage_audio_index + 1) % 5;
     player_character->health -= damage;
     SDL_Log(("Player health: " + std::to_string(player_character->health)).c_str());
 
@@ -687,6 +788,17 @@ void Player::DealDamage(Character* enemy_character, uint32_t enemy_id, int damag
                 player_data.first_boss_dead = true;
                 enemy_manager->boss_1_active = false;
             }
+        }
+        
+        if (EntityHasTag(enemy_id, "FinalBoss"))
+        {
+            player_data.third_boss_dead = true;
+            enemy_manager->boss_3_active = false;
+            user_interface->ShowCredits(true);
+            HealMaxHealth();
+            SetMouseVisible(true);
+            player_data.level = 1;
+            map->LoadMap(0, SquareCore::Vec2(0.0f, 0.0f));
         }
         
         SDL_Log(("Enemy : " + std::to_string(enemy_id) + " died").c_str());

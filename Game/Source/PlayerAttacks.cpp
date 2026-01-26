@@ -8,8 +8,8 @@ void Player::Slash(float delta_time)
     
     if (GetMouseButtonPressed(0) && !dialog_manager->IsActive() && !is_slashing && !slash_in_cooldown && !(player_velocity.x > 600.0f || player_velocity.x < -600.0f))
     {
-        StopAudioClip(slash_audio);
-        PlayAudioClip(slash_audio);
+        PlayAudioClip(slash_audio[slash_audio_index]);
+        slash_audio_index = (slash_audio_index + 1) % 5;
         
         is_slashing = true;
         slash_in_cooldown = true;
@@ -182,8 +182,8 @@ void Player::Projectile(float delta_time)
     
     if (GetMouseButtonPressed(2) && !dialog_manager->IsActive() && !projectile_in_cooldown && player_data.has_projectile)
     {
-        StopAudioClip(projectile_audio);
-        PlayAudioClip(projectile_audio);
+        PlayAudioClip(projectile_audio[projectile_audio_index]);
+        projectile_audio_index = (projectile_audio_index + 1) % 5;
         
         for (int i = 0; i < projectile_pool.GetTotal(); i++)
         {

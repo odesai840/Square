@@ -15,6 +15,7 @@ public:
     void SetEnemyManager(EnemyManager* enemy_manager) { this->enemy_manager = enemy_manager; }
     void SetPlayerScript(Player* player) { this->player_script = player; }
     void SetUserInterface(UserInterface* ui) { this->ui = ui; }
+    void UpdateMusicVolumes();
     
     int current_map = 0;
 

@@ -10,6 +10,8 @@ void EnemyManager::OnStart()
 void EnemyManager::LoadEnemies()
 {
     enemies.clear();
+    
+    final_boss = 0;
 
     std::vector<uint32_t> all_enemies_with_jump_enemy_tag = GetAllEntitiesWithTag("JumpEnemy");
     std::vector<uint32_t> all_enemies_with_charge_enemy_tag = GetAllEntitiesWithTag("ChargeEnemy");
@@ -108,6 +110,7 @@ uint32_t EnemyManager::SpawnFinalBoss(const SquareCore::Vec2& position)
     fb->sword_entity = AddEntity("Resources/Sprites/sword.png", position.x, position.y, 0.0f, 2.0f, 2.0f, true);
     AddTagToEntity(fb->sword_entity, "Enemy");
     AddTagToEntity(fb->sword_entity, "EnemyProjectile");
+    AddTagToEntity(fb->sword_entity, "Pogo");
     AddPropertyToEntity(fb->sword_entity, new Character(1, 1, 2));
     SetGravityScale(fb->sword_entity, 0.0f);
     SetEntityVisible(fb->sword_entity, false);
@@ -287,6 +290,7 @@ void EnemyManager::OnUpdate(float deltaTime)
 
                         if (jump_property->windup_timer >= jump_property->windup_duration)
                         {
+                            player_script->PlayBounceSound();
                             jump_property->state = JumpEnemyState::JUMPING;
                             jump_property->windup_timer = 0.0f;
 
@@ -441,6 +445,7 @@ void EnemyManager::OnUpdate(float deltaTime)
 
                         if (charge_property->prepare_timer >= charge_property->prepare_duration)
                         {
+                            player_script->PlayDashSound();
                             charge_property->state = ChargeEnemyState::CHARGING;
                             charge_property->charge_elapsed = 0.0f;
                             SetScale(enemy, charge_property->base_scale);
@@ -497,6 +502,7 @@ void EnemyManager::OnUpdate(float deltaTime)
 
                     if (jump_property->charge_windup_timer >= jump_property->charge_windup_time)
                     {
+                        player_script->PlayDashSound();
                         jump_property->is_winding_up = false;
                         jump_property->charge_windup_timer = 0.0f;
                         jump_property->jump_cooldown_timer = 0.0f;
@@ -520,6 +526,7 @@ void EnemyManager::OnUpdate(float deltaTime)
                     }
                     else if (distance < jump_property->close_range)
                     {
+                        player_script->PlayBounceSound();
                         jump_property->jump_cooldown_timer = 0.0f;
                         SetVelocity(enemy, direction * distance * jump_property->jump_force.x,
                                     jump_property->jump_force.y);
@@ -533,6 +540,7 @@ void EnemyManager::OnUpdate(float deltaTime)
                         }
                         else
                         {
+                            player_script->PlayBounceSound();
                             jump_property->jump_cooldown_timer = 0.0f;
                             SetVelocity(enemy, direction * distance * jump_property->jump_force.x,
                                         jump_property->jump_force.y);
@@ -579,14 +587,17 @@ void EnemyManager::OnUpdate(float deltaTime)
                             switch (current_attack_type)
                             {
                             case 0:
+                                player_script->PlayDashSound();
                                 SetVelocity(second_bosses[active_boss], 0.0f, 0.0f);
                                 SetVelocity(second_bosses[active_boss], 5000.0f, 0.0f);
                                 break;
                             case 1:
+                                player_script->PlayDashSound();
                                 SetVelocity(second_bosses[active_boss], 0.0f, 0.0f);
                                 SetVelocity(second_bosses[active_boss], -5000.0f, 0.0f);
                                 break;
                             case 2:
+                                player_script->PlayDashSound();
                                 SetVelocity(second_bosses[active_boss], 0.0f, 0.0f);
                                 SetVelocity(second_bosses[active_boss], 0.0f, -5000.0f);
                                 break;
@@ -742,6 +753,7 @@ void EnemyManager::OnUpdate(float deltaTime)
                         {
                             if (!fb->slashed)
                             {
+                                player_script->PlaySwordSound();
                                 SetVelocity(final_boss, fb_direction * fb->slash_force, GetVelocity(final_boss).y);
                                 SetVelocity(fb->sword_entity, fb_direction * fb->slash_force, 0.0f);
                                 fb->slashed = true;
@@ -775,6 +787,7 @@ void EnemyManager::OnUpdate(float deltaTime)
                         if (fb->slam_length_elapsed >= fb->slam_length / 4.0f && !fb->slammed)
                         {
                             fb->slammed = true;
+                            player_script->PlaySwordSound();
                             SetVelocity(fb->sword_entity, 0.0f, -fb->slam_speed);
                         }
                     }
@@ -810,6 +823,7 @@ void EnemyManager::OnUpdate(float deltaTime)
                                 if (!projectile->active)
                                 {
                                     SquareCore::Vec2 boss_pos = GetPosition(final_boss);
+                                    player_script->PlayLaserSound();
                                     SetPosition(projectile->id, boss_pos.x, boss_pos.y);
                                     SetVelocity(projectile->id, 0.0f, -2000.0f);
                                     SetEntityVisible(projectile->id, true);
@@ -853,7 +867,7 @@ void EnemyManager::OnUpdate(float deltaTime)
         if (projectile->active)
         {
             projectile->timer += deltaTime;
-            if (projectile->timer >= 2.0f)
+            if (projectile->timer >= 0.425f)
             {
                 projectile->active = false;
                 SetEntityVisible(projectile->id, false);

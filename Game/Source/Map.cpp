@@ -8,7 +8,7 @@ void Map::OnStart()
     main_menu_music = AddAudioClip("Resources/Audio/29th.wav");
     level_1_music = AddAudioClip("Resources/Audio/12.mp3");
     level_2_music = AddAudioClip("Resources/Audio/03.mp3");
-    level_3_music = AddAudioClip("Resources/Audio/11.mp3");
+    level_3_music = AddAudioClip("Resources/Audio/14.wav");
     SetAudioVolume(main_menu_music, 0.1f);
     SetAudioVolume(level_1_music, 0.1f);
     SetAudioVolume(level_2_music, 0.1f);
@@ -17,11 +17,10 @@ void Map::OnStart()
     SetAudioLooping(level_1_music, true);
     SetAudioLooping(level_2_music, true);
     SetAudioLooping(level_3_music, true);
-    SetAudioMasterVolume(0.0f);
-    PlayAudioClip(main_menu_music);
+    SetAudioMasterVolume(1.0f);
     
     SetCameraZoom(0.85f);
-    //SetCameraZoom(0.1f);
+    //SetCameraZoom(0.05f);
     EnableCameraBounds(true);
     SetGravity(-1500.0f);
     
@@ -114,7 +113,9 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
     LoadScene(scene_path);
     if (enemy_manager) enemy_manager->LoadEnemies();
     if (player_script) player_script->TeleportPlayer({player_position.x, player_position.y});
-
+    player_script->UpdateAudioVolumes();
+    UpdateMusicVolumes();
+    
     ability_icons = GetAllEntitiesWithTag("Ability");
     wormholes = GetAllEntitiesWithTag("Wormhole");
     wormholes_negative = GetAllEntitiesWithTag("WormholeNegative");
@@ -238,6 +239,11 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             player_script->UpdateCameraBounds(-14000.0f, -5000.0f, 9500.0f, 14000.0f);
             SetCameraPosition(player_script->GetPlayerData().spawn_points[2]);
             if (ui) ui->AreaTitle("The Palace", "Now Playing:\nThe Palace\nCaleb Kronstad");
+            if (!player_script->GetPlayerData().third_boss_dead)
+            {
+                enemy_manager->SpawnFinalBoss({-9000.0f, 5200.0f});
+                enemy_manager->boss_3_active = true;
+            }
             break;
         }
     default:
@@ -250,4 +256,12 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
         }
     }
     
+}
+
+void Map::UpdateMusicVolumes()
+{
+    SetAudioVolume(main_menu_music, player_script->GetPlayerData().music_volume);
+    SetAudioVolume(level_1_music, player_script->GetPlayerData().music_volume);
+    SetAudioVolume(level_2_music, player_script->GetPlayerData().music_volume);
+    SetAudioVolume(level_3_music, player_script->GetPlayerData().music_volume);
 }

@@ -74,8 +74,8 @@ void UserInterface::OnStart()
     dialogTestTrigger = GetFirstEntityWithTag("DialogTrigger");
     dialogManager.Load("Resources/Data/dialog.json");
 
-    float boxWidth = 400.0f;
-    float boxHeight = 400.0f;
+    float boxWidth = 500.0f;
+    float boxHeight = 600.0f;
     pauseMenuBox = AddUIRect(1920.0f / 2.0f - boxWidth / 2.0f, 1080.0f / 2.0f - boxHeight / 2.0f, boxWidth, boxHeight,
                              SquareCore::RGBA(20, 20, 20, 230), "", {SquareCore::RGBA(0, 0, 0, 0)});
     pauseMenuResumeButton = AddUIButton(1920.0f / 2.0f - 150.0f, 1080.0f / 2.0f - 125.0f, 300, 75,
@@ -87,13 +87,71 @@ void UserInterface::OnStart()
                                       [this] { Quit(); }, "Resources/Fonts/Helvetica.ttf", 32,
                                       SquareCore::RGBA(255, 255, 255, 255));
 
+    pauseMenuMusicLabel = AddUIText(1920.0f / 2.0f - 200.0f, 1080.0f / 2.0f + 150.0f, 24,
+                                     SquareCore::RGBA(255, 255, 255, 255), "Resources/Fonts/Helvetica.ttf", "Music:");
+    pauseMenuMusicMinusButton = AddUIButton(1920.0f / 2.0f - 70.0f, 1080.0f / 2.0f + 140.0f, 50, 50,
+                                            SquareCore::RGBA(50, 50, 50, 255), "-", {SquareCore::RGBA(0, 0, 0, 0)},
+                                            [this] {
+                                                float& vol = player_script->GetPlayerData().music_volume;
+                                                vol = std::max(0.0f, vol - 0.1f);
+                                                map->UpdateMusicVolumes();
+                                            }, "Resources/Fonts/Helvetica.ttf", 32,
+                                            SquareCore::RGBA(255, 255, 255, 255));
+    pauseMenuMusicVolumeText = AddUIText(1920.0f / 2.0f - 10.0f, 1080.0f / 2.0f + 150.0f, 24,
+                                         SquareCore::RGBA(255, 255, 255, 255), "Resources/Fonts/Helvetica.ttf", "1.0");
+    pauseMenuMusicPlusButton = AddUIButton(1920.0f / 2.0f + 50.0f, 1080.0f / 2.0f + 140.0f, 50, 50,
+                                           SquareCore::RGBA(50, 50, 50, 255), "+", {SquareCore::RGBA(0, 0, 0, 0)},
+                                           [this] {
+                                               float& vol = player_script->GetPlayerData().music_volume;
+                                               vol = std::min(1.0f, vol + 0.1f);
+                                                map->UpdateMusicVolumes();
+                                           }, "Resources/Fonts/Helvetica.ttf", 32,
+                                           SquareCore::RGBA(255, 255, 255, 255));
+
+    pauseMenuSfxLabel = AddUIText(1920.0f / 2.0f - 200.0f, 1080.0f / 2.0f + 230.0f, 24,
+                                   SquareCore::RGBA(255, 255, 255, 255), "Resources/Fonts/Helvetica.ttf", "SFX:");
+    pauseMenuSfxMinusButton = AddUIButton(1920.0f / 2.0f - 70.0f, 1080.0f / 2.0f + 220.0f, 50, 50,
+                                          SquareCore::RGBA(50, 50, 50, 255), "-", {SquareCore::RGBA(0, 0, 0, 0)},
+                                          [this] {
+                                              float& vol = player_script->GetPlayerData().sfx_volume;
+                                              vol = std::max(0.0f, vol - 0.1f);
+                                              player_script->UpdateAudioVolumes();
+                                          }, "Resources/Fonts/Helvetica.ttf", 32,
+                                          SquareCore::RGBA(255, 255, 255, 255));
+    pauseMenuSfxVolumeText = AddUIText(1920.0f / 2.0f - 10.0f, 1080.0f / 2.0f + 230.0f, 24,
+                                       SquareCore::RGBA(255, 255, 255, 255), "Resources/Fonts/Helvetica.ttf", "1.0");
+    pauseMenuSfxPlusButton = AddUIButton(1920.0f / 2.0f + 50.0f, 1080.0f / 2.0f + 220.0f, 50, 50,
+                                         SquareCore::RGBA(50, 50, 50, 255), "+", {SquareCore::RGBA(0, 0, 0, 0)},
+                                         [this] {
+                                             float& vol = player_script->GetPlayerData().sfx_volume;
+                                             vol = std::min(1.0f, vol + 0.1f);
+                                              player_script->UpdateAudioVolumes();
+                                         }, "Resources/Fonts/Helvetica.ttf", 32,
+                                         SquareCore::RGBA(255, 255, 255, 255));
+
     SetUIElementVisible(pauseMenuBox, false);
     SetUIElementVisible(pauseMenuResumeButton, false);
     SetUIElementVisible(pauseMenuQuitButton, false);
+    SetUIElementVisible(pauseMenuMusicLabel, false);
+    SetUIElementVisible(pauseMenuMusicMinusButton, false);
+    SetUIElementVisible(pauseMenuMusicVolumeText, false);
+    SetUIElementVisible(pauseMenuMusicPlusButton, false);
+    SetUIElementVisible(pauseMenuSfxLabel, false);
+    SetUIElementVisible(pauseMenuSfxMinusButton, false);
+    SetUIElementVisible(pauseMenuSfxVolumeText, false);
+    SetUIElementVisible(pauseMenuSfxPlusButton, false);
 
     SetUIElementPersistent(pauseMenuBox, true);
     SetUIElementPersistent(pauseMenuResumeButton, true);
     SetUIElementPersistent(pauseMenuQuitButton, true);
+    SetUIElementPersistent(pauseMenuMusicLabel, true);
+    SetUIElementPersistent(pauseMenuMusicMinusButton, true);
+    SetUIElementPersistent(pauseMenuMusicVolumeText, true);
+    SetUIElementPersistent(pauseMenuMusicPlusButton, true);
+    SetUIElementPersistent(pauseMenuSfxLabel, true);
+    SetUIElementPersistent(pauseMenuSfxMinusButton, true);
+    SetUIElementPersistent(pauseMenuSfxVolumeText, true);
+    SetUIElementPersistent(pauseMenuSfxPlusButton, true);
 
     SetButtonSprites(pauseMenuResumeButton, "Resources/Sprites/albinauric_fatty.png", "Resources/Sprites/fish.png",
                      "Resources/Sprites/albinauric_fatty.png");
@@ -127,6 +185,7 @@ void UserInterface::OnStart()
 
 void UserInterface::ShowCredits(bool show)
 {
+    SetUIElementVisible(main_menu_background, true);
     if (show)
     {   
         SetUIElementVisible(credits_title, true);
@@ -450,6 +509,9 @@ void UserInterface::OnUpdate(float deltaTime)
 
     if (GetKeyPressed(pause_bind))
         Pause();
+    
+    if (paused)
+        UpdateVolumeDisplays();
 }
 
 void UserInterface::OnPlay()
@@ -486,6 +548,14 @@ void UserInterface::Pause()
         SetUIElementVisible(pauseMenuBox, false);
         SetUIElementVisible(pauseMenuResumeButton, false);
         SetUIElementVisible(pauseMenuQuitButton, false);
+        SetUIElementVisible(pauseMenuMusicLabel, false);
+        SetUIElementVisible(pauseMenuMusicMinusButton, false);
+        SetUIElementVisible(pauseMenuMusicVolumeText, false);
+        SetUIElementVisible(pauseMenuMusicPlusButton, false);
+        SetUIElementVisible(pauseMenuSfxLabel, false);
+        SetUIElementVisible(pauseMenuSfxMinusButton, false);
+        SetUIElementVisible(pauseMenuSfxVolumeText, false);
+        SetUIElementVisible(pauseMenuSfxPlusButton, false);
         SetTimeScale(1.0f);
     }
     else if (!paused)
@@ -495,6 +565,23 @@ void UserInterface::Pause()
         SetUIElementVisible(pauseMenuBox, true);
         SetUIElementVisible(pauseMenuResumeButton, true);
         SetUIElementVisible(pauseMenuQuitButton, true);
+        SetUIElementVisible(pauseMenuMusicLabel, true);
+        SetUIElementVisible(pauseMenuMusicMinusButton, true);
+        SetUIElementVisible(pauseMenuMusicVolumeText, true);
+        SetUIElementVisible(pauseMenuMusicPlusButton, true);
+        SetUIElementVisible(pauseMenuSfxLabel, true);
+        SetUIElementVisible(pauseMenuSfxMinusButton, true);
+        SetUIElementVisible(pauseMenuSfxVolumeText, true);
+        SetUIElementVisible(pauseMenuSfxPlusButton, true);
+        
+        float music_vol = player_script->GetPlayerData().music_volume;
+        std::string music_vol_str = std::to_string(music_vol).substr(0, 3);
+        SetUIText(pauseMenuMusicVolumeText, music_vol_str.c_str());
+        
+        float sfx_vol = player_script->GetPlayerData().sfx_volume;
+        std::string sfx_vol_str = std::to_string(sfx_vol).substr(0, 3);
+        SetUIText(pauseMenuSfxVolumeText, sfx_vol_str.c_str());
+        
         SetTimeScale(0.0f);
     }
 }
@@ -515,4 +602,15 @@ void UserInterface::DialogUpdate()
     {
         dialogManager.Advance();
     }
+}
+
+void UserInterface::UpdateVolumeDisplays()
+{
+    float music_vol = player_script->GetPlayerData().music_volume;
+    std::string music_vol_str = std::to_string(music_vol).substr(0, 3);
+    SetUIText(pauseMenuMusicVolumeText, music_vol_str.c_str());
+    
+    float sfx_vol = player_script->GetPlayerData().sfx_volume;
+    std::string sfx_vol_str = std::to_string(sfx_vol).substr(0, 3);
+    SetUIText(pauseMenuSfxVolumeText, sfx_vol_str.c_str());
 }
