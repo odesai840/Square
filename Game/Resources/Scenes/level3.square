@@ -78,7 +78,7 @@
             ],
             "zIndex": 499
         },
-        // guard room floor
+        // guard room floor pieces
         {
             "color": [
                 40,
@@ -88,11 +88,11 @@
             ],
             "isSpriteless": false,
             "position": [
-                -2950.0,
+                -2650.0,
                 -390.0
             ],
             "scale": [
-                3.07,
+                2.5,
                 0.25
             ],
             "spritePath": "Resources/Sprites/square.png",
@@ -102,7 +102,30 @@
             ],
             "zIndex": 500
         },
-        // barracks ground
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -4550.0,
+                -390.0
+            ],
+            "scale": [
+                0.1,
+                0.25
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 502
+        },
+        // barracks ground pieces
         {
             "color": [
                 40,
@@ -112,11 +135,34 @@
             ],
             "isSpriteless": false,
             "position": [
-                -9735.0,
+                -13730.0,
                 -390.0
             ],
             "scale": [
-                9.5,
+                1.0,
+                0.25
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground",
+                "ValidGround"
+            ],
+            "zIndex": 501
+        },
+        {
+            "color": [
+                40,
+                25,
+                5,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -8800.0,
+                -390.0
+            ],
+            "scale": [
+                7.8,
                 0.25
             ],
             "spritePath": "Resources/Sprites/square.png",
@@ -925,7 +971,7 @@
             ],
             "scale": [
                 3.0,
-                0.7
+                1.0
             ],
             "collider": {
                 "type": 0
@@ -1543,6 +1589,9 @@
                 0.4
             ],
             "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
             "zIndex": 1
         },
         {
@@ -1562,6 +1611,9 @@
                 1.1
             ],
             "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
             "zIndex": 1
         },
         // boss room floor
@@ -1585,6 +1637,9 @@
                 "type": 1
             },
             "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
             "zIndex": 2
         },
         // boss room divider
@@ -1605,7 +1660,10 @@
                 1.1
             ],
             "spritePath": "Resources/Sprites/brick.png",
-            "zIndex": -50
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": -40
         },
         // distant palace towers
         { // roof
@@ -1758,6 +1816,591 @@
             ],
             "zIndex": -150
         },
+        // underground background
+        {
+            "color": [
+                40,
+                25,
+                5,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -2500.0,
+                -4200.0
+            ],
+            "scale": [
+                25.0,
+                7.0
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "zIndex": -500
+        },
+        // underground prison background
+        {
+            "color": [
+                20,
+                20,
+                20,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -2950.0,
+                -1000.0
+            ],
+            "scale": [
+                3.0,
+                1.07
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "zIndex": -100
+        },
+        // underground prison walls
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -4550.0,
+                -1000.0
+            ],
+            "scale": [
+                0.1,
+                1.0
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 10
+        },
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -1355.0,
+                -1000.0
+            ],
+            "scale": [
+                0.1,
+                1.0
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 10
+        },
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -2950.0,
+                -1550.0
+            ],
+            "scale": [
+                3.07,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 10
+        },
+        // prison platform ladder
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -4450.0,
+                -600.0
+            ],
+            "scale": [
+                0.2,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                40,
+                40,
+                40,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -4450.0,
+                -1050.0
+            ],
+            "scale": [
+                0.2,
+                0.1
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 0
+        },
+        // prison cell
+        {
+            "color": [
+                30,
+                30,
+                30,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -3000.0,
+                -800.0
+            ],
+            "scale": [
+                1.75,
+                0.04
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "zIndex": 5
+        },
+        {
+            "color": [
+                30,
+                30,
+                30,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -3000.0,
+                -1475.0
+            ],
+            "scale": [
+                1.75,
+                0.04
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "zIndex": 5
+        },
+        // prison cell bars
+        {
+            "color": [
+                30,
+                30,
+                30,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -2100.0,
+                -1150.0
+            ],
+            "scale": [
+                0.04,
+                0.65
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "zIndex": 5
+        },
+        {
+            "color": [
+                30,
+                30,
+                30,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -2325.0,
+                -1150.0
+            ],
+            "scale": [
+                0.04,
+                0.65
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "zIndex": 5
+        },
+        {
+            "color": [
+                30,
+                30,
+                30,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -2550.0,
+                -1150.0
+            ],
+            "scale": [
+                0.04,
+                0.65
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "zIndex": 5
+        },
+        {
+            "color": [
+                30,
+                30,
+                30,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -2775.0,
+                -1150.0
+            ],
+            "scale": [
+                0.04,
+                0.65
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "zIndex": 5
+        },
+        {
+            "color": [
+                30,
+                30,
+                30,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -3000.0,
+                -1150.0
+            ],
+            "scale": [
+                0.04,
+                0.65
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "zIndex": 5
+        },
+        {
+            "color": [
+                30,
+                30,
+                30,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -3225.0,
+                -1150.0
+            ],
+            "scale": [
+                0.04,
+                0.65
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "zIndex": 5
+        },
+        {
+            "color": [
+                30,
+                30,
+                30,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -3450.0,
+                -1150.0
+            ],
+            "scale": [
+                0.04,
+                0.65
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "zIndex": 5
+        },
+        {
+            "color": [
+                30,
+                30,
+                30,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -3675.0,
+                -1150.0
+            ],
+            "scale": [
+                0.04,
+                0.65
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "zIndex": 5
+        },
+        {
+            "color": [
+                30,
+                30,
+                30,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -3900.0,
+                -1150.0
+            ],
+            "scale": [
+                0.04,
+                0.65
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "zIndex": 5
+        },
+        // final boss key
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -1700.0,
+                -1400.0
+            ],
+            "scale": [
+                0.7,
+                0.7
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/final-boss-key.png",
+            "tags": [
+                "FinalBossKey"
+            ],
+            "zIndex": 1
+        },
+        // octagon tunnel background
+        {
+            "color": [
+                25,
+                15,
+                0,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -13102.0,
+                -632.5
+            ],
+            "scale": [
+                0.17,
+                0.7
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "zIndex": -500
+        },
+        {
+            "color": [
+                25,
+                15,
+                0,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -12653.0,
+                -1032.5
+            ],
+            "scale": [
+                1.0,
+                0.17
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "zIndex": -499
+        },
+        // octagon tunnel walls
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "isSpriteless": false,
+            "position": [
+                -13207.0,
+                -820.0
+            ],
+            "scale": [
+                0.03,
+                0.6
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 2
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "isSpriteless": false,
+            "position": [
+                -12995.0,
+                -720.0
+            ],
+            "scale": [
+                0.03,
+                0.4
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 2
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "isSpriteless": false,
+            "position": [
+                -12650.0,
+                -1140.0
+            ],
+            "scale": [
+                1.1,
+                0.03
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 2
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "isSpriteless": false,
+            "position": [
+                -12550.0,
+                -920.0
+            ],
+            "scale": [
+                0.85,
+                0.03
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 2
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "isSpriteless": false,
+            "position": [
+                -12100.0,
+                -1030.0
+            ],
+            "scale": [
+                0.03,
+                0.2
+            ],
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Ground"
+            ],
+            "zIndex": 2
+        },
+        // wormhole to level start
         // wormhole to level 2
         {
             "color": [
