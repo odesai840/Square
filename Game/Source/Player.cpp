@@ -147,8 +147,9 @@ void Player::OnUpdate(float delta_time)
     
     if (in_octagon_dialogue)
     {
-        if (dialog_manager->HasBeenSeen(5))
+        if (dialog_manager->HasBeenSeen(5) && !has_ability)
         {
+            has_ability = true;
             PlayPickupSound();
             player_data.has_faster_slash = true;
             user_interface->AbilityGained("Faster Slash", "idk maybe slash faster or something you can figure it out");

@@ -200,7 +200,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             StopAudioClip(level_1_music);
             StopAudioClip(level_2_music);
             StopAudioClip(level_3_music);
-            PlayAudioClip(main_menu_music);
+            //PlayAudioClip(main_menu_music);
             player_script->UpdateCameraBounds(-10000.0f, -400.0f, 9500.0f, 10000.0f);
             SetCameraPosition(player_script->GetPlayerData().spawn_points[0]);
             break;

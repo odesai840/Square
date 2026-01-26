@@ -82,6 +82,7 @@ private:
     bool in_octagon_dialogue = false;
     
     bool has_key = false;
+    bool has_ability = false;
     
     PlayerData player_data;
     uint32_t player = 0;
