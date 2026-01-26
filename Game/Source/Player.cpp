@@ -502,17 +502,17 @@ void Player::OnCollision(float delta_time)
         }
         if (EntityHasTag(collision.first, "Level3BoundsTrigger2") && !SquareCore::CompareFloats(target_bounds_y_min, 0.0f))
         {
-            target_bounds_y_min = 0.0f;
+            target_bounds_y_min = -1750.0f;
             continue;
         }
         if (EntityHasTag(collision.first, "Level3BoundsTrigger3") && !SquareCore::CompareFloats(target_bounds_y_min, 0.0f))
         {
-            target_bounds_y_min = 0.0f;
+            target_bounds_y_min = -3000.0f;
             continue;
         }
         if (EntityHasTag(collision.first, "Level3BoundsTrigger4") && !SquareCore::CompareFloats(target_bounds_y_min, 0.0f))
         {
-            target_bounds_y_min = 0.0f;
+            target_bounds_y_min = 5000.0f;
             continue;
         }
         
