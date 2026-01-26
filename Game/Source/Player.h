@@ -81,7 +81,7 @@ private:
     bool in_final_boss_dialogue = false;
     bool in_octagon_dialogue = false;
     
-    bool has_key = true;
+    bool has_key = false;
     
     PlayerData player_data;
     uint32_t player = 0;
