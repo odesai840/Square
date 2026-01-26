@@ -12,6 +12,16 @@ void EnemyManager::LoadEnemies()
     enemies.clear();
     
     final_boss = 0;
+    jump_boss = 0;
+    second_bosses = {};
+    second_boss_properties = {};
+    second_boss_ch_properties = {};
+    boss_projectiles = {};
+    boss_1_active = false;
+    boss_2_active = false;
+    boss_3_active = false;
+    final_boss_slam_active = false;
+    final_boss_slash_active = false;
 
     std::vector<uint32_t> all_enemies_with_jump_enemy_tag = GetAllEntitiesWithTag("JumpEnemy");
     std::vector<uint32_t> all_enemies_with_charge_enemy_tag = GetAllEntitiesWithTag("ChargeEnemy");
@@ -90,21 +100,22 @@ uint32_t EnemyManager::SpawnFinalBoss(const SquareCore::Vec2& position)
 
     for (int i = 0; i < fb->shot_positions.size(); i++)
     {
-        int slot = projectile_pool.Alloc();
-        EnemyProjectileEntity* projectile = static_cast<EnemyProjectileEntity*>(projectile_pool.GetPointer(slot));
-        projectile->id = AddEntity("Resources/Sprites/lazar.png", position.x, position.y, 0.0f, 1.0f, 0.1f, true);
-        projectile->active = false;
-        projectile->timer = 0.0f;
-        projectile->direction = Direction::DOWN;
+        EnemyProjectileEntity projectile = EnemyProjectileEntity();
+        projectile.id = AddEntity("Resources/Sprites/lazar.png", position.x, position.y, 0.0f, 1.0f, 0.1f, true);
+        projectile.active = false;
+        projectile.timer = 0.0f;
+        projectile.direction = Direction::DOWN;
 
-        SetColliderType(projectile->id, SquareCore::ColliderType::TRIGGER);
-        SetGravityScale(projectile->id, 0.0f);
-        AddTagToEntity(projectile->id, "Enemy");
-        AddTagToEntity(projectile->id, "EnemyProjectile");
-        SetEntityVisible(projectile->id, false);
-        SetEntityPersistent(projectile->id, true);
-        SetZIndex(projectile->id, -1);
-        AddPropertyToEntity(projectile->id, new Character(1, 1, 1));
+        SetColliderType(projectile.id, SquareCore::ColliderType::TRIGGER);
+        SetGravityScale(projectile.id, 0.0f);
+        AddTagToEntity(projectile.id, "Enemy");
+        AddTagToEntity(projectile.id, "EnemyProjectile");
+        SetEntityVisible(projectile.id, false);
+        SetEntityPersistent(projectile.id, true);
+        SetZIndex(projectile.id, -1);
+        AddPropertyToEntity(projectile.id, new Character(1, 1, 1));
+        SetEntityPersistent(projectile.id, true);
+        boss_projectiles.push_back(projectile);
     }
 
     fb->sword_entity = AddEntity("Resources/Sprites/sword.png", position.x, position.y, 0.0f, 2.0f, 2.0f, true);
@@ -354,31 +365,26 @@ void EnemyManager::OnUpdate(float deltaTime)
                 {
                 case ChargeEnemyState::PATROLLING:
                     {
-                        if (!charge_property->aware_of_player)
+                        bool player_in_front = false;
+                        if (charge_property->facing_direction == Direction::RIGHT)
                         {
-                            bool player_in_front = false;
-                            if (charge_property->facing_direction == Direction::RIGHT)
-                            {
-                                player_in_front = player_position.x > enemy_position.x;
-                            }
-                            else if (charge_property->facing_direction == Direction::LEFT)
-                            {
-                                player_in_front = player_position.x < enemy_position.x;
-                            }
-
-                            bool can_see_player = player_in_front && horizontal_distance < 600.0f && vertical_distance <
-                                100.0f;
-
-                            if (can_see_player)
-                            {
-                                charge_property->aware_of_player = true;
-                                charge_property->state = ChargeEnemyState::NOTICING;
-                                charge_property->notice_timer = 0.0f;
-                                SetVelocity(enemy, 0.0f, enemy_velocity.y);
-                            }
+                            player_in_front = player_position.x > enemy_position.x;
+                        }
+                        else if (charge_property->facing_direction == Direction::LEFT)
+                        {
+                            player_in_front = player_position.x < enemy_position.x;
                         }
 
-                        if (!charge_property->aware_of_player)
+                        bool can_see_player = player_in_front && horizontal_distance < 600.0f && vertical_distance < 100.0f;
+
+                        if (can_see_player || charge_property->aware_of_player)
+                        {
+                            charge_property->aware_of_player = true;
+                            charge_property->state = ChargeEnemyState::NOTICING;
+                            charge_property->notice_timer = 0.0f;
+                            SetVelocity(enemy, 0.0f, enemy_velocity.y);
+                        }
+                        else
                         {
                             if (charge_property->facing_direction == Direction::RIGHT)
                             {
@@ -445,7 +451,7 @@ void EnemyManager::OnUpdate(float deltaTime)
 
                         if (charge_property->prepare_timer >= charge_property->prepare_duration)
                         {
-                            player_script->PlayDashSound();
+                            player_script->PlayEnemyDashSound();
                             charge_property->state = ChargeEnemyState::CHARGING;
                             charge_property->charge_elapsed = 0.0f;
                             SetScale(enemy, charge_property->base_scale);
@@ -502,7 +508,7 @@ void EnemyManager::OnUpdate(float deltaTime)
 
                     if (jump_property->charge_windup_timer >= jump_property->charge_windup_time)
                     {
-                        player_script->PlayDashSound();
+                        player_script->PlayEnemyDashSound();
                         jump_property->is_winding_up = false;
                         jump_property->charge_windup_timer = 0.0f;
                         jump_property->jump_cooldown_timer = 0.0f;
@@ -584,20 +590,18 @@ void EnemyManager::OnUpdate(float deltaTime)
                         if (wind_up_timer >= current_wind_up_time)
                         {
                             is_winding_up = false;
+                            player_script->PlayEnemyDashSound();
                             switch (current_attack_type)
                             {
                             case 0:
-                                player_script->PlayDashSound();
                                 SetVelocity(second_bosses[active_boss], 0.0f, 0.0f);
                                 SetVelocity(second_bosses[active_boss], 5000.0f, 0.0f);
                                 break;
                             case 1:
-                                player_script->PlayDashSound();
                                 SetVelocity(second_bosses[active_boss], 0.0f, 0.0f);
                                 SetVelocity(second_bosses[active_boss], -5000.0f, 0.0f);
                                 break;
                             case 2:
-                                player_script->PlayDashSound();
                                 SetVelocity(second_bosses[active_boss], 0.0f, 0.0f);
                                 SetVelocity(second_bosses[active_boss], 0.0f, -5000.0f);
                                 break;
@@ -649,7 +653,7 @@ void EnemyManager::OnUpdate(float deltaTime)
             }
 
             FinalBoss* fb = dynamic_cast<FinalBoss*>(property);
-            if (final_boss && fb && boss_3_active && fb->state != FinalBossState::TALKING)
+            if (final_boss && fb && boss_3_active && fb->state != FinalBossState::TALKING && EntityExists(final_boss))
             {
                 if (fb->state == FinalBossState::IDLE)
                     fb->time_elapsed_between_attacks += deltaTime;
@@ -740,6 +744,13 @@ void EnemyManager::OnUpdate(float deltaTime)
 
                 if (fb->attack_type == FinalBossAttackType::SLASH && fb->state == FinalBossState::ATTACKING)
                 {
+                    if (!EntityExists(fb->sword_entity))
+                    {
+                        fb->state = FinalBossState::IDLE;
+                        fb->attack_type = FinalBossAttackType::NONE;
+                        continue;
+                    }
+                    
                     if (fb->slash_length_elapsed < fb->slash_length)
                     {
                         fb->slash_length_elapsed += deltaTime;
@@ -780,6 +791,13 @@ void EnemyManager::OnUpdate(float deltaTime)
 
                 if (fb->attack_type == FinalBossAttackType::SLAM && fb->state == FinalBossState::ATTACKING)
                 {
+                    if (!EntityExists(fb->sword_entity))
+                    {
+                        fb->state = FinalBossState::IDLE;
+                        fb->attack_type = FinalBossAttackType::NONE;
+                        continue;
+                    }
+                    
                     if (fb->slam_length_elapsed < fb->slam_length)
                     {
                         fb->slam_length_elapsed += deltaTime;
@@ -805,6 +823,13 @@ void EnemyManager::OnUpdate(float deltaTime)
 
                 if (fb->attack_type == FinalBossAttackType::SHOOT && fb->state == FinalBossState::ATTACKING)
                 {
+                    if (!EntityExists(fb->gun_entity))
+                    {
+                        fb->state = FinalBossState::IDLE;
+                        fb->attack_type = FinalBossAttackType::NONE;
+                        continue;
+                    }
+                    
                     if (fb->shots_fired < fb->num_shots)
                     {
                         if (fb->time_elapsed_after_firing >= fb->time_between_shots)
@@ -816,20 +841,18 @@ void EnemyManager::OnUpdate(float deltaTime)
                             SetPosition(fb->gun_entity, fb->shot_positions.at(fb->shots_fired).x,
                                         fb->shot_positions.at(fb->shots_fired).y - 100.0f);
 
-                            for (int i = 0; i < projectile_pool.GetTotal(); i++)
+                            for (auto& projectile : boss_projectiles)
                             {
-                                ProjectileEntity* projectile = static_cast<ProjectileEntity*>(projectile_pool.
-                                    GetPointer(i));
-                                if (!projectile->active)
+                                if (!projectile.active)
                                 {
                                     SquareCore::Vec2 boss_pos = GetPosition(final_boss);
                                     player_script->PlayLaserSound();
-                                    SetPosition(projectile->id, boss_pos.x, boss_pos.y);
-                                    SetVelocity(projectile->id, 0.0f, -2000.0f);
-                                    SetEntityVisible(projectile->id, true);
-                                    projectile->active = true;
-                                    projectile->timer = 0.0f;
-                                    projectile->direction = Direction::DOWN;
+                                    SetPosition(projectile.id, boss_pos.x, boss_pos.y);
+                                    SetVelocity(projectile.id, 0.0f, -2000.0f);
+                                    SetEntityVisible(projectile.id, true);
+                                    projectile.active = true;
+                                    projectile.timer = 0.0f;
+                                    projectile.direction = Direction::DOWN;
                                     SDL_Log("Fired projectile %d/%d", fb->shots_fired + 1, fb->num_shots);
                                     break;
                                 }
@@ -861,18 +884,17 @@ void EnemyManager::OnUpdate(float deltaTime)
         }
     }
 
-    for (int i = 0; i < projectile_pool.GetTotal(); i++)
+    for (auto& projectile : boss_projectiles)
     {
-        ProjectileEntity* projectile = static_cast<ProjectileEntity*>(projectile_pool.GetPointer(i));
-        if (projectile->active)
+        if (projectile.active && EntityExists(projectile.id))
         {
-            projectile->timer += deltaTime;
-            if (projectile->timer >= 0.425f)
+            projectile.timer += deltaTime;
+            if (projectile.timer >= 0.425f)
             {
-                projectile->active = false;
-                SetEntityVisible(projectile->id, false);
-                SetVelocity(projectile->id, 0.0f, 0.0f);
-                projectile->timer = 0.0f;
+                projectile.active = false;
+                SetEntityVisible(projectile.id, false);
+                SetVelocity(projectile.id, 0.0f, 0.0f);
+                projectile.timer = 0.0f;
             }
         }
     }

@@ -51,45 +51,65 @@ void Player::OnStart()
     
     SDL_Log("test");
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < slash_audio.size(); i++)
     {
         slash_audio[i] = AddAudioClip("Resources/Audio/SFX/swoosh.mp3");
         SetAudioLooping(slash_audio[i], false);
     }
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < jump_audio.size(); i++)
     {
         jump_audio[i] = AddAudioClip("Resources/Audio/SFX/jump.wav");
         SetAudioLooping(jump_audio[i], false);
     }
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < heal_audio.size(); i++)
+    {
+        heal_audio[i] = AddAudioClip("Resources/Audio/SFX/heal.wav");
+        SetAudioLooping(heal_audio[i], false);
+    }
+    for (int i = 0; i < projectile_audio.size(); i++)
     {
         projectile_audio[i] = AddAudioClip("Resources/Audio/SFX/projectile.wav");
         SetAudioLooping(projectile_audio[i], false);
     }
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < dash_audio.size(); i++)
     {
-        dash_audio[i] = AddAudioClip("Resources/Audio/SFX/dash.wav");
+        dash_audio[i] = AddAudioClip("Resources/Audio/SFX/enemy_dash.wav");
         SetAudioLooping(dash_audio[i], false);
     }
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < take_damage_audio.size(); i++)
     {
         take_damage_audio[i] = AddAudioClip("Resources/Audio/SFX/damage.mp3");
         SetAudioLooping(take_damage_audio[i], false);
     }
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < bounce_audio.size(); i++)
     {
         bounce_audio[i] = AddAudioClip("Resources/Audio/SFX/bounce.wav");
         SetAudioLooping(bounce_audio[i], false);
     }
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < final_boss_laser_audio.size(); i++)
     {
         final_boss_laser_audio[i] = AddAudioClip("Resources/Audio/SFX/boss_lazar.wav");
         SetAudioLooping(final_boss_laser_audio[i], false);
     }
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < final_boss_sword_audio.size(); i++)
     {
         final_boss_sword_audio[i] = AddAudioClip("Resources/Audio/SFX/sword_slash.wav");
         SetAudioLooping(final_boss_sword_audio[i], false);
+    }
+    for (int i = 0; i < ability_pickup_audio.size(); i++)
+    {
+        ability_pickup_audio[i] = AddAudioClip("Resources/Audio/SFX/ability.wav");
+        SetAudioLooping(ability_pickup_audio[i], false);
+    }
+    for (int i = 0; i < door_slam_audio.size(); i++)
+    {
+        door_slam_audio[i] = AddAudioClip("Resources/Audio/SFX/metal_slam.wav");
+        SetAudioLooping(door_slam_audio[i], false);
+    }
+    for (int i = 0; i < enemy_dash_audio.size(); i++)
+    {
+        enemy_dash_audio[i] = AddAudioClip("Resources/Audio/SFX/enemy_dash.wav");
+        SetAudioLooping(enemy_dash_audio[i], false);
     }
     UpdateAudioVolumes();
 
@@ -99,30 +119,6 @@ void Player::OnStart()
 void Player::TeleportPlayer(const SquareCore::Vec2& position)
 {
     SetPosition(player, position.x, position.y);
-}
-
-void Player::PlayLaserSound()
-{
-    PlayAudioClip(final_boss_laser_audio[final_boss_laser_audio_index]);
-    final_boss_laser_audio_index = (final_boss_laser_audio_index + 1) % 5;
-}
-
-void Player::PlaySwordSound()
-{
-    PlayAudioClip(final_boss_sword_audio[final_boss_sword_audio_index]);
-    final_boss_sword_audio_index = (final_boss_sword_audio_index + 1) % 5;
-}
-
-void Player::PlayBounceSound()
-{
-    PlayAudioClip(bounce_audio[bounce_audio_index]);
-    bounce_audio_index = (bounce_audio_index + 1) % 5;
-}
-
-void Player::PlayDashSound()
-{
-    PlayAudioClip(dash_audio[dash_audio_index]);
-    dash_audio_index = (dash_audio_index + 1) % 5;
 }
 
 void Player::OnExit()
@@ -208,42 +204,6 @@ void Player::UpdateCameraBounds(float min_x, float min_y, float max_x, float max
     target_bounds_y_min = min_y;
 }
 
-void Player::UpdateAudioVolumes()
-{
-    for (int i = 0; i < 5; i++)
-    {
-        SetAudioVolume(slash_audio[i], player_data.sfx_volume);
-    }
-    for (int i = 0; i < 5; i++)
-    {
-        SetAudioVolume(jump_audio[i], player_data.sfx_volume);
-    }
-    for (int i = 0; i < 5; i++)
-    {
-        SetAudioVolume(projectile_audio[i], player_data.sfx_volume);
-    }
-    for (int i = 0; i < 5; i++)
-    {
-        SetAudioVolume(dash_audio[i], player_data.sfx_volume / 2.0f);
-    }
-    for (int i = 0; i < 5; i++)
-    {
-        SetAudioVolume(take_damage_audio[i], player_data.sfx_volume * 2.0f);
-    }
-    for (int i = 0; i < 5; i++)
-    {
-        SetAudioVolume(bounce_audio[i], player_data.sfx_volume * 2.0f);
-    }
-    for (int i = 0; i < 5; i++)
-    {
-        SetAudioVolume(final_boss_laser_audio[i], player_data.sfx_volume);
-    }
-    for (int i = 0; i < 5; i++)
-    {
-        SetAudioVolume(final_boss_sword_audio[i], player_data.sfx_volume / 2.0f);
-    }
-}
-
 void Player::Move(float delta_time)
 {
     SquareCore::Vec2 player_velocity = GetVelocity(player);
@@ -303,8 +263,7 @@ void Player::Jump(float delta_time)
     
     if (GetKeyPressed(jump_bind) && (grounded || (player_data.has_double_jump && can_double_jump)) && !dialog_manager->IsActive())
     {
-        PlayAudioClip(jump_audio[jump_audio_index]);
-        jump_audio_index = (jump_audio_index + 1) % 5;
+        PlayJumpSound();
         
         if (!grounded)
         {
@@ -427,8 +386,12 @@ void Player::Heal(float delta_time)
         {
             if (Character* player_character = dynamic_cast<Character*>(player_property))
             {
-                player_character->health = player_data.max_health;
-                player_data.heals--;
+                if (player_character->health < player_data.max_health)
+                {
+                    PlayHealSound();
+                    player_character->health = player_data.max_health;
+                    player_data.heals--;
+                }
             }
         }
     }
@@ -527,29 +490,41 @@ void Player::OnCollision(float delta_time)
 
         if (EntityHasTag(collision.first, "GainDoubleDash") && !player_data.has_double_dash)
         {
+            PlayPickupSound();
             player_data.has_double_dash = true;
-            user_interface->AbilityGained("Double Dash", "Press DASH in quick succession to dash twice");
+            user_interface->AbilityGained("Double Dash", "Press SHIFT in quick succession to dash twice");
             RemoveEntity(collision.first);
             continue;
         }
         if (EntityHasTag(collision.first, "GainDoubleJump") && !player_data.has_double_jump)
         {
+            PlayPickupSound();
             player_data.has_double_jump = true;
-            user_interface->AbilityGained("Double Jump", "Press JUMP while in the air to jump a second time");
+            user_interface->AbilityGained("Double Jump", "Press SPACE while in the air to jump a second time");
             RemoveEntity(collision.first);
             continue;
         }
         if (EntityHasTag(collision.first, "GainProjectile") && !player_data.has_projectile)
         {
+            PlayPickupSound();
             player_data.has_projectile = true;
-            user_interface->AbilityGained("Projectile", "Press PROJECTILE to fire a ranged projectile");
+            user_interface->AbilityGained("Projectile", "Press RMB to fire a ranged projectile");
             RemoveEntity(collision.first);
             continue;
         }
         if (EntityHasTag(collision.first, "GainFasterSlash") && !player_data.has_faster_slash)
         {
+            PlayPickupSound();
             player_data.has_faster_slash = true;
             user_interface->AbilityGained("Faster Slash", "idk maybe slash faster or something you can figure it out");
+            RemoveEntity(collision.first);
+            continue;
+        }
+        if (EntityHasTag(collision.first, "GainKey") && !player_data.has_faster_slash)
+        {
+            PlayPickupSound();
+            player_data.has_faster_slash = true;
+            user_interface->AbilityGained("Mysterious Golden Key", "I wonder what this goes to?");
             RemoveEntity(collision.first);
             continue;
         }
@@ -660,6 +635,7 @@ void Player::OnCollision(float delta_time)
             
             for (int i = 0; i < 3; i++)
             {
+                PlayDoorSound();
                 uint32_t charge_enemy = enemy_manager->SpawnChargeEnemy({800 + i * 100.0f, 1950.0f});
                 uint32_t jump_enemy = enemy_manager->SpawnJumpEnemy({2100 - i * 100.0f, 1950.0f});
                 FlipSprite(jump_enemy, false, false);
@@ -727,9 +703,8 @@ void Player::TakeDamage(Character* player_character, int damage)
     if (!can_take_damage) return;
     can_take_damage = false;
     can_take_damage_timer = 0.0f;
-
-    PlayAudioClip(take_damage_audio[take_damage_audio_index]);
-    take_damage_audio_index = (take_damage_audio_index + 1) % 5;
+    
+    PlayDamageSound();
     player_character->health -= damage;
     SDL_Log(("Player health: " + std::to_string(player_character->health)).c_str());
 
@@ -895,4 +870,133 @@ bool Player::IsGrounded(uint32_t playerId)
         }
     }
     return false;
+}
+
+
+
+void Player::PlaySlashSound()
+{
+    PlayAudioClip(slash_audio[slash_audio_index]);
+    slash_audio_index = (slash_audio_index + 1) % slash_audio.size();
+}
+
+void Player::PlayJumpSound()
+{
+    PlayAudioClip(jump_audio[jump_audio_index]);
+    jump_audio_index = (jump_audio_index + 1) % 5;
+}
+
+void Player::PlayHealSound()
+{
+    PlayAudioClip(heal_audio[heal_audio_index]);
+    heal_audio_index = (heal_audio_index + 1) % heal_audio.size();
+}
+
+void Player::PlayDashSound()
+{
+    PlayAudioClip(dash_audio[dash_audio_index]);
+    dash_audio_index = (dash_audio_index + 1) % dash_audio.size();
+}
+
+void Player::PlayProjectileSound()
+{
+    PlayAudioClip(projectile_audio[projectile_audio_index]);
+    projectile_audio_index = (projectile_audio_index + 1) % projectile_audio.size();
+}
+
+void Player::PlayDamageSound()
+{
+    PlayAudioClip(take_damage_audio[take_damage_audio_index]);
+    take_damage_audio_index = (take_damage_audio_index + 1) % take_damage_audio.size();
+}
+
+void Player::PlayLaserSound()
+{
+    PlayAudioClip(final_boss_laser_audio[final_boss_laser_audio_index]);
+    final_boss_laser_audio_index = (final_boss_laser_audio_index + 1) % final_boss_laser_audio.size();
+}
+
+void Player::PlaySwordSound()
+{
+    PlayAudioClip(final_boss_sword_audio[final_boss_sword_audio_index]);
+    final_boss_sword_audio_index = (final_boss_sword_audio_index + 1) % final_boss_sword_audio.size();
+}
+
+void Player::PlayBounceSound()
+{
+    PlayAudioClip(bounce_audio[bounce_audio_index]);
+    bounce_audio_index = (bounce_audio_index + 1) % bounce_audio.size();
+}
+
+void Player::PlayPickupSound()
+{
+    PlayAudioClip(ability_pickup_audio[ability_pickup_audio_index]);
+    ability_pickup_audio_index = (ability_pickup_audio_index + 1) % ability_pickup_audio.size();
+}
+
+void Player::PlayDoorSound()
+{
+    PlayAudioClip(door_slam_audio[door_slam_audio_index]);
+    door_slam_audio_index = (door_slam_audio_index + 1) % door_slam_audio.size();
+}
+
+void Player::PlayEnemyDashSound()
+{
+    PlayAudioClip(enemy_dash_audio[enemy_dash_audio_index]);
+    enemy_dash_audio_index = (enemy_dash_audio_index + 1) % enemy_dash_audio.size();
+}
+
+
+void Player::UpdateAudioVolumes()
+{
+    for (int i = 0; i < slash_audio.size(); i++)
+    {
+        SetAudioVolume(slash_audio[i], player_data.sfx_volume * 1.5f);
+    }
+    for (int i = 0; i < jump_audio.size(); i++)
+    {
+        SetAudioVolume(jump_audio[i], player_data.sfx_volume);
+    }
+    for (int i = 0; i < heal_audio.size(); i++)
+    {
+        SetAudioVolume(heal_audio[i], player_data.sfx_volume);
+    }
+    for (int i = 0; i < projectile_audio.size(); i++)
+    {
+        SetAudioVolume(projectile_audio[i], player_data.sfx_volume * 1.5f);
+    }
+    for (int i = 0; i < dash_audio.size(); i++)
+    {
+        SetAudioVolume(dash_audio[i], player_data.sfx_volume * 2.5f);
+    }
+    for (int i = 0; i < take_damage_audio.size(); i++)
+    {
+        SetAudioVolume(take_damage_audio[i], player_data.sfx_volume * 2.0f);
+    }
+    for (int i = 0; i < bounce_audio.size(); i++)
+    {
+        SetAudioVolume(bounce_audio[i], player_data.sfx_volume * 2.0f);
+    }
+    for (int i = 0; i < final_boss_laser_audio.size(); i++)
+    {
+        SetAudioVolume(final_boss_laser_audio[i], player_data.sfx_volume);
+    }
+    for (int i = 0; i < final_boss_sword_audio.size(); i++)
+    {
+        SetAudioVolume(final_boss_sword_audio[i], player_data.sfx_volume / 2.0f);
+    }
+    for (int i = 0; i < ability_pickup_audio.size(); i++)
+    {
+        SetAudioVolume(ability_pickup_audio[i], player_data.sfx_volume);
+    }
+    for (int i = 0; i < enemy_dash_audio.size(); i++)
+    {
+        SetAudioVolume(enemy_dash_audio[i], player_data.sfx_volume * 2.0f);
+    }
+}
+
+void Player::ResetPlayerData()
+{
+    player_data = PlayerData();
+    GameStateManager::SavePlayerData("S_001.square", player_data);
 }

@@ -42,12 +42,22 @@ public:
     void CancelVelocity();
     void UpdateCameraBounds(float min_x, float min_y, float max_x, float max_y);
     
+    void PlaySlashSound();
+    void PlayJumpSound();
+    void PlayHealSound();
+    void PlayDashSound();
+    void PlayProjectileSound();
+    void PlayDamageSound();
+    void PlayBounceSound();
     void PlayLaserSound();
     void PlaySwordSound();
-    void PlayBounceSound();
-    void PlayDashSound();
+    void PlayPickupSound();
+    void PlayDoorSound();
+    void PlayEnemyDashSound();
     
     void UpdateAudioVolumes();
+    
+    void ResetPlayerData();
 
 private:
     void Move(float delta_time);
@@ -83,24 +93,30 @@ private:
 
     Direction player_direction = Direction::LEFT;
     
-    uint32_t slash_audio[5] = {0, 0, 0, 0, 0};
+    std::vector<uint32_t> slash_audio = {0, 0, 0, 0, 0};
     int slash_audio_index = 0;
-    uint32_t jump_audio[5] = {0, 0, 0, 0, 0};
+    std::vector<uint32_t> jump_audio = {0, 0, 0, 0, 0};
     int jump_audio_index = 0;
-    uint32_t heal_audio[5] = {0, 0, 0, 0, 0};
+    std::vector<uint32_t> heal_audio = {0, 0, 0, 0, 0};
     int heal_audio_index = 0;
-    uint32_t dash_audio[5] = {0, 0, 0, 0, 0};
+    std::vector<uint32_t> dash_audio = {0, 0, 0, 0, 0};
     int dash_audio_index = 0;
-    uint32_t projectile_audio[5] = {0, 0, 0, 0, 0};
+    std::vector<uint32_t> projectile_audio = {0, 0, 0, 0, 0};
     int projectile_audio_index = 0;
-    uint32_t take_damage_audio[5] = {0, 0, 0, 0, 0};
+    std::vector<uint32_t> take_damage_audio = {0, 0, 0, 0, 0};
     int take_damage_audio_index = 0;
-    uint32_t bounce_audio[5] = {0, 0, 0, 0, 0};
+    std::vector<uint32_t> bounce_audio = {0, 0, 0, 0, 0};
     int bounce_audio_index = 0;
-    uint32_t final_boss_laser_audio[5] = {0, 0, 0, 0, 0};
+    std::vector<uint32_t> final_boss_laser_audio = {0, 0, 0, 0, 0};
     int final_boss_laser_audio_index = 0;
-    uint32_t final_boss_sword_audio[5] = {0, 0, 0, 0, 0};
+    std::vector<uint32_t> final_boss_sword_audio = {0, 0, 0, 0, 0};
     int final_boss_sword_audio_index = 0;
+    std::vector<uint32_t> ability_pickup_audio = {0, 0};
+    int ability_pickup_audio_index = 0;
+    std::vector<uint32_t> door_slam_audio = {0, 0};
+    int door_slam_audio_index = 0;
+    std::vector<uint32_t> enemy_dash_audio = {0, 0, 0, 0, 0};
+    int enemy_dash_audio_index = 0;
 
     int slash_damage = 1;
     int projectile_damage = 2;

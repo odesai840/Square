@@ -48,6 +48,7 @@ private:
     uint32_t pauseMenuSfxMinusButton = 0;
     uint32_t pauseMenuSfxVolumeText = 0;
     uint32_t pauseMenuSfxPlusButton = 0;
+    uint32_t pauseMenuControlsText = 0;
     bool paused = false;
 
     uint32_t player = 0;
@@ -75,6 +76,7 @@ private:
     uint32_t main_menu_play_button = 0;
     uint32_t main_menu_credits_button = 0;
     uint32_t main_menu_quit_button = 0;
+    uint32_t main_menu_reset_data_button = 0;
     uint32_t main_menu_background = 0;
 
     uint32_t credits_title = 0;

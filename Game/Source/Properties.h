@@ -108,6 +108,7 @@ struct ChargeEnemy : SquareCore::Property
     ChargeEnemyState state = ChargeEnemyState::PATROLLING;
     Direction facing_direction = Direction::RIGHT;
     bool aware_of_player = false;
+    bool aggro_on_player = false;
     
     SquareCore::Vec2 base_scale = {1.0f, 1.0f};
     

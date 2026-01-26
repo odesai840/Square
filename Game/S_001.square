@@ -1,0 +1,20 @@
+{
+    "damage": 1,
+    "first_boss_dead": false,
+    "has_double_dash": false,
+    "has_double_jump": false,
+    "has_faster_slash": false,
+    "has_projectile": false,
+    "heals": 3,
+    "health": 5,
+    "level": 1,
+    "max_heals": 3,
+    "max_health": 5,
+    "music_volume": 0.5,
+    "second_boss_dead": false,
+    "sfx_volume": 0.5,
+    "the_wall_dead": false,
+    "third_boss_dead": false,
+    "x_pos": 0.0,
+    "y_pos": 0.0
+}

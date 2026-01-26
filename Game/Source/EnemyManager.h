@@ -18,7 +18,7 @@ struct EnemyProjectileEntity
 class EnemyManager : public SquareCore::Script
 {
 public:
-    EnemyManager() : projectile_pool(sizeof(EnemyProjectileEntity), 8) {}
+    EnemyManager() {}
     void OnStart() override;
     void OnUpdate(float deltaTime) override;
 
@@ -86,8 +86,8 @@ private:
     int current_attack_type = -1;
 
     float intro_countdown = 3.0f;
-
+    
+    std::vector<EnemyProjectileEntity> boss_projectiles = {};
     uint32_t final_boss = 0;
-    SquareCore::PoolAllocator projectile_pool;
     float fb_direction = 0.0f;
 };
