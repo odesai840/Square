@@ -461,6 +461,10 @@ void Player::OnCollision(float delta_time)
                 is_transitioning = false;
                 return;
             }
+            if (EntityHasTag(collision.first, "TeleportPlayer"))
+            {
+                TeleportPlayer({-12700.0f, -250.0f});
+            }
         }
         
         if (EntityHasTag(collision.first, "Level2BoundsTrigger1") && !SquareCore::CompareFloats(target_bounds_y_min, -400.0f))

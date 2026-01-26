@@ -2597,7 +2597,151 @@
             ],
             "zIndex": 2
         },
+        // octagon (reginald pemberton)
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "isSpriteless": false,
+            "position": [
+                -11025.0,
+                -2530.0
+            ],
+            "scale": [
+                0.3,
+                0.3
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "DialogTriggerLastOcta"
+            ],
+            "zIndex": 20
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -10725.0,
+                -2560.0
+            ],
+            "scale": [
+                0.27,
+                0.27
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/last-octagon.png",
+            "zIndex": 2
+        },
         // wormhole to level start
+        {
+            "color": [
+                140,
+                140,
+                255,
+                255
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                -10200.0,
+                -2560.0
+            ],
+            "scale": [
+                2.0,
+                2.0
+            ],
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "Wormhole"
+            ],
+            "zIndex": 99
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                -10200.0,
+                -2560.0
+            ],
+            "scale": [
+                2.0,
+                2.0
+            ],
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "Wormhole"
+            ],
+            "zIndex": 97
+        },
+        {
+            "color": [
+                255,
+                140,
+                140,
+                255
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                -10200.0,
+                -2560.0
+            ],
+            "scale": [
+                2.0,
+                2.0
+            ],
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "WormholeNegative"
+            ],
+            "zIndex": 98
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "physApplied": false,
+            "isSpriteless": false,
+            "position": [
+                -10200.0,
+                -2560.0
+            ],
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/wormhole.png",
+            "tags": [
+                "WormholeTrigger",
+                "TeleportPlayer"
+            ],
+            "zIndex": 99
+        },
         // wormhole to level 2
         {
             "color": [
