@@ -162,6 +162,7 @@ void Player::OnUpdate(float delta_time)
             in_final_boss_dialogue = false;
             map->PlayBossMusic();
             enemy_manager->boss_3_active = true;
+            user_interface->AreaTitle("Reginald Bartholomew Pemberton III", "Now Playing:\nRBP3\nCaleb Kronstad");
             
             uint32_t final_boss = GetFirstEntityWithTag("FinalBoss");
             for (auto& prop : GetAllEntityProperties(final_boss))
