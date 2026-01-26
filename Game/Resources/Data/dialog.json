@@ -35,7 +35,7 @@
     {
         "id": 4,
         "lines": [
-            {"speaker": "Lord Hex", "text": "You. I know your vertices. You're the square who built the weapon that destroyed everything."},
+            {"speaker": "Lord Hex", "text": "You. I know your vertices. You're the square who built the energy core that powers the triangles' weapons."},
             {"speaker": "Lord Hex", "text": "We ruled with wisdom and order for generations. Then your invention put those lowly tris on our throne."},
             {"speaker": "Lord Hex", "text": "Don't expect sympathy from us. You made this nightmare possible."}
         ]
@@ -53,7 +53,7 @@
             {"speaker": "The Last Octagon", "text": "A square. In my tunnel. How did you even find this place?"},
             {"speaker": "The Last Octagon", "text": "I was the leader of the Higher Order. Eight vertices, centuries of lineage. Now I'm the last one left, hiding in the dirt like vermin."},
             {"speaker": "The Last Octagon", "text": "The triangles hunted down every octagon they could find. Executed us in the streets. I only survived because I ran."},
-            {"speaker": "The Last Octagon", "text": "You want to know if I blame you? Of course I do. Your weapon put the executioner's blade in their hands."},
+            {"speaker": "The Last Octagon", "text": "You want to know if I blame you? Of course I do. Your creation put the executioner's blade in their hands."},
             {"speaker": "The Last Octagon", "text": "But hatred won't fix this. Someone has to end what you started. Might as well be you."},
             {"speaker": "The Last Octagon", "text": "Here. Let me teach you something the octagons used to know. You'll need it if you're going after the leader of the triangles."},
             {"speaker": "The Last Octagon", "text": "Go. Finish this. And if you survive... never show your face here ever again."}
@@ -63,10 +63,10 @@
         "id": 7,
         "lines": [
             {"speaker": "Reginald Bartholomew Pemberton III", "text": "Ah. There you are. I was wondering when you'd finally make it down here."},
-            {"speaker": "Reginald Bartholomew Pemberton III", "text": "You know, I should thank you. That weapon you built? Made overthrowing the Higher Order so easy."},
+            {"speaker": "Reginald Bartholomew Pemberton III", "text": "You know, I should thank you. This energy core you built? Made overthrowing the Higher Order so easy."},
             {"speaker": "Reginald Bartholomew Pemberton III", "text": "They never saw it coming. Neither did you, apparently, when we took it right out from under you."},
             {"speaker": "Reginald Bartholomew Pemberton III", "text": "For centuries, they treated us like we were nothing. The lowest shapes, good only for labor and servitude."},
-            {"speaker": "Reginald Bartholomew Pemberton III", "text": "But I suppose you didn't build that weapon for us, did you?"},
+            {"speaker": "Reginald Bartholomew Pemberton III", "text": "But I suppose you didn't build the energy core for us, did you?"},
             {"speaker": "Reginald Bartholomew Pemberton III", "text": "Well then. Time for you to die."}
         ]
     }

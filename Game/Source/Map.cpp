@@ -234,8 +234,8 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             StopAudioClip(level_2_music);
             StopAudioClip(main_menu_music);
             PlayAudioClip(level_3_music);
-            SetCameraBounds(-10000.0f, -400.0f, 9500.0f, 10000.0f);
-            player_script->UpdateCameraBounds(-10000.0f, -400.0f, 9500.0f, 10000.0f);
+            SetCameraBounds(-14000.0f, -5000.0f, 9500.0f, 14000.0f);
+            player_script->UpdateCameraBounds(-14000.0f, -5000.0f, 9500.0f, 14000.0f);
             SetCameraPosition(player_script->GetPlayerData().spawn_points[2]);
             if (ui) ui->AreaTitle("The Palace", "Now Playing:\nThe Palace\nCaleb Kronstad");
             break;
