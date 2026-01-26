@@ -8,6 +8,83 @@
     "entities": [
         {
             "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -2680.0,
+                215.0
+            ],
+            "scale": [
+                1.8,
+                1.5
+            ],
+            "collider": {
+                "type": 2
+            },
+            "rotation": -90,
+            "spritePath": "Resources/Sprites/spikes.png",
+            "tags": [
+                "Spike"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -2320.0,
+                220.0
+            ],
+            "scale": [
+                1.8,
+                1.5
+            ],
+            "collider": {
+                "type": 2
+            },
+            "rotation": 90,
+            "spritePath": "Resources/Sprites/spikes.png",
+            "tags": [
+                "Spike"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -2500.0,
+                400.0
+            ],
+            "scale": [
+                1.8,
+                1.5
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/spikes.png",
+            "tags": [
+                "Spike"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
                 200,
                 200,
                 255,
@@ -26,7 +103,7 @@
             "tags": [
                 "Bounce"
             ],
-            "zIndex": 0
+            "zIndex": 15
         },
         {
             "color": [
@@ -392,7 +469,7 @@
             "tags": [
                 "Bounce"
             ],
-            "zIndex": 0
+            "zIndex": -15
         },
         {
             "color": [

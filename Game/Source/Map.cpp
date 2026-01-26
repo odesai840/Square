@@ -24,6 +24,8 @@ void Map::OnStart()
     //SetCameraZoom(0.1f);
     EnableCameraBounds(true);
     SetGravity(-1500.0f);
+    
+    LoadMap(0, SquareCore::Vec2(0.0f, 0.0f));
 }
 
 
@@ -96,7 +98,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
         scene_path = "Resources/Scenes/test.square";
         break;
     case 1:
-        scene_path = "Resources/Scenes/test.square";
+        scene_path = "Resources/Scenes/level1.square";
         break;
     case 2:
         scene_path = "Resources/Scenes/level2.square";
@@ -196,7 +198,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             StopAudioClip(level_3_music);
             PlayAudioClip(main_menu_music);
             player_script->UpdateCameraBounds(-10000.0f, -400.0f, 9500.0f, 10000.0f);
-            SetCameraPosition(player_script->GetPlayerData().spawn_points[2]);
+            SetCameraPosition(player_script->GetPlayerData().spawn_points[0]);
             break;
         }
     case 1:
@@ -209,8 +211,8 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             player_script->UpdateCameraBounds(-14000.0f, -400.0f, 6000.0f, 10000.0f);
             SetCameraPosition(player_script->GetPlayerData().spawn_points[0]);
             if (ui) ui->AreaTitle("The Cage", "Now Playing:\nThe Cage\nCaleb Kronstad and Ohm Desai");
-            enemy_manager->SpawnFinalBoss({200.0f, 100.0f});
-            enemy_manager->boss_3_active = true;
+            //enemy_manager->SpawnFinalBoss({200.0f, 100.0f});
+            //enemy_manager->boss_3_active = true;
             break;
         }
     case 2:
