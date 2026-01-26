@@ -19,8 +19,8 @@ void Map::OnStart()
     SetAudioLooping(level_3_music, true);
     SetAudioMasterVolume(1.0f);
     
-    SetCameraZoom(0.85f);
-    //SetCameraZoom(0.05f);
+    //SetCameraZoom(0.85f);
+    SetCameraZoom(0.3f);
     EnableCameraBounds(true);
     SetGravity(-1500.0f);
     
@@ -239,11 +239,11 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             player_script->UpdateCameraBounds(-14000.0f, -10000.0f, 9500.0f, 14000.0f);
             SetCameraPosition(player_script->GetPlayerData().spawn_points[2]);
             if (ui) ui->AreaTitle("The Palace", "Now Playing:\nThe Palace\nCaleb Kronstad");
-            if (!player_script->GetPlayerData().third_boss_dead)
-            {
-                enemy_manager->SpawnFinalBoss({-9000.0f, 5200.0f});
-                enemy_manager->boss_3_active = true;
-            }
+            //if (!player_script->GetPlayerData().third_boss_dead)
+            //{
+            //    enemy_manager->SpawnFinalBoss({-9000.0f, 5200.0f});
+            //    enemy_manager->boss_3_active = true;
+            //}
             break;
         }
     default:
