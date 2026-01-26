@@ -1718,7 +1718,7 @@
             "tags": [
                 "Ground"
             ],
-            "zIndex": 1
+            "zIndex": 11
         },
         // left tower wall
         {
@@ -1741,7 +1741,7 @@
             "tags": [
                 "Ground"
             ],
-            "zIndex": 0
+            "zIndex": 10
         },
         // weapon racks
         {
@@ -3099,11 +3099,11 @@
             ],
             "isSpriteless": false,
             "position": [
-                -13022.0,
+                -13025.0,
                 -1332.5
             ],
             "scale": [
-                0.3,
+                0.31,
                 2.0
             ],
             "collider": {
@@ -3121,7 +3121,7 @@
             ],
             "isSpriteless": false,
             "position": [
-                -11562.5,
+                -11570.0,
                 -2532.5
             ],
             "scale": [
@@ -3244,6 +3244,266 @@
                 "Ground"
             ],
             "zIndex": 2
+        },
+        // octagon
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "isSpriteless": false,
+            "position": [
+                -11025.0,
+                -2530.0
+            ],
+            "scale": [
+                0.3,
+                0.3
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "DialogTriggerLastOcta"
+            ],
+            "zIndex": 20
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -10725.0,
+                -2560.0
+            ],
+            "scale": [
+                0.27,
+                0.27
+            ],
+            "collider": {
+                "type": 0
+            },
+            "spritePath": "Resources/Sprites/last-octagon.png",
+            "zIndex": 2
+        },
+        // octagon tunnel barrel cover
+        {
+            "color": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -13010.0,
+                -165.0
+            ],
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "spritePath": "Resources/Sprites/barrel.png",
+            "tags": [
+                "Breakable"
+            ],
+            "zIndex": 2
+        },
+        {
+            "color": [
+                200,
+                200,
+                200,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -12950.0,
+                -165.0
+            ],
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "spritePath": "Resources/Sprites/barrel.png",
+            "tags": [
+                "Breakable"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                155,
+                155,
+                155,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -12900.0,
+                -165.0
+            ],
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "spritePath": "Resources/Sprites/barrel.png",
+            "tags": [
+                "Breakable"
+            ],
+            "zIndex": 0
+        },
+        {
+            "color": [
+                200,
+                200,
+                200,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -13070.0,
+                -165.0
+            ],
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "spritePath": "Resources/Sprites/barrel.png",
+            "tags": [
+                "Breakable"
+            ],
+            "zIndex": 1
+        },
+        {
+            "color": [
+                155,
+                155,
+                155,
+                255
+            ],
+            "isSpriteless": false,
+            "position": [
+                -13120.0,
+                -165.0
+            ],
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "spritePath": "Resources/Sprites/barrel.png",
+            "tags": [
+                "Breakable"
+            ],
+            "zIndex": 0
+        },
+        // level bounds
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "isSpriteless": false,
+            "position": [
+                -2650.0,
+                2300.0
+            ],
+            "scale": [
+                25.0,
+                5.0
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Level3BoundsTrigger1"
+            ],
+            "zIndex": 1000
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "isSpriteless": false,
+            "position": [
+                -2950.0,
+                -1000.0
+            ],
+            "scale": [
+                3.0,
+                1.0
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Level3BoundsTrigger2"
+            ],
+            "zIndex": 1000
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "isSpriteless": false,
+            "position": [
+                -11600.0,
+                -1700.0
+            ],
+            "scale": [
+                3.7,
+                2.2
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Level3BoundsTrigger3"
+            ],
+            "zIndex": 1000
+        },
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "isSpriteless": false,
+            "position": [
+                -10000.0,
+                5650.0
+            ],
+            "scale": [
+                2.5,
+                1.0
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "Level3BoundsTrigger4"
+            ],
+            "zIndex": 1000
         },
         // wormhole to level start
         // wormhole to level 2
