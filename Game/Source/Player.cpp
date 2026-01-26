@@ -143,6 +143,25 @@ void Player::OnUpdate(float delta_time)
     Projectile(delta_time);
     OnCollision(delta_time);
     UpdateBounceEntities(delta_time);
+    
+    if (in_final_boss_dialogue)
+    {
+        if (dialog_manager->HasBeenSeen(6))
+        {
+            in_final_boss_dialogue = false;
+            map->PlayBossMusic();
+            enemy_manager->boss_3_active = true;
+            
+            uint32_t final_boss = GetFirstEntityWithTag("FinalBoss");
+            for (auto& prop : GetAllEntityProperties(final_boss))
+            {
+                if (FinalBoss* fb = dynamic_cast<FinalBoss*>(prop))
+                {
+                    fb->state = FinalBossState::IDLE;
+                }
+            }
+        }
+    }
 
     if (!can_take_damage)
     {
@@ -480,6 +499,29 @@ void Player::OnCollision(float delta_time)
             target_bounds_y_min = 0.0f;
             continue;
         }
+        
+        if (EntityHasTag(collision.first, "FinalBossDoorLockTrigger") && !enemy_manager->boss_3_active && has_key)
+        {
+            uint32_t fbdo = GetFirstEntityWithTag("FinalBossDoorOpen");
+            uint32_t fbdc = GetFirstEntityWithTag("FinalBossDoorClosed");
+            uint32_t fbdl = GetFirstEntityWithTag("FinalBossDoorLock");
+            SetEntityColor(fbdo, SquareCore::RGBA(255, 255, 255, 255));
+            SetEntityVisible(fbdl, false);
+            SetEntityVisible(fbdc, false);
+        }
+        
+        if (EntityHasTag(collision.first, "DialogTriggerReginald") && !enemy_manager->boss_3_active)
+        {
+            map->MuteAllMusic();
+            in_final_boss_dialogue = true;
+            
+            uint32_t fbdo = GetFirstEntityWithTag("FinalBossDoorOpen");
+            uint32_t fbdc = GetFirstEntityWithTag("FinalBossDoorClosed");
+            uint32_t fbdl = GetFirstEntityWithTag("FinalBossDoorLock");
+            SetEntityColor(fbdo, SquareCore::RGBA(255, 255, 255, 0));
+            SetEntityVisible(fbdl, true);
+            SetEntityVisible(fbdc, true);
+        }
 
         if (EntityHasTag(collision.first, "Boss2Activate") && !enemy_manager->boss_2_active && !player_data.second_boss_dead)
         {
@@ -520,10 +562,10 @@ void Player::OnCollision(float delta_time)
             RemoveEntity(collision.first);
             continue;
         }
-        if (EntityHasTag(collision.first, "GainKey") && !player_data.has_faster_slash)
+        if (EntityHasTag(collision.first, "GainKey") && !has_key)
         {
             PlayPickupSound();
-            player_data.has_faster_slash = true;
+            has_key = true;
             user_interface->AbilityGained("Mysterious Golden Key", "I wonder what this goes to?");
             RemoveEntity(collision.first);
             continue;

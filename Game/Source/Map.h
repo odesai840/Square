@@ -16,6 +16,8 @@ public:
     void SetPlayerScript(Player* player) { this->player_script = player; }
     void SetUserInterface(UserInterface* ui) { this->ui = ui; }
     void UpdateMusicVolumes();
+    void MuteAllMusic();
+    void PlayBossMusic();
     
     int current_map = 0;
 
@@ -24,6 +26,7 @@ private:
     uint32_t level_1_music = 0;
     uint32_t level_2_music = 0;
     uint32_t level_3_music = 0;
+    uint32_t final_boss_music = 0;
     EnemyManager* enemy_manager = nullptr;
     Player* player_script = nullptr;
     UserInterface* ui = nullptr;

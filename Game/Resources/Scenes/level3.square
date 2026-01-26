@@ -6,6 +6,31 @@
         255
     ],
     "entities": [
+        {
+            "color": [
+                255,
+                255,
+                255,
+                0
+            ],
+            "isSpriteless": false,
+            "position": [
+                -10500.0,
+                5375.0
+            ],
+            "scale": [
+                0.2,
+                0.6
+            ],
+            "collider": {
+                "type": 2
+            },
+            "spritePath": "Resources/Sprites/square.png",
+            "tags": [
+                "DialogTriggerReginald"
+            ],
+            "zIndex": 1
+        },
         // main spawn ground
         {
             "color": [

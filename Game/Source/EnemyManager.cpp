@@ -830,6 +830,11 @@ void EnemyManager::OnUpdate(float deltaTime)
                         continue;
                     }
                     
+                    if (fb->shots_fired == 0)
+                    {
+                        SetGravityScale(final_boss, 0.0f);
+                    }
+                    
                     if (fb->shots_fired < fb->num_shots)
                     {
                         if (fb->time_elapsed_after_firing >= fb->time_between_shots)
@@ -847,6 +852,7 @@ void EnemyManager::OnUpdate(float deltaTime)
                                 {
                                     SquareCore::Vec2 boss_pos = GetPosition(final_boss);
                                     player_script->PlayLaserSound();
+                                    SetVelocity(final_boss, 0.0f, 0.0f);
                                     SetPosition(projectile.id, boss_pos.x, boss_pos.y);
                                     SetVelocity(projectile.id, 0.0f, -2000.0f);
                                     SetEntityVisible(projectile.id, true);
@@ -877,6 +883,7 @@ void EnemyManager::OnUpdate(float deltaTime)
                             fb->shots_fired = 0;
                             fb->time_elapsed_after_firing = 0.0f;
                             fb->attack_type = FinalBossAttackType::NONE;
+                            SetGravityScale(final_boss, 0.0f);
                         }
                     }
                 }

@@ -78,6 +78,9 @@ private:
 private:
     bool loaded = false;
     bool is_transitioning = false;
+    bool in_final_boss_dialogue = false;
+    
+    bool has_key = false;
     
     PlayerData player_data;
     uint32_t player = 0;

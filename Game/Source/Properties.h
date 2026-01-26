@@ -181,7 +181,7 @@ struct SecondBoss : SquareCore::Property
 
 struct FinalBoss : SquareCore::Property
 {
-    FinalBossState state = FinalBossState::IDLE;
+    FinalBossState state = FinalBossState::TALKING;
     FinalBossAttackType attack_type = FinalBossAttackType::NONE;
 
     FinalBossAttackType last_attack_type = FinalBossAttackType::NONE;

@@ -8,7 +8,8 @@ void Map::OnStart()
     main_menu_music = AddAudioClip("Resources/Audio/29th.wav");
     level_1_music = AddAudioClip("Resources/Audio/12.mp3");
     level_2_music = AddAudioClip("Resources/Audio/03.mp3");
-    level_3_music = AddAudioClip("Resources/Audio/14.wav");
+    level_3_music = AddAudioClip("Resources/Audio/11.mp3");
+    final_boss_music = AddAudioClip("Resources/Audio/14.wav");
     SetAudioVolume(main_menu_music, 0.1f);
     SetAudioVolume(level_1_music, 0.1f);
     SetAudioVolume(level_2_music, 0.1f);
@@ -194,6 +195,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
     {
     case 0:
         {
+            StopAudioClip(final_boss_music);
             StopAudioClip(level_1_music);
             StopAudioClip(level_2_music);
             StopAudioClip(level_3_music);
@@ -204,6 +206,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
         }
     case 1:
         {
+            StopAudioClip(final_boss_music);
             StopAudioClip(main_menu_music);
             StopAudioClip(level_2_music);
             StopAudioClip(level_3_music);
@@ -218,6 +221,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
         }
     case 2:
         {
+            StopAudioClip(final_boss_music);
             StopAudioClip(level_1_music);
             StopAudioClip(main_menu_music);
             StopAudioClip(level_3_music);
@@ -231,6 +235,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
         }
     case 3:
         {
+            StopAudioClip(final_boss_music);
             StopAudioClip(level_1_music);
             StopAudioClip(level_2_music);
             StopAudioClip(main_menu_music);
@@ -239,15 +244,16 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             player_script->UpdateCameraBounds(-14000.0f, -10000.0f, 9500.0f, 14000.0f);
             SetCameraPosition(player_script->GetPlayerData().spawn_points[2]);
             if (ui) ui->AreaTitle("The Palace", "Now Playing:\nThe Palace\nCaleb Kronstad");
-            //if (!player_script->GetPlayerData().third_boss_dead)
-            //{
-            //    enemy_manager->SpawnFinalBoss({-9000.0f, 5200.0f});
-            //    enemy_manager->boss_3_active = true;
-            //}
+            if (!player_script->GetPlayerData().third_boss_dead)
+            {
+                enemy_manager->SpawnFinalBoss({-9000.0f, 5200.0f});
+                enemy_manager->boss_3_active = false;
+            }
             break;
         }
     default:
         {
+            StopAudioClip(final_boss_music);
             StopAudioClip(level_1_music);
             StopAudioClip(level_2_music);
             StopAudioClip(level_3_music);
@@ -264,4 +270,22 @@ void Map::UpdateMusicVolumes()
     SetAudioVolume(level_1_music, player_script->GetPlayerData().music_volume);
     SetAudioVolume(level_2_music, player_script->GetPlayerData().music_volume);
     SetAudioVolume(level_3_music, player_script->GetPlayerData().music_volume);
+}
+
+void Map::MuteAllMusic()
+{
+    StopAudioClip(final_boss_music);
+    StopAudioClip(level_1_music);
+    StopAudioClip(level_2_music);
+    StopAudioClip(level_3_music);
+    StopAudioClip(main_menu_music);
+}
+
+void Map::PlayBossMusic()
+{
+    StopAudioClip(level_1_music);
+    StopAudioClip(level_2_music);
+    StopAudioClip(level_3_music);
+    StopAudioClip(main_menu_music);
+    PlayAudioClip(final_boss_music);
 }
