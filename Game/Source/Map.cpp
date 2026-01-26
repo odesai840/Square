@@ -245,7 +245,7 @@ void Map::LoadMap(int level, SquareCore::Vec2 player_position)
             if (ui) ui->AreaTitle("The Palace", "Now Playing:\nThe Palace\nCaleb Kronstad");
             if (!player_script->GetPlayerData().third_boss_dead)
             {
-                enemy_manager->SpawnFinalBoss({-9000.0f, 5200.0f});
+                enemy_manager->SpawnFinalBoss({-9200.0f, 5200.0f});
                 enemy_manager->boss_3_active = false;
             }
             break;
