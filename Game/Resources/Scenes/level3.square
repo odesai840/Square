@@ -1562,7 +1562,7 @@
                 1.1
             ],
             "spritePath": "Resources/Sprites/square.png",
-            "zIndex": -50
+            "zIndex": 1
         },
         // boss room floor
         {
