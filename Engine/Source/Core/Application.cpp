@@ -56,7 +56,7 @@ namespace SquareCore
                 window.GetTitle().c_str(),
                 window.GetWidth(),
                 window.GetHeight(),
-                SDL_WINDOW_FULLSCREEN | SDL_WINDOW_BORDERLESS | SDL_WINDOW_MAXIMIZED | SDL_WINDOW_MOUSE_GRABBED
+                SDL_WINDOW_BORDERLESS | SDL_WINDOW_MAXIMIZED | SDL_WINDOW_MOUSE_GRABBED
             )
         );
 
