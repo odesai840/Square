@@ -696,6 +696,8 @@ void Player::OnCollision(float delta_time)
                 SetPosition(trap_wall, GetPosition(trap_wall).x, 1570.0f);
             }
             
+            spawned_enemy_ids.clear();
+            
             for (int i = 0; i < 3; i++)
             {
                 PlayDoorSound();
@@ -815,6 +817,7 @@ void Player::DealDamage(Character* enemy_character, uint32_t enemy_id, int damag
                         SetPosition(trap_wall, GetPosition(trap_wall).x, 1870.0f);
                     }
                 }
+                break;
             }
         }
         
